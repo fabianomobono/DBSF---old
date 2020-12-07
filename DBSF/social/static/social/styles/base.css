@@ -1,0 +1,71 @@
+/* shadow */
+#login_navbar {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: dodgerblue;
+}
+#login_navbar a {
+  padding: 20px;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+#login_navbar form {
+  padding: 20px;
+}
+#login_navbar form input[type=text], #login_navbar form input[type=password] {
+  padding: 5px;
+  text-align: center;
+}
+#login_navbar form input[type=submit] {
+  padding: 5px;
+}
+
+.register_form {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px;
+  border-radius: 20px;
+  float: right;
+  width: 30%;
+  margin-right: 5%;
+  margin-top: 1%;
+  background-color: silver;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid grey;
+}
+.register_form input {
+  border-radius: 10px;
+  padding: 10px;
+  margin: 1%;
+  text-align: center;
+  font-size: 15px;
+  font-size: 15px;
+  font-weight: bold;
+}
+.register_form input[type=submit] {
+  background-color: dodgerblue;
+  padding: 5px;
+  margin: 5%;
+  color: white;
+  width: 90%;
+}
+.register_form h3 {
+  text-align: center;
+}
+
+#login_image {
+  width: 700px;
+  margin: 1% 0 0 2%;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+html {
+  font-family: sans-serif;
+}
+
+/*# sourceMappingURL=base.css.map */

@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'social/styles/base.css' %}">
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <nav>
+      <a href="#">Profile</a>
+      <a href="#">Messages</a>
+      <a href="#">Settings</a>
+    </nav>
+    {% block body %}{% endblock %}
+  </body>
+</html>
