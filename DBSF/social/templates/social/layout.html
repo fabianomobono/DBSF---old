@@ -3,6 +3,10 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <script type="text/babel" src="{% static 'social/javascript/index.js' %}"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <link rel="stylesheet" href="{% static 'social/styles/base.css' %}">
     <title>{% block title %}{% endblock %}</title>
   </head>
@@ -12,6 +16,20 @@
       <a href="#">Messages</a>
       <a href="#">Settings</a>
     </nav>
-    {% block body %}{% endblock %}
+    <div class="index">
+      {% block body %}{% endblock %}
+    </div>
+    <div class="side_bar">
+      <ul>
+        <li>item</li>
+        <li>item2</li>
+      </ul>
+    </div>
+    <div id='feed' class="feed">
+
+    </div>
+    <div class="friends_right_div">
+      <p>Here is all the frienship stuff</p>
+    </div>
   </body>
 </html>

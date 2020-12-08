@@ -10,13 +10,18 @@
     <nav id="login_navbar">
       <a href="#">DBSF</a>
       <form class="login_form" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
         {{form}}
         <input type="submit" name="" value="Log in">
       </form>
     </nav>
+    <div class="message">
+      {{message}}
+    </div>
     <img id='login_image' src="{% static 'social/core_images/coglioni.jpg' %}" alt="">
 
-    <form class="register_form" action="index.html" method="post">
+    <form class="register_form" action="register" method="post">
+      {% csrf_token %}
       <h3>New Here? Sign Up!</h3>
       {{register_form.First_name}}
       {{register_form.Last_name}}
