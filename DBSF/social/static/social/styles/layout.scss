@@ -1,18 +1,20 @@
 @import 'colors';
 
 .main_nav {
-    background-color: $blue;
-    display: flex;
-    justify-content: space-around;
-    a, form  {
-      padding: 10px;
-      font-weight: bold;
-      text-decoration: none;
+  background-color: $blue;
+  display: flex;
+  justify-content: space-around;
+  a, form  {
+    color: $grey;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none;
+    width: auto;
+    &:hover {
+      color: $black;
     }
-    a:hover {
-      background-color: blue;
-      color: $white;
-    }
+  }
 }
 
 .side_bar {

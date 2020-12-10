@@ -5,20 +5,23 @@
     <meta charset="utf-8">
     <script type="text/babel" src="{% static 'social/javascript/layout.js' %}"></script>
     {% block head %}{% endblock %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'social/styles/base.css' %}">
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
     <nav class='main_nav'>
-      <a href="#">{{user}}</a>
+      <a href="{% url 'index' %}">DBSF</a>
+      <a href="#"><i class="fa fa-gear" style="font-size:24px"></i></a>
+      <a href="#">{{user|title}}</a>
       <a href="#">Messages</a>
-      <a href="#">Settings</a>
       <form class="logout_form" action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <a class='logout_a' href="#">Log out</a>
       </form>
     </nav>
     <div class="index">
+
       {% block body %}{% endblock %}
     </div>
     <div class="side_bar">
