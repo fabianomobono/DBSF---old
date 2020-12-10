@@ -1,8 +1,8 @@
 from django import forms
 CHOICES = {('male', 'female', 'other')}
 class LoginForm(forms.Form):
-    username = forms.CharField(label='', max_length=20, widget=forms.TextInput(attrs={'placeholder': 'Username'}))
-    password = forms.CharField(label='', max_length=40, widget=forms.PasswordInput(attrs={'placeholder':'Password'}))
+    username = forms.CharField(label='', max_length=20, widget=forms.TextInput(attrs={'placeholder': 'Username', 'id': 'login_username'}))
+    password = forms.CharField(label='', max_length=40, widget=forms.PasswordInput(attrs={'placeholder':'Password', 'id': 'login_password'}))
 
 
 class RegisterForm(forms.Form):

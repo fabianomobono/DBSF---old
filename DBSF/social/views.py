@@ -12,7 +12,9 @@ def index(request):
     if request.user.is_authenticated:
         return render(request, 'social/index.html', {'user': request.user})
     else:
-        return render(request, 'social/login.html')
+        login_form = LoginForm()
+        register_form = RegisterForm()
+        return render(request, 'social/login.html' , {'form': login_form, 'register_form': register_form})
 
 
 def register_view(request):
@@ -27,8 +29,8 @@ def register_view(request):
             email = form.cleaned_data['email']
             dob = form.cleaned_data['dob']
 
-            if username == '' or first =='' or last == '' or email == '' or dob == '':
-                return render(request, 'social/login.html', {'message': 'You must provide all the fields'})
+            if username == '1' or first == '' or last == '' or email == '' or dob == '':
+                return render(request, 'social/login.html', {'message': 'You must provide all the fields', 'form': LoginForm(), 'register_form': form})
 
             if password != confirmation:
                 return render(request, 'social/login.html', {'message': 'Password and confirmationdo not match'})
@@ -51,16 +53,22 @@ def register_view(request):
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            print('form is valid')
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
-            return render(request, 'social/index.html', {'message': 'You have been logged in', 'user': request.user})
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(reverse('index'))
+
+            else:
+                return render(request, 'social/login.html', {'message': "Invalid login credentials", 'form': form, 'register_form': RegisterForm()})
 
         else:
-            return render(request, 'social/login.html', {'message': "Invalid login credentials"})
+            return render(request, 'social/login.html', {'message': "You have to provide all the fields", 'form': form, 'register_form': RegisterForm()})
 
     elif request.method == 'GET':
         login_form = LoginForm()
@@ -72,7 +80,6 @@ def login_view(request):
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return render(request, 'social/login.html', {'message':'You have been logged out'})
-
+        return HttpResponseRedirect(reverse('index'))
     else:
         return render(request, 'social/index.html', {'message': 'you must log out via the logout button'})

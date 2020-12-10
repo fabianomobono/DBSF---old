@@ -65,6 +65,21 @@
 }
 
 /* shadow */
+.main_nav {
+  background-color: dodgerblue;
+  display: flex;
+  justify-content: space-around;
+}
+.main_nav a, .main_nav form {
+  padding: 10px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.main_nav a:hover {
+  background-color: blue;
+  color: white;
+}
+
 .side_bar {
   float: left;
   border: 2px solid black;
