@@ -65,6 +65,10 @@
 }
 
 /* shadow */
+h1 {
+  text-align: center;
+}
+
 .main_nav {
   background-color: #292f4f;
   display: flex;
@@ -81,7 +85,6 @@
 .main_nav a:hover, .main_nav form:hover {
   color: black;
 }
-
 .side_bar {
   float: left;
   border: 2px solid black;
@@ -96,7 +99,7 @@
   height: 100%;
 }
 
-.feed {
+.main {
   float: left;
   width: 49%;
   border: 2px solid black;
@@ -119,6 +122,64 @@
 .post .post_body {
   margin: 5px;
   padding: 20px;
+}
+
+/* shadow */
+.profile_pic_div, .user_info_div {
+  float: left;
+}
+
+.profile_pic {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 3%;
+  border: 2px solid black;
+  filter: drop-shadow(10px 10px 4px rgba(41, 47, 79, 0.5));
+}
+
+.user_info_div {
+  border: 2px solid black;
+}
+.user_info_div p {
+  text-align: center;
+  font-size: large;
+}
+.user_info_div ul li {
+  list-style: none;
+  padding: 20px;
+  font-family: Georgia, serif;
+}
+
+.upload_picture_div {
+  display: none;
+  position: absolute;
+  background-color: white;
+  width: 50%;
+  height: 70%;
+  top: 10%;
+  left: 25%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.upload_picture_div img {
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 3%;
+  border: 2px solid black;
+  width: 200px;
+  height: 200px;
+}
+.upload_picture_div form p label {
+  font-weight: bold;
+  margin: 3% 3% 3% 10%;
+}
+.upload_picture_div form p label:hover {
+  text-decoration: underline;
+}
+.upload_picture_div form input {
+  display: none;
 }
 
 html {

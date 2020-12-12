@@ -3,8 +3,12 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    
     <script type="text/babel" src="{% static 'social/javascript/layout.js' %}"></script>
     {% block head %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'social/styles/base.css' %}">
     <title>{% block title %}{% endblock %}</title>
@@ -13,16 +17,15 @@
     <nav class='main_nav'>
       <a href="{% url 'index' %}">DBSF</a>
       <a href="#"><i class="fa fa-gear" style="font-size:24px"></i></a>
-      <a href="#">{{user|title}}</a>
+      <a href="{% url 'profile' %}">{{user|title}}</a>
       <a href="#">Messages</a>
       <form class="logout_form" action="{% url 'logout' %}" method="post">
         {% csrf_token %}
-        <a class='logout_a' href="#">Log out</a>
+        <a class='logout_a' href="/logout">Log out</a>
       </form>
     </nav>
-    <div class="index">
-
-      {% block body %}{% endblock %}
+    <div class="messages">
+      <h1>Messages: {{message}}</h1>
     </div>
     <div class="side_bar">
       <ul>
@@ -30,8 +33,8 @@
         <li>item2</li>
       </ul>
     </div>
-    <div id='feed' class="feed">
-
+    <div class="main">
+      {% block body %}{% endblock %}
     </div>
     <div class="friends_right_div">
       <p>Here is all the frienship stuff</p>

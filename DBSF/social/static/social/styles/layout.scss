@@ -1,5 +1,10 @@
 @import 'colors';
 
+h1 {
+  text-align: center;
+}
+
+
 .main_nav {
   background-color: $blue;
   display: flex;
@@ -13,6 +18,9 @@
     width: auto;
     &:hover {
       color: $black;
+    }
+    &:active {
+    
     }
   }
 }
@@ -32,7 +40,7 @@
 }
 
 
-.feed {
+.main {
   float: left;
   width: 49%;
   border: 2px solid black;

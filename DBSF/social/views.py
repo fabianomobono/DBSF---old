@@ -5,6 +5,9 @@ from .models import User
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
+from DBSF.settings import MEDIA_ROOT, MEDIA_URL
 # Create your views here.
 
 
@@ -78,8 +81,20 @@ def login_view(request):
 
 
 def logout_view(request):
-    if request.method == 'POST':
-        logout(request)
-        return HttpResponseRedirect(reverse('index'))
-    else:
-        return render(request, 'social/index.html', {'message': 'you must log out via the logout button'})
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
+
+
+def profile(request):
+    return render(request, 'social/profile.html', {'user': request.user})
+
+
+@login_required
+@require_http_methods(['POST'])
+def change_profile_pic(request):
+    picture = request.FILES['profile_pic']
+    print(picture)
+    user = User.objects.get(username=request.user)
+    user.profile_pic = picture
+    user.save()
+    return HttpResponseRedirect(reverse('profile'))
