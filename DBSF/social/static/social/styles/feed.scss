@@ -2,21 +2,77 @@
 
 
 .post {
+  float: left;
+  width: 98%;
   box-shadow: $shadow;
   background-color: $white;
   margin: 1%;
   border-radius: 5px;
-  .post_author_pic {
-    margin: 3%;
+  .author_info_div {
+    .post_author_pic {
+      display: inline;
+      margin: 3%;
+      margin-right: 1px;
+      border-radius: 50px;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+    .post_author_user {
+      display: inline;
+      margin-left: 1%;
+      font-weight: bold;
+      font-size: larger;
+    }
+  }
+  .post_body {
+    margin: 5%;
+    padding: 20px;
+  }
+}
+
+
+.new_post_div {
+  float: left;
+  width: 98%;
+  margin-bottom: 10%;
+  border-radius: 5px;
+  background-color: $white;
+  box-shadow: $shadow;
+  margin: 1%;
+
+  img {
+    float: left;
+    display: inline;
+    margin: 2%;
     border-radius: 50px;
     width: 50px;
     height: 50px;
     object-fit: cover;
-
   }
-  .post_body {
-    margin: 5px;
-    padding: 20px;
+  form {
+    float: left;
+    display: inline;
+    width: 80%;
+    margin-top: -10px!important;
+    textarea {
+      display: inline;
+      margin-top: 5%;
+      width:85%;
+      border-radius: 40px;
+      padding-left: 10px;
+      font-size: 20px;
+      height: 40px;
+      resize: none;
+      overflow: hidden;
+      &:focus {
+        outline: none;
+      }
+    }
+    button {
+      display: inline;
+      margin: -10px 10px 20px 10px;
+    }
   }
-
 }
+

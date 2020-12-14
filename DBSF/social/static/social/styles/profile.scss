@@ -9,18 +9,19 @@
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 3%;
-  border: 2px solid black;
+  margin: 10%;
+  border: 2px solid $cornflowerblue;
   filter: drop-shadow(10px 10px 4px rgba(41,47,79, 0.5));
 }
 
 
 .user_info_div {
-  border: 2px solid $black;
+  
+  margin-left: 5%;
   p {
+    margin-top: 5%;
     text-align: center;
-    font-size: large;
-
+    font-size: 40px;
   }
   ul {
     li {
@@ -32,6 +33,20 @@
 }
 
 .upload_picture_div {
+  #close_button {
+    float: right;
+    margin: 5% 5% 5% 0%;
+    background-color: white;
+    border: none;
+    &:hover {
+      font-weight: bold;
+    }
+  }
+  h1 {
+    margin: 3%;
+    font-weight: normal;
+
+  }
   display: none;
   position: absolute;
   background-color: white;
@@ -41,10 +56,12 @@
   left: 25%;
   border-radius: 10px;
   box-shadow: $shadow;
+  text-align: center;
+  
   img {
     border-radius: 50%;
     object-fit: cover;
-    margin: 3%;
+    margin: 3% 3% 3% 13%;
     border: 2px solid black;
     width: 200px;
     height: 200px;
@@ -53,7 +70,7 @@
     p {
       label {
         font-weight: bold;
-        margin: 3% 3% 3% 10%;
+        margin: 3% 3% 0% 3%;
         &:hover {
           text-decoration: underline;
         }

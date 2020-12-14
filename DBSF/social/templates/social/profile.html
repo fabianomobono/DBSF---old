@@ -30,6 +30,7 @@
     </ul>
   </div>
   <div class="upload_picture_div">
+    <button id='close_button' onclick='closeElement(this)' type="button" name="button">&#10006</button>
     <h1>Upload a new Profile picture</h1>
     {% if user.profile_pic.url != None %}
     <div class="profile_pic_in_popup">
@@ -44,10 +45,8 @@
       {% csrf_token %}
       <p><label for="image_upload">Upload Picture</label></p>
       <input name='profile_pic' type="file" id="image_upload" onchange="loadFile(event)" accept="image/gif, image/jpeg, image/png" name="order_pictures" multiple>
-      <button class='btn btn-primary' type="submit" name="button">Save Picture</button>
+      <button id='save_picture_button' class='btn btn-primary' type="submit" name="button" disabled>Save Picture</button>
     </form>
-    <button id='close_button' onclick='closeElement(this)' type="button" name="button">&#10006</button>
-
   </div>
 
 {% endblock %}

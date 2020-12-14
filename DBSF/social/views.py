@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonRespons
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
-from DBSF.settings import MEDIA_ROOT, MEDIA_URL
+import json
 # Create your views here.
 
 
@@ -84,7 +84,7 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
-
+@login_required
 def profile(request):
     return render(request, 'social/profile.html', {'user': request.user})
 

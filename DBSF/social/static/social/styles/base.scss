@@ -2,7 +2,18 @@
 @import 'layout';
 @import 'feed';
 @import 'profile';
+
+
 html {
   font-family: sans-serif;
   background-color: #f0f2f5
+}
+
+
+.profile_pic_small_icon {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
 }

@@ -107,21 +107,74 @@ h1 {
 
 /* shadow */
 .post {
+  float: left;
+  width: 98%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: white;
   margin: 1%;
   border-radius: 5px;
 }
-.post .post_author_pic {
+.post .author_info_div .post_author_pic {
+  display: inline;
   margin: 3%;
+  margin-right: 1px;
   border-radius: 50px;
   width: 50px;
   height: 50px;
   object-fit: cover;
 }
+.post .author_info_div .post_author_user {
+  display: inline;
+  margin-left: 1%;
+  font-weight: bold;
+  font-size: larger;
+}
 .post .post_body {
-  margin: 5px;
+  margin: 5%;
   padding: 20px;
+}
+
+.new_post_div {
+  float: left;
+  width: 98%;
+  margin-bottom: 10%;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 1%;
+}
+.new_post_div img {
+  float: left;
+  display: inline;
+  margin: 2%;
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+.new_post_div form {
+  float: left;
+  display: inline;
+  width: 80%;
+  margin-top: -10px !important;
+}
+.new_post_div form textarea {
+  display: inline;
+  margin-top: 5%;
+  width: 85%;
+  border-radius: 40px;
+  padding-left: 10px;
+  font-size: 20px;
+  height: 40px;
+  resize: none;
+  overflow: hidden;
+}
+.new_post_div form textarea:focus {
+  outline: none;
+}
+.new_post_div form button {
+  display: inline;
+  margin: -10px 10px 20px 10px;
 }
 
 /* shadow */
@@ -134,17 +187,18 @@ h1 {
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 3%;
-  border: 2px solid black;
+  margin: 10%;
+  border: 2px solid cornflowerblue;
   filter: drop-shadow(10px 10px 4px rgba(41, 47, 79, 0.5));
 }
 
 .user_info_div {
-  border: 2px solid black;
+  margin-left: 5%;
 }
 .user_info_div p {
+  margin-top: 5%;
   text-align: center;
-  font-size: large;
+  font-size: 40px;
 }
 .user_info_div ul li {
   list-style: none;
@@ -162,18 +216,32 @@ h1 {
   left: 25%;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+}
+.upload_picture_div #close_button {
+  float: right;
+  margin: 5% 5% 5% 0%;
+  background-color: white;
+  border: none;
+}
+.upload_picture_div #close_button:hover {
+  font-weight: bold;
+}
+.upload_picture_div h1 {
+  margin: 3%;
+  font-weight: normal;
 }
 .upload_picture_div img {
   border-radius: 50%;
   object-fit: cover;
-  margin: 3%;
+  margin: 3% 3% 3% 13%;
   border: 2px solid black;
   width: 200px;
   height: 200px;
 }
 .upload_picture_div form p label {
   font-weight: bold;
-  margin: 3% 3% 3% 10%;
+  margin: 3% 3% 0% 3%;
 }
 .upload_picture_div form p label:hover {
   text-decoration: underline;
@@ -185,6 +253,14 @@ h1 {
 html {
   font-family: sans-serif;
   background-color: #f0f2f5;
+}
+
+.profile_pic_small_icon {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 /*# sourceMappingURL=base.css.map */

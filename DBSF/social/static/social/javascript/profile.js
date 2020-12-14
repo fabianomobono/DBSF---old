@@ -16,5 +16,5 @@ var loadFile = function(event){
   image.width = 200
   image.src = URL.createObjectURL(event.target.files['0']);
   document.querySelector(".profile_pic_in_popup").appendChild(image)
-
+  document.querySelector("#save_picture_button").removeAttribute('disabled');
 }
