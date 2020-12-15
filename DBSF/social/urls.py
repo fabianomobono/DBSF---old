@@ -10,4 +10,5 @@ urlpatterns = [
     path('logout', views.logout_view, name='logout'),
     path('profile', views.profile, name='profile'),
     path('change_profile_pic', views.change_profile_pic, name='upload_profile_pic'),
+    path('create_new_post', views.create_new_post, name='create_new_post'),
 ]

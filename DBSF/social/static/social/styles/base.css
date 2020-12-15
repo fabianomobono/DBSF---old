@@ -152,13 +152,13 @@ h1 {
   height: 50px;
   object-fit: cover;
 }
-.new_post_div form {
+.new_post_div div {
   float: left;
   display: inline;
   width: 80%;
   margin-top: -10px !important;
 }
-.new_post_div form textarea {
+.new_post_div div textarea {
   display: inline;
   margin-top: 5%;
   width: 85%;
@@ -169,10 +169,10 @@ h1 {
   resize: none;
   overflow: hidden;
 }
-.new_post_div form textarea:focus {
+.new_post_div div textarea:focus {
   outline: none;
 }
-.new_post_div form button {
+.new_post_div div button {
   display: inline;
   margin: -10px 10px 20px 10px;
 }

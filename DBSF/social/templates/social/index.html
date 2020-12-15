@@ -1,6 +1,19 @@
 {% extends 'social/layout.html' %}
 {% load static %}
 {% block head %}
+  <script>
+    const username = "{{user|escapejs}}"
+    {% if user.profile_pic.url != '' %}
+      const profile_pic_url = "{{user.profile_pic.url|escapejs}}"
+    {% else %}
+      const profile_pic_url = "{% static 'social/core_images/no_image.jpg' %}"
+    {% endif %}
+    var posts_from_server = []
+    {% for post in posts %}
+      posts_from_server.push({author: "{{post.author}}", author_picture: "{{post.author.profile_pic.url}}", text: "{{post.text}}"})
+    {% endfor %}
+    console.log(posts_from_server)
+  </script>
   <script type="text/babel" src="{% static 'social/javascript/index.js' %}"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
@@ -11,8 +24,6 @@
 {% endblock %}
 
 {% block body %}
-  
-  
   <div id='feed'>
    
   </div>

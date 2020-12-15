@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import login, logout, authenticate
-from .models import User
+from .models import User, Post
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
@@ -13,7 +13,8 @@ import json
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'social/index.html', {'user': request.user})
+        print(Post.objects.all())
+        return render(request, 'social/index.html', {'user': request.user, 'posts': Post.objects.all().order_by("-date")})
     else:
         login_form = LoginForm()
         register_form = RegisterForm()
@@ -98,3 +99,13 @@ def change_profile_pic(request):
     user.profile_pic = picture
     user.save()
     return HttpResponseRedirect(reverse('profile'))
+
+
+@login_required
+@require_http_methods(['POST'])
+def create_new_post(request):
+    data = json.loads(request.body.decode("utf-8"))
+    print(data)
+    new_post = Post(author=request.user, text=data['text'])
+    new_post.save()
+    return JsonResponse(data)

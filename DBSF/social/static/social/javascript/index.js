@@ -3,10 +3,10 @@ class Post_generator extends React.Component {
     return (
     <div className="new_post_div">
     <img className="post_author_pic" src={this.props.picture} alt="profile_pic" />
-    
-    <textarea name="new_post_text" id="new_post_text" placeholder="Say something to your close firends"></textarea>
-    <button onClick={() => this.props.onClick()} className='btn btn-primary'>&#10002;</button>
-    
+    <div>
+      <textarea name="new_post_text" id="new_post_text" placeholder="Say something to your close firends"></textarea>
+      <button onClick={() => this.props.onClick()} className='btn btn-primary'>&#10002;</button>
+    </div>
   </div>
     )
   }
@@ -17,7 +17,7 @@ class Post_generator extends React.Component {
 class Post_body extends React.Component {
   render() {
     return (
-      <p className="post_body" >This is the body</p>
+      <p className="post_body" >{this.props.text}</p>
     )
   }
 }
@@ -41,7 +41,7 @@ class Post extends React.Component {
           picture={this.props.profile_pic}
           user={this.props.user}
         />
-        <Post_body />
+        <Post_body text={this.props.text}/>
       </div>
     )
   }
@@ -54,11 +54,29 @@ class Feed extends React.Component {
     this.state = {
       profile_pic: profile_pic_url,
       user: username,
-      posts: []
+      posts: posts_from_server,
     }
   }
   handleClick() {
-    alert('is was clicked')
+    const text = document.querySelector('#new_post_text').value;
+    if (text.length > 1) {
+      const data = {author: username, text: text}
+      // send that post to the server to save it
+      const csrftoken = Cookies.get('csrftoken');
+      const request = new XMLHttpRequest();
+      request.open('POST', '/create_new_post', true);
+      request.setRequestHeader('X-CSRFToken', csrftoken);
+      request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+      request.onload = () => {
+        const response = JSON.parse(request.responseText)
+        this.setState({
+          posts : [{author: response.author, author_picture: profile_pic_url, text: response.text}, ...this.state.posts]
+        })
+        document.querySelector("#new_post_text").value = '';
+        console.log(response)
+      }
+      request.send(JSON.stringify(data))
+    }
   }
   render() {
     return (
@@ -68,8 +86,9 @@ class Feed extends React.Component {
           onClick={() => this.handleClick()} />
 
         {this.state.posts.map(post => <Post 
-          user={this.state.user}
-          profile_pic={this.state.profile_pic}  
+          user={post.author}
+          profile_pic={post.author_picture}
+          text={post.text}  
         />)}
       </div>
     )

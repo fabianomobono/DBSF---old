@@ -3,10 +3,6 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <script>
-      const username = "{{user|escapejs}}"
-      const profile_pic_url = "{{user.profile_pic.url|escapejs}}" 
-    </script>
     <script type="text/babel" src="{% static 'social/javascript/layout.js' %}"></script>
     {% block head %}{% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
@@ -20,7 +16,14 @@
     <nav class='main_nav'>
       <a href="{% url 'index' %}">DBSF</a>
       <a href="#"><i class="fa fa-gear" style="font-size:24px"></i></a>
-      <a href="{% url 'profile' %}"><img class="profile_pic_small_icon" src="{{user.profile_pic.url}}" alt="profile_pic">{{user|title}}</a>
+      <a href="{% url 'profile' %}">
+        {% if user.profile_pic.url != '' %}
+          <img class="profile_pic_small_icon" src="{{user.profile_pic.url}}" alt="profile_pic">
+        {% else %}
+          <img class='profile_pic_small_icon' src="{% static 'social/core_images/no_image.jpg' %}" alt="{{user}} hasn't uploaded an image yet">  
+        {% endif %}
+        {{user|title}}
+      </a>
       <a href="#">Messages</a>
       <form class="logout_form" action="{% url 'logout' %}" method="post">
         {% csrf_token %}
