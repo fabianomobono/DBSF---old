@@ -108,4 +108,11 @@ def create_new_post(request):
     print(data)
     new_post = Post(author=request.user, text=data['text'])
     new_post.save()
+    data['date']= new_post.date
     return JsonResponse(data)
+
+
+@login_required
+@require_http_methods(['GET'])
+def friends_profile(request):
+    return render(request, 'social/friends_profile.html')

@@ -26,7 +26,10 @@ function Post_author(props) {
     return (
       <div className="author_info_div">
         <img className='post_author_pic' src={props.picture}/>
-        <p className='post_author_user'>{props.user}</p>
+        <div className='post_info'>
+          <p className='post_author_user'>{props.user}</p>
+          <small className="post_date">{props.date}</small>
+        </div>
       </div>
     )
 }
@@ -40,6 +43,7 @@ class Post extends React.Component {
         <Post_author 
           picture={this.props.profile_pic}
           user={this.props.user}
+          date={this.props.date}
         />
         <Post_body text={this.props.text}/>
       </div>
@@ -70,7 +74,7 @@ class Feed extends React.Component {
       request.onload = () => {
         const response = JSON.parse(request.responseText)
         this.setState({
-          posts : [{author: response.author, author_picture: profile_pic_url, text: response.text}, ...this.state.posts]
+          posts : [{author: response.author, author_picture: profile_pic_url, text: response.text, date: response.date}, ...this.state.posts]
         })
         document.querySelector("#new_post_text").value = '';
         console.log(response)
@@ -88,7 +92,8 @@ class Feed extends React.Component {
         {this.state.posts.map(post => <Post 
           user={post.author}
           profile_pic={post.author_picture}
-          text={post.text}  
+          text={post.text}
+          date={post.date}  
         />)}
       </div>
     )
