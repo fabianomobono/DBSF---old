@@ -2,7 +2,21 @@
 {% load static %}
 
 {% block head %}
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script>
+       var username = "{{user}}"      
+        {% if user.profile_pic.url != '' %}
+        const profile_pic_url = "{{user.profile_pic.url|escapejs}}"
+        {% else %}
+        const profile_pic_url = "{% static 'social/core_images/no_image.jpg' %}"
+        {% endif %}
+        var posts_from_server = []
+        {% for post in posts %}
+        posts_from_server.push({author: "{{post.author}}", author_picture: "{{post.author.profile_pic.url}}", text: "{{post.text}}", date: "{{post.date}}"})
+        {% endfor %}
+        console.log(posts_from_server)
+        console.log(username)
+    </script>
     <script type="text/babel" src="{% static 'social/javascript/profile.js' %}"></script>
 {% endblock %}
 
@@ -18,8 +32,7 @@
     {% else %}
       <img class='profile_pic' src="{% static 'social/core_images/no_image.jpg' %}" alt="{{user}} hasn't uploaded an image yet" width="300">
       <p>You haven't uploaded a profile pic yet</p>
-
-      {% endif %}
+    {% endif %}
   </div>
   <div class="user_info_div">
     <p id='profile_username'>{{user}}</p>
@@ -48,5 +61,5 @@
       <button id='save_picture_button' class='btn btn-primary' type="submit" name="button" disabled>Save Picture</button>
     </form>
   </div>
-
+  <div id="friends_posts_div"></div>
 {% endblock %}

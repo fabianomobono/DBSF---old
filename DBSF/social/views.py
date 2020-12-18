@@ -87,7 +87,8 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    return render(request, 'social/profile.html', {'user': request.user})
+    posts = Post.objects.filter(author=request.user)
+    return render(request, 'social/profile.html', {'user': request.user, 'posts': posts})
 
 
 @login_required
@@ -114,5 +115,7 @@ def create_new_post(request):
 
 @login_required
 @require_http_methods(['GET'])
-def friends_profile(request):
-    return render(request, 'social/friends_profile.html')
+def friends_profile(request, friend):
+    friend_user = User.objects.get(username=friend)
+    posts = Post.objects.filter(author=(User.objects.get(username=friend)))
+    return render(request, 'social/friends_profile.html', {'user': request.user, 'friend': friend_user, 'posts':posts})
