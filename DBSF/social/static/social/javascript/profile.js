@@ -24,13 +24,16 @@ class Post_list extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-          posts: posts_from_server
+          posts: posts_from_server,
+          user: username,
       }
   }
   render() {
       return (
           <div>
               {this.state.posts.map(post => <Post
+              current_user={this.state.user}
+              key={post.id}
               user={post.author}
               profile_pic={post.author_picture}
               text={post.text}

@@ -12,10 +12,8 @@
         {% endif %}
         var posts_from_server = []
         {% for post in posts %}
-        posts_from_server.push({author: "{{post.author}}", author_picture: "{{post.author.profile_pic.url}}", text: "{{post.text}}", date: "{{post.date}}"})
+        posts_from_server.push({id: '{{post.id}}', author: "{{post.author}}", author_picture: "{{post.author.profile_pic.url}}", text: "{{post.text}}", date: "{{post.date}}"})
         {% endfor %}
-        console.log(posts_from_server)
-        console.log(username)
        </script>
     
     <script type="text/babel" src="{% static 'social/javascript/friends_profile.js' %}"></script>   
@@ -26,27 +24,24 @@
 {% endblock %}
 
 {% block body %}    
-    <div class="profile_div">
-        This is that div
-        <div class="profile_pic_div">
-            {% if friend.profile_pic.url != None %}
-              <img class='profile_pic' src="{{friend.profile_pic.url}}" alt="profile_pic">
-            {% else %}
-              <img class='profile_pic' src="{% static 'social/core_images/no_image.jpg' %}" alt="{{user}} hasn't uploaded an image yet" width="300">
-              <p>{{friend}} hasn't uploaded a profile pic yet</p>   
-            {% endif %}
-          </div>
-          <div class="user_info_div">
-            <p id='profile_friendname'>{{friend}}</p>
-            <ul>
-              <li>{{friend.first_name}} {{friend.last_name}}</li>
-              <li>{{friend.dob}}</li>
-              <li>{{friend.email}}</li>
-            </ul>
-          </div>
+  <div class="profile_div">
+    <div class="profile_pic_div">
+      {% if friend.profile_pic.url != None %}
+        <img class='profile_pic' src="{{friend.profile_pic.url}}" alt="profile_pic">
+      {% else %}
+        <img class='profile_pic' src="{% static 'social/core_images/no_image.jpg' %}" alt="{{user}} hasn't uploaded an image yet" width="300">
+        <p>{{friend}} hasn't uploaded a profile pic yet</p>   
+      {% endif %}
     </div>
-      <br>
-      <h1>{{friend |title}}'s posts</h1>
-      <div id='friends_posts_div'>
-      </div>
+    <div class="user_info_div">
+      <p id='profile_friendname'>{{friend}}</p>
+      <ul>
+        <li>{{friend.first_name}} {{friend.last_name}}</li>
+        <li>{{friend.dob}}</li>
+        <li>{{friend.email}}</li>
+      </ul>
+    </div>
+  </div>
+  <div id='friends_posts_div'>
+  </div>
 {% endblock %}

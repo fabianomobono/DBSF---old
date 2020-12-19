@@ -10,6 +10,7 @@ class Post_list extends React.Component {
         return (
             <div>
                 {this.state.posts.map(post => <Post
+                key={post.id}
                 user={post.author}
                 profile_pic={post.author_picture}
                 text={post.text}

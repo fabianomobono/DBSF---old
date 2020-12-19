@@ -35,10 +35,13 @@ class Feed extends React.Component {
     return (
       <div>
         <Post_generator 
+          current_user={this.state.user}
           picture={this.state.profile_pic}
           onClick={() => this.handleClick()} />
 
         {this.state.posts.map(post => <Post 
+          key={post.id}
+          current_user={this.state.user}
           user={post.author}
           profile_pic={post.author_picture}
           text={post.text}

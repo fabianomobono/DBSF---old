@@ -264,19 +264,6 @@ h1 {
 }
 
 /* shadow */
-.profile_div {
-  display: block;
-  clear: right;
-  float: left;
-  background-color: red;
-}
-
-#friends_posts_div {
-  clear: left;
-  display: block;
-  background-color: yellowgreen;
-}
-
 html {
   font-family: sans-serif;
   background-color: #f0f2f5;
