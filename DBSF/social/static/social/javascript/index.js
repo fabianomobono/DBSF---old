@@ -10,6 +10,7 @@ class Feed extends React.Component {
       posts: posts_from_server,
     }
   }
+
   handleClick() {
     const text = document.querySelector('#new_post_text').value;
     if (text.length > 1) {
@@ -31,6 +32,18 @@ class Feed extends React.Component {
       request.send(JSON.stringify(data))
     }
   }
+
+  deletePost(post_id) {
+    const post = document.getElementById(post_id)
+    const image = post.childNodes[1].childNodes[0]
+    
+    post.style.animationPlayState = 'running';
+    
+    console.log(post.childNodes)
+    image.style.animationPlayState = 'running';
+    }
+
+  
   render() {
     return (
       <div>
@@ -39,8 +52,10 @@ class Feed extends React.Component {
           picture={this.state.profile_pic}
           onClick={() => this.handleClick()} />
 
-        {this.state.posts.map(post => <Post 
+        {this.state.posts.map(post => <Post
+          delete={() => this.deletePost(post.id)} 
           key={post.id}
+          post_id={post.id}
           current_user={this.state.user}
           user={post.author}
           profile_pic={post.author_picture}

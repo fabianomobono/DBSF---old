@@ -50,17 +50,34 @@ function Post_author(props) {
 
 
 class Post extends React.Component {
+ 
   render() {
-    return (
-      <div className="post">
-        <Post_author 
-          current_user={this.props.current_user}
-          picture={this.props.profile_pic}
-          user={this.props.user}
-          date={this.props.date}
-        />
-        <Post_body text={this.props.text}/>
-      </div>
-    )
+    if (this.props.current_user === this.props.user){
+      return (
+        <div id={this.props.post_id} className="post">
+          <button onClick={() => this.props.delete()} className="delete_post_button">&#10006;</button>
+          <Post_author 
+            current_user={this.props.current_user}
+            picture={this.props.profile_pic}
+            user={this.props.user}
+            date={this.props.date}
+          />
+          <Post_body text={this.props.text}/>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div id={this.props.post_id} className="post">
+          <Post_author 
+            current_user={this.props.current_user}
+            picture={this.props.profile_pic}
+            user={this.props.user}
+            date={this.props.date}
+          />
+          <Post_body text={this.props.text}/>
+        </div>
+      )
+    }
   }
 }
