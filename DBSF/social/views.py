@@ -113,9 +113,21 @@ def create_new_post(request):
     return JsonResponse(data)
 
 
+# delete post 
+@login_required
+@require_http_methods(['POST'])
+def delete_post_function(request):
+    
+    data = json.loads(request.body.decode("utf-8"))
+    print(data)
+    return JsonResponse(data)
+
+
 @login_required
 @require_http_methods(['GET'])
 def friends_profile(request, friend):
     friend_user = User.objects.get(username=friend)
     posts = Post.objects.filter(author=(User.objects.get(username=friend)))
     return render(request, 'social/friends_profile.html', {'user': request.user, 'friend': friend_user, 'posts':posts})
+
+

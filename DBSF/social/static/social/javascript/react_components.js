@@ -13,7 +13,6 @@ class Post_generator extends React.Component {
 }
 
 
-
 class Post_body extends React.Component {
   render() {
     return (
@@ -21,6 +20,7 @@ class Post_body extends React.Component {
     )
   }
 }
+
 
 function Post_author(props) { 
   if(props.current_user !== props.user){
@@ -48,14 +48,12 @@ function Post_author(props) {
 }
 
 
-
 class Post extends React.Component {
- 
   render() {
     if (this.props.current_user === this.props.user){
       return (
         <div id={this.props.post_id} className="post">
-          <button onClick={() => this.props.delete()} className="delete_post_button">&#10006;</button>
+          <button onClick={() => this.props.onClick()} className="delete_post_button">&#10006;</button>
           <Post_author 
             current_user={this.props.current_user}
             picture={this.props.profile_pic}
