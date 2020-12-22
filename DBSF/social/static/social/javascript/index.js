@@ -10,6 +10,7 @@ class Feed extends React.Component {
       posts: posts_from_server,
     }
   }
+ 
 
   handleClick() {
     const text = document.querySelector('#new_post_text').value;
@@ -24,7 +25,7 @@ class Feed extends React.Component {
       request.onload = () => {
         const response = JSON.parse(request.responseText)
         this.setState({
-          posts : [{author: response.author, author_picture: profile_pic_url, text: response.text, date: response.date}, ...this.state.posts]
+          posts : [{author: response.author, author_picture: profile_pic_url, text: response.text, date: response.date, id:response.id}, ...this.state.posts]
         })
         document.querySelector("#new_post_text").value = '';
         console.log(response)
@@ -52,7 +53,7 @@ class Feed extends React.Component {
     request.onload = () => {
       const response = JSON.parse(request.responseText);
                             
-      console.log('loaded')
+      console.log(response)
     }
     request.send(JSON.stringify(data))
     }

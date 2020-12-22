@@ -46,7 +46,7 @@ class Post_list extends React.Component {
      request.setRequestHeader('X-CSRFToken', csrftoken);
      request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
      request.onload = () => {
-       response = JSON.parse(request.responseText);
+       const response = JSON.parse(request.responseText);
        console.log(response)
      }
      request.send(JSON.stringify(data))
@@ -57,7 +57,7 @@ class Post_list extends React.Component {
       return (
           <div>
               {this.state.posts.map(post => <Post
-              delete={() => this.deletePost(post.id, post.author)}
+              onClick={() => this.deletePost(post.id, post.author)}
               current_user={this.state.user}
               key={post.id}
               post_id={post.id}

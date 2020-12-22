@@ -80,7 +80,6 @@ def login_view(request):
         return render(request, 'social/login.html' , {'form': login_form, 'register_form': register_form})
 
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
@@ -107,10 +106,11 @@ def change_profile_pic(request):
 def create_new_post(request):
     data = json.loads(request.body.decode("utf-8"))
     print(data)
-    new_post = Post(author=request.user, text=data['text'])
-    new_post.save()
-    data['date']= new_post.date
-    return JsonResponse(data)
+    text = data['text']
+    new_post = Post(author=request.user, text=text)
+    new_post.save() 
+    response = {'author': new_post.author.username, 'date': new_post.date, 'id': new_post.id, 'text': text}
+    return JsonResponse(response)
 
 
 # delete post 
@@ -119,8 +119,16 @@ def create_new_post(request):
 def delete_post_function(request):
     
     data = json.loads(request.body.decode("utf-8"))
-    print(data)
-    return JsonResponse(data)
+    print(data['post_author'])
+    print(request.user)
+    if str(data['post_author']) == str(request.user):
+        post_to_delete = Post.objects.get(id=data['id'])
+        post_to_delete.delete()
+        response = {'response': "post was deleted"}
+        return JsonResponse(response)
+    else:
+        response = {'response': 'you can only delete your own posts'}
+        return JsonResponse(response)
 
 
 @login_required

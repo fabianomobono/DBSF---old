@@ -1,4 +1,10 @@
 class Post_generator extends React.Component {
+  componentDidMount() {
+    console.log('Post generator is mounted')
+  }
+  componentWillUnmount() {
+    console.log('post generator  did unMount')
+  }
   render() {
     return (
     <div className="new_post_div">
@@ -49,6 +55,7 @@ function Post_author(props) {
 
 
 class Post extends React.Component {
+  
   render() {
     if (this.props.current_user === this.props.user){
       return (

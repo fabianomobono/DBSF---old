@@ -12,7 +12,8 @@
         {% endif %}
         var posts_from_server = []
         {% for post in posts %}
-        posts_from_server.push({id:'{{post.id}}', author: "{{post.author}}", author_picture: "{{post.author.profile_pic.url}}", text: "{{post.text}}", date: "{{post.date}}"})
+        
+        posts_from_server.push({id:'{{post.id}}', author: "{{post.author}}", author_picture: "{{post.author.profile_pic.url}}", text: '{{post.text| escapejs}}', date: "{{post.date}}"})
         {% endfor %}
     </script>
     <script type="text/babel" src="{% static 'social/javascript/profile.js' %}"></script>

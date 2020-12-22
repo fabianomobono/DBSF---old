@@ -10,13 +10,11 @@
     {% endif %}
     var posts_from_server = []
     {% for post in posts %}
-      posts_from_server.push({id:'{{post.id}}', author: "{{post.author}}", author_picture: "{{post.author.profile_pic.url}}", text: "{{post.text}}", date: "{{post.da}}"})
+      posts_from_server.push({id:'{{post.id}}', author: "{{post.author|escapejs}}", author_picture: "{{post.author.profile_pic.url|escapejs}}", text: "{{post.text|escapejs}}", date: "{{post.date}}"})
     {% endfor %}  
   </script>
   <script type="text/babel" src="{% static 'social/javascript/index.js' %}"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  
 {% endblock %}
 {% block title %}
   DBSF | Home
