@@ -1,20 +1,7 @@
 {% extends 'social/layout.html' %}
 {% load static %}
 {% block head %}
-  <script>
-    const username = "{{user|escapejs}}"
-    {% if user.profile_pic.url != '' %}
-      const profile_pic_url = "{{user.profile_pic.url|escapejs}}"
-    {% else %}
-      const profile_pic_url = "{% static 'social/core_images/no_image.jpg' %}"
-    {% endif %}
-    var posts_from_server = []
-    {% for post in posts %}
-      posts_from_server.push({id:'{{post.id}}', author: "{{post.author|escapejs}}", author_picture: "{{post.author.profile_pic.url|escapejs}}", text: "{{post.text|escapejs}}", date: "{{post.date}}"})
-    {% endfor %}  
-  </script>
   <script type="text/babel" src="{% static 'social/javascript/index.js' %}"></script>
-  
 {% endblock %}
 {% block title %}
   DBSF | Home
