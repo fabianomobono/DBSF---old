@@ -15,6 +15,10 @@ posts.onload = () => {
         posts: server_posts.response
       }
     }
+    
+    componentDidMount() {
+      console.log('COMPONENT DID MOUNT')
+    }
    
   
     handleClick() {

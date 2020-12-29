@@ -1,3 +1,19 @@
 @import 'colors';
 
-
+.friendship_div {
+    background-color: red;
+    margin-left: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100% !important;
+    #friend_request_button {
+        height: 50%;
+        margin-left: 10%;
+        margin-right: 1%;
+    }
+  
+    #profile_friendname {
+        display: inline;
+    }
+}

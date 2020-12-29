@@ -4,4 +4,66 @@ document.querySelector(".logout_a").addEventListener('click', (e) =>{
   document.querySelector('.logout_form').submit()
 })
 
+const f_requests = new XMLHttpRequest()
+f_requests.open('GET', '/get_f_requests', true)
+f_requests.onload = () => {
+  const requests = JSON.parse(f_requests.responseText)
+  console.log(requests)
 
+  class Friendship_requests_div extends React.Component {
+    constructor(props){
+      super(props);
+      this.state = {
+       pending: requests.requests
+      }
+    }
+
+    confirm_request(id) {
+      const confirm = new XMLHttpRequest()
+      const csrftoken = Cookies.get('csrftoken');
+      
+      confirm.open('POST', '/confirm_friend_request', true);
+      confirm.setRequestHeader('X-CSRFToken', csrftoken);
+      confirm.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+      confirm.onload = () => {
+        const response = JSON.parse(confirm.responseText)
+        console.log(response)
+      }
+      confirm.send(id)
+    }
+
+    ignore_request(id) {
+      const ignore = new XMLHttpRequest();
+      const csrftoken = Cookies.get('csrftoken');
+      ignore.open('POST', '/ignore_friend_request', true);
+      ignore.setRequestHeader('X-CSRFToken',csrftoken);
+      ignore.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
+      ignore.onload = () => {
+        const response = JSON.parse(ignore.responseText)
+        console.log(response)
+      }
+      ignore.send(id)
+    }
+    render() {
+      return (
+        <div>
+          {this.state.pending.map(x => <Friendship_request
+            key={x.id}
+            img={x.sender_profile_pic}
+            sender={x.sender}
+            ignore={() => this.ignore_request(x.id)}
+            confirm={() => this.confirm_request(x.id)}
+            />
+          )}
+        </div>
+      );
+    }
+  }
+
+
+  ReactDOM.render(
+    <Friendship_requests_div />, 
+    document.getElementById("friendship_request_div")
+  )
+}
+f_requests.send()

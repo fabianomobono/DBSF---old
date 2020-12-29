@@ -33,33 +33,27 @@ function Post_body(props) {
 
 function Post_author(props) { 
   const profile = 'profile/'
-  if(props.current_user !== props.user){
     return ( 
       <div className="author_info_div">
         <img className='post_author_pic' src={props.picture}/>
         <div className='post_info'>
-          <a href={profile.concat(props.user)} className='post_author_user'>{props.user}</a>           
+          {props.current_user !== props.user ? (
+            <a href={profile.concat(props.user)} className='post_author_user'>{props.user}</a>
+            ) : <a href='/profile' className='post_author_user'>{props.user}</a>
+          }                    
           <small className="post_date">{props.date}</small>
         </div>
       </div>
     )
-  }
-  else {
-    return (
-      <div className="author_info_div">
-        <img className='post_author_pic' src={props.picture}/>
-        <div className='post_info'>
-          <a href='/profile' className='post_author_user'>{props.user}</a>           
-          <small className="post_date">{props.date}</small>
-        </div>
-      </div>
-    )
-  }    
 }
 
 
 class Post extends React.Component {
-  
+
+  componentWillUnmount() {
+    console.log('COMPONENT WILL UNMOUNT')
+  }
+
   render() {
     if (this.props.current_user === this.props.user){
       return (
@@ -89,4 +83,17 @@ class Post extends React.Component {
       )
     }
   }
+}
+
+
+function Friendship_request(props) {
+  const profile = 'profile/'
+  return (
+    <div className='friendship_request'>
+      <img src={props.img} className='friend_request_img'/>
+      <a href={profile.concat(props.sender)} className="request_sender">{props.sender}</a>
+      <button onClick={() => props.confirm()} className="accept_request_button btn btn-primary">&#10004;</button>
+      <button onClick={() => props.ignore()} className="ignore_request_button btn btn-secondary">&#10006;</button> 
+    </div>
+  )
 }

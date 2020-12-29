@@ -32,9 +32,13 @@
         <img class='profile_pic' src="{% static 'social/core_images/no_image.jpg' %}" alt="{{user}} hasn't uploaded an image yet" width="300">
         <p>{{friend}} hasn't uploaded a profile pic yet</p>   
       {% endif %}
+      
     </div>
     <div class="user_info_div">
+     <div class="friendship_div">
       <p id='profile_friendname'>{{friend}}</p>
+      <button  id='friend_request_button' class="btn btn-primary"><i class="fa fa-user-plus"></i>  Add</button> 
+     </div>
       <ul>
         <li>{{friend.first_name}} {{friend.last_name}}</li>
         <li>{{friend.dob}}</li>

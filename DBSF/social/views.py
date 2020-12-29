@@ -1,20 +1,24 @@
 from django.shortcuts import render
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import login, logout, authenticate
-from .models import User, Post
+from .models import User, Post, Friendship
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 import json
+import datetime
 # Create your views here.
 
 
 def index(request):
     if request.user.is_authenticated:
-        print(Post.objects.all())
-        return render(request, 'social/index.html', {'user': request.user, 'posts': Post.objects.all().order_by("-date")})
+        context = {
+            'user': request.user,
+            'requests': Friendship.objects.filter(receiver=request.user, pending=True),
+            'posts': Post.objects.all().order_by("-date")}
+        return render(request, 'social/index.html', context)
     else:
         login_form = LoginForm()
         register_form = RegisterForm()
@@ -147,3 +151,53 @@ def get_posts(request):
         response['response'].append({'id': post.id, 'author': post.author.username, 'text': post.text, 'date': post.date, 'author_picture': post.author.profile_pic.url})   
     return JsonResponse(response)
     
+
+def request_friendship(request):
+    # get the firend user  
+    receiver = User.objects.get(username=(request.body.decode('ascii')))
+
+    # check if this Friendship (or it's opposite already exists)
+    first = Friendship.objects.filter(sender=request.user, receiver=receiver)
+    second = Friendship.objects.filter(receiver=request.user, sender=receiver)
+    if first.count() != 0 or second.count() != 0:
+         response = {'response': "this Friendship already exists"}
+         return JsonResponse(response)
+    
+    # create the frienship 
+    else:
+        friendship = Friendship(sender=request.user, receiver=receiver)
+        friendship.save()
+        response = {'response': 'Friendship requested'}
+        return JsonResponse(response)
+
+
+def get_friend_requests(request):
+    requests = Friendship.objects.filter(receiver=request.user, pending=True)
+    response  = {'requests': [] }
+    for request in requests:
+        response['requests'].append({'sender': request.sender.username, 'sender_profile_pic': request.sender.profile_pic.url, 'id': request.id})
+    return JsonResponse(response)
+
+
+# confirm friend request
+def confirm_friend_request(request):
+    friendship = Friendship.objects.get(id=(request.body.decode('ascii')))
+    friendship.are_they_friends = True
+    now = datetime.datetime.now()
+    friendship.date_confirmed = now
+    friendship.pending = False
+    friendship.save()
+    response = {'response': 'friendship confirmed'}
+    return JsonResponse(response)
+
+
+def ignore_friend_request(request):
+    friendship = Friendship.objects.get(id=(request.body.decode('ascii')))
+    friendship.pending = False
+    friendship.rejected = True
+    now = datetime.datetime.now()
+    friendship.date_confirmed = now
+    friendship.save()
+    response = {'response': 'request ignored'}
+    print(friendship)
+    return JsonResponse(response)
