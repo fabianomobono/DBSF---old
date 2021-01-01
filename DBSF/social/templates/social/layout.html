@@ -36,16 +36,21 @@
       </form>
     </nav>
     <div class="messages">
-      <h1>Messages: {{message}}</h1>
+      <h1>{{message}}</h1>
     </div>
-    <div id="friendship_request_div" class="side_bar">
-      
+    <div class="side_bar">
+      <h4>Friend Requests</h4>  
+      <div id="friendship_request_div"></div> 
     </div>
     <div class="main">
       {% block body %}{% endblock %}
     </div>
     <div class="friends_right_div">
-      <p id='friendship_stuff'>Here is all the frienship stuff</p>
+      <h4>Friends</h4>
+      <div id='friendship_div'></div>
+    </div>
+    <div id='message_box' class='message_box'>
+      dflsghfdgh
     </div>
   </body>
 </html>

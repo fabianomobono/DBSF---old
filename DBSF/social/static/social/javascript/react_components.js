@@ -97,3 +97,16 @@ function Friendship_request(props) {
     </div>
   )
 }
+
+
+function Friend_box(props) {
+  const profile = 'profile/'
+  return (
+    <div className='friend_box_div'>
+      <img className='friend_img' src={props.profile_pic} />
+      <a className="friend_link" href={profile.concat(props.name)}>{props.name}</a>
+      <button onClick={() => props.message()} id={props.friend} className="btn btn-primary"><i className="fa fa-paper-plane"></i></button>
+  </div>
+  ) 
+}
+

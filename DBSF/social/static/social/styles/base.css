@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: #292f4f;
+  background-color: #104099;
 }
 #login_navbar a {
   padding: 20px;
@@ -47,7 +47,7 @@
   font-weight: bold;
 }
 .register_form input[type=submit] {
-  background-color: #292f4f;
+  background-color: #104099;
   padding: 5px;
   margin: 5%;
   color: white;
@@ -65,18 +65,12 @@
 }
 
 /* shadow */
-#test_img {
-  animation-name: hide_image;
-  animation-duration: 4s;
-  animation-fill-mode: forwards;
-}
-
-h1 {
+h1, h4 {
   text-align: center;
 }
 
 .main_nav {
-  background-color: #292f4f;
+  background-color: #104099;
   display: flex;
   justify-content: space-around;
 }
@@ -141,6 +135,39 @@ h1 {
 }
 .friendship_request .ignore_request_button {
   border-radius: 50%;
+}
+
+.friend_box_div {
+  margin: 1%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 5%;
+}
+.friend_box_div .friend_img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 2%;
+}
+.friend_box_div .friend_link {
+  color: black;
+  font-weight: bold;
+}
+.friend_box_div button {
+  float: right;
+}
+
+.message_box {
+  display: none;
+  position: absolute;
+  border-radius: 5px;
+  border: 1px solid greenyellow;
+  bottom: 0;
+  right: 10%;
+  background-color: white;
+  width: 20%;
+  height: 50%;
 }
 
 /* shadow */

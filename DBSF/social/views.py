@@ -201,3 +201,17 @@ def ignore_friend_request(request):
     response = {'response': 'request ignored'}
     print(friendship)
     return JsonResponse(response)
+
+
+def get_friends(request):
+    friends_received = Friendship.objects.filter(receiver=request.user, pending=False)
+    friends_sent = Friendship.objects.filter(sender=request.user, pending=False)    
+    friends = []
+    for f in friends_received:
+        friends.append({'user': f.sender.username, 'profile_pic': f.sender.profile_pic.url, 'id': f.id})
+    
+    for s in friends_sent:
+        friends.append({'user': s.receiver.username, 'profile_pic':s.receiver.profile_pic.url, 'id': s.id})
+
+    response = {'response': friends}
+    return JsonResponse(response)

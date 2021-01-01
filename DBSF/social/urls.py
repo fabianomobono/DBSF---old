@@ -18,4 +18,5 @@ urlpatterns = [
     path('get_f_requests', views.get_friend_requests, name='get_friend_requests'),
     path('confirm_friend_request', views.confirm_friend_request, name='confirm_friend_request'),
     path('ignore_friend_request', views.ignore_friend_request, name='ignore_friend_request'),
+    path('get_friends', views.get_friends, name='users_friends'),
 ]

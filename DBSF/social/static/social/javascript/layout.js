@@ -1,9 +1,13 @@
+
+//logout logic
 document.querySelector(".logout_a").addEventListener('click', (e) =>{
 
   e.preventDefault()
   document.querySelector('.logout_form').submit()
 })
 
+
+//displays all pending friend requests
 const f_requests = new XMLHttpRequest()
 f_requests.open('GET', '/get_f_requests', true)
 f_requests.onload = () => {
@@ -67,3 +71,59 @@ f_requests.onload = () => {
   )
 }
 f_requests.send()
+
+
+// displays all of the users friends
+const friends = new XMLHttpRequest()
+friends.open('GET', '/get_friends', true)
+friends.onload = () => {
+  const response = JSON.parse(friends.responseText)
+  console.log(response)
+  class Friends extends React.Component {
+    constructor(props){
+      super(props)
+      this.state = {
+        friends: response.response
+      }
+    }
+
+    message() {
+      document.getElementById('message_box').style.display = 'block'
+      class Message_app extends React.Component {
+        render() {
+          return(
+            <div>
+              <p>Hello</p>
+            </div>
+          )
+        }
+      }
+      ReactDOM.render(
+        <Message_app />, document.getElementById('message_box')
+      )
+
+    }
+    render() {
+      return (
+        <div>
+          {this.state.friends.map(friend => <Friend_box
+            key={friend.id}
+            name={friend.user}
+            profile_pic={friend.profile_pic}
+            friend={friend.id}
+            message={() => this.message()}
+          />)}
+        </div>
+        )
+      }
+    }
+
+  ReactDOM.render(
+    <Friends />, 
+    document.getElementById('friendship_div')
+  )
+}
+friends.send()
+
+
+//open message box
