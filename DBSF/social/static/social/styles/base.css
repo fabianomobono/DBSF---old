@@ -210,6 +210,14 @@ h1, h4 {
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
+.message_screen .user_message {
+  margin: 3%;
+  color: white;
+  padding: 2px 5px 2px 5px;
+  background-color: #1b92e2;
+  border-radius: 10px;
+  width: fit-content;
+}
 
 .compose_message {
   background-color: #cfcfcf;
@@ -388,7 +396,7 @@ h1, h4 {
   border-radius: 50%;
   object-fit: cover;
   margin: 10%;
-  border: 2px solid cornflowerblue;
+  border: 2px solid #1b92e2;
   filter: drop-shadow(10px 10px 4px rgba(41, 47, 79, 0.5));
 }
 

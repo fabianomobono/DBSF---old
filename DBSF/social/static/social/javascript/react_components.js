@@ -114,7 +114,7 @@ function Friend_box(props) {
 function Message(props) {
   return(
     <div className='message'>
-      <p>Hello</p>
+      <p className='user_message'>{props.text}</p>
     </div>
   )
 }
@@ -133,22 +133,27 @@ function Top_bar(props) {
   )
 }
 
+
 function Message_screen(props) {
   return(
     <div className='message_screen'>
-      <Message />
+      {props.messages.map(message =>
+        <Message 
+        text={message.message}/>
+        )}
     </div>
   )
 }
+
 
 function Compose_message(props) {
   return(
     <div className='compose_message'>
       <div className='message_input_div'>
-        <input type='text'></input>
+        <input id='message_text' type='text'></input>
       </div>
       <div className='send_message_div'>
-        <button id='send_message_button'><i className="fa fa-paper-plane"></i></button>
+        <button onClick={() => props.send()} id='send_message_button'><i className="fa fa-paper-plane"></i></button>
       </div>
     </div>
   )

@@ -99,6 +99,14 @@ friends.onload = () => {
             receiver_pic: profile_pic,
           }
         }
+        
+        sendMessage() {
+          const message = document.querySelector("#message_text").value;
+          this.setState({
+            messages: [{'message': message }, ...this.state.messages]
+          })
+          document.querySelector("#message_text").value = '';
+        }
 
         close() {
           document.getElementById('message_box').style.display = 'none';
@@ -111,8 +119,12 @@ friends.onload = () => {
               profile_pic={this.state.receiver_pic}
               close={() => this.close()}
             />
-            <Message_screen />
-            <Compose_message />
+            <Message_screen 
+              messages={this.state.messages}
+            />
+            <Compose_message 
+              send={() => this.sendMessage()}
+            />
             </div>
           )
         }
