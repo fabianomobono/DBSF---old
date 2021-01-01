@@ -105,8 +105,51 @@ function Friend_box(props) {
     <div className='friend_box_div'>
       <img className='friend_img' src={props.profile_pic} />
       <a className="friend_link" href={profile.concat(props.name)}>{props.name}</a>
-      <button onClick={() => props.message()} id={props.friend} className="btn btn-primary"><i className="fa fa-paper-plane"></i></button>
+      <button onClick={() => props.message(props.name, props.profile_pic)} id={props.friend} className="btn btn-primary"><i className="fa fa-paper-plane"></i></button>
   </div>
   ) 
 }
 
+
+function Message(props) {
+  return(
+    <div className='message'>
+      <p>Hello</p>
+    </div>
+  )
+}
+
+
+function Top_bar(props) {
+  const profile = 'profile/'
+  return(
+    <div className='top_bar'>
+      <div className='user_info_div'>
+        <img className='profile_pic_in_top_bar' src={props.profile_pic}/>
+        <a href={profile.concat(props.user)}>{props.user}</a>
+      </div>
+      <button onClick={() => props.close()}>&#x2716;</button>
+    </div>
+  )
+}
+
+function Message_screen(props) {
+  return(
+    <div className='message_screen'>
+      <Message />
+    </div>
+  )
+}
+
+function Compose_message(props) {
+  return(
+    <div className='compose_message'>
+      <div className='message_input_div'>
+        <input type='text'></input>
+      </div>
+      <div className='send_message_div'>
+        <button id='send_message_button'><i className="fa fa-paper-plane"></i></button>
+      </div>
+    </div>
+  )
+}

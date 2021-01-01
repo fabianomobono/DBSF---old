@@ -162,12 +162,86 @@ h1, h4 {
   display: none;
   position: absolute;
   border-radius: 5px;
-  border: 1px solid greenyellow;
+  border: 1px solid #cfcfcf;
   bottom: 0;
   right: 10%;
-  background-color: white;
+  background-color: #cfcfcf;
   width: 20%;
   height: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.top_bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #104099;
+  padding: 10px 10px 10px 2px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.top_bar div img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.top_bar div a {
+  margin-left: 10px;
+  color: white;
+  font-weight: bold;
+}
+.top_bar button {
+  background-color: #104099;
+  outline: none;
+  border: none;
+  color: white;
+  font-family: "Zapf Dingbats";
+}
+.top_bar button:hover {
+  color: silver;
+}
+
+.message_screen {
+  border: 1px solid #cfcfcf;
+  height: 227px;
+  background-color: white;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.compose_message {
+  background-color: #cfcfcf;
+  padding: 1% 0 1% 1%;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.compose_message .message_input_div {
+  display: inline;
+}
+.compose_message .message_input_div input {
+  width: 80%;
+  outline: none;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+}
+.compose_message .send_message_div {
+  display: inline;
+  margin-left: 3%;
+}
+.compose_message .send_message_div button {
+  color: #104099;
+  font-family: "Zapf Dingbats";
+  font-size: large;
+  border: none;
+  outline: none;
+  background-color: #cfcfcf;
+  border-radius: 50%;
+}
+.compose_message .send_message_div button:hover {
+  background-color: silver;
 }
 
 /* shadow */

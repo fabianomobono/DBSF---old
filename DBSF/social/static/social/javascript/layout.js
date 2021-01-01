@@ -87,19 +87,39 @@ friends.onload = () => {
       }
     }
 
-    message() {
-      document.getElementById('message_box').style.display = 'block'
+    message(friend, profile_pic) {
+      document.getElementById('message_box').style.display = 'block';
+
       class Message_app extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = {
+            messages: [],
+            receiver: friend,
+            receiver_pic: profile_pic,
+          }
+        }
+
+        close() {
+          document.getElementById('message_box').style.display = 'none';
+        }
         render() {
           return(
             <div>
-              <p>Hello</p>
+            <Top_bar
+              user={this.state.receiver}
+              profile_pic={this.state.receiver_pic}
+              close={() => this.close()}
+            />
+            <Message_screen />
+            <Compose_message />
             </div>
           )
         }
       }
       ReactDOM.render(
         <Message_app />, document.getElementById('message_box')
+
       )
 
     }
@@ -111,7 +131,7 @@ friends.onload = () => {
             name={friend.user}
             profile_pic={friend.profile_pic}
             friend={friend.id}
-            message={() => this.message()}
+            message={() => this.message(friend.user, friend.profile_pic)}
           />)}
         </div>
         )
