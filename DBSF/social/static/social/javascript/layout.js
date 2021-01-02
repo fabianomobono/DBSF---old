@@ -103,7 +103,7 @@ friends.onload = () => {
         sendMessage() {
           const message = document.querySelector("#message_text").value;
           this.setState({
-            messages: [{'message': message }, ...this.state.messages]
+            messages: [...this.state.messages, {'message': message }]
           })
           document.querySelector("#message_text").value = '';
         }

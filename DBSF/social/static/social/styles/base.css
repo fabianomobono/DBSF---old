@@ -217,6 +217,7 @@ h1, h4 {
   background-color: #1b92e2;
   border-radius: 10px;
   width: fit-content;
+  max-width: 80%;
 }
 
 .compose_message {

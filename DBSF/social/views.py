@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import login, logout, authenticate
-from .models import User, Post, Friendship
+from .models import User, Post, Friendship, Message
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
