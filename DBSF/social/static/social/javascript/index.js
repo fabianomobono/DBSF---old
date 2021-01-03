@@ -3,8 +3,6 @@ const posts = new XMLHttpRequest()
 posts.open('GET','/get_posts', true)
 posts.onload = () => {
   const server_posts = JSON.parse(posts.responseText)
-  console.log(server_posts)
-
 
   class Feed extends React.Component {
     constructor(props){
@@ -16,9 +14,6 @@ posts.onload = () => {
       }
     }
     
-    componentDidMount() {
-      console.log('COMPONENT DID MOUNT')
-    }
    
   
     handleClick() {

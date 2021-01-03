@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'social',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -80,7 +81,7 @@ REST_FRAMEWORK = {
 }
 
 WSGI_APPLICATION = 'DBSF.wsgi.application'
-
+ASGI_APPLICATION = 'DBSF.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

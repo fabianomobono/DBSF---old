@@ -12,7 +12,6 @@ const f_requests = new XMLHttpRequest()
 f_requests.open('GET', '/get_f_requests', true)
 f_requests.onload = () => {
   const requests = JSON.parse(f_requests.responseText)
-  console.log(requests)
 
   class Friendship_requests_div extends React.Component {
     constructor(props){
@@ -31,7 +30,7 @@ f_requests.onload = () => {
       confirm.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
       confirm.onload = () => {
         const response = JSON.parse(confirm.responseText)
-        console.log(response)
+       
       }
       confirm.send(id)
     }
@@ -44,7 +43,7 @@ f_requests.onload = () => {
       ignore.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
       ignore.onload = () => {
         const response = JSON.parse(ignore.responseText)
-        console.log(response)
+        
       }
       ignore.send(id)
     }
@@ -78,7 +77,7 @@ const friends = new XMLHttpRequest()
 friends.open('GET', '/get_friends', true)
 friends.onload = () => {
   const response = JSON.parse(friends.responseText)
-  console.log(response)
+  
   class Friends extends React.Component {
     constructor(props){
       super(props)
@@ -97,9 +96,24 @@ friends.onload = () => {
             messages: [],
             receiver: friend,
             receiver_pic: profile_pic,
+            user: response.user,
           }
         }
         
+        componentDidMount() {
+          const receiver = this.state.receiver
+          const sender = this.state.user
+          const chatSocket = new WebSocket(
+             'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + sender
+            + '/'
+            + receiver
+            + '/'
+          );
+         
+        }
         sendMessage() {
           const message = document.querySelector("#message_text").value;
           this.setState({

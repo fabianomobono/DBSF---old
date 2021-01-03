@@ -213,5 +213,5 @@ def get_friends(request):
     for s in friends_sent:
         friends.append({'user': s.receiver.username, 'profile_pic':s.receiver.profile_pic.url, 'id': s.id})
 
-    response = {'response': friends}
+    response = {'response': friends, 'user': request.user.username}
     return JsonResponse(response)
