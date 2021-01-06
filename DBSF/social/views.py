@@ -215,3 +215,19 @@ def get_friends(request):
 
     response = {'response': friends, 'user': request.user.username}
     return JsonResponse(response)
+
+
+def get_friendship_id(request):
+    data = json.loads(request.body.decode('utf-8'))
+    sender = data['sender']
+    receiver = data['receiver']
+    
+    try: 
+        friendship = Friendship.objects.get(sender=(User.objects.get(username=sender)),receiver=(User.objects.get(username=receiver)))
+        response = {'id': friendship.id}
+        return JsonResponse(response)
+    
+    except:
+        friendship = Friendship.objects.get(sender=(User.objects.get(username=receiver)),receiver=(User.objects.get(username=sender)))
+        response = {'id': friendship.id}
+        return JsonResponse(response)

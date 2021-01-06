@@ -107,14 +107,25 @@ function Friend_box(props) {
 
 
 function Message(props) {
-  return(
-    <div className='message'>
-      <p className='user_message'>{props.text}</p>
-    </div>
-  )
+  if (props.current_user === props.sender){
+    return (
+      <div className='user_message_div'>
+        <p className='user_message'>{props.text}</p>
+      </div>
+    )
+  }
+  else {
+    return (
+      <div className='receiver_message_div'>
+        <p className='receiver_message'>{props.text}</p>
+      </div>
+    )
+  }
+ 
+   
 }
 
-
+ 
 function Top_bar(props) {
   const profile = 'profile/'
   return(
@@ -129,15 +140,26 @@ function Top_bar(props) {
 }
 
 
-function Message_screen(props) {
-  return(
-    <div className='message_screen'>
-      {props.messages.map(message =>
-        <Message 
-        text={message.message}/>
-        )}
-    </div>
-  )
+class  Message_screen extends React.Component {
+  
+  componentDidUpdate(){
+    var screen = document.getElementById('message_screen')
+    screen.scrollTop = screen.scrollHeight;
+  }
+  render() {
+    return(
+      <div id='message_screen' className='message_screen'>
+        {this.props.messages.map(message =>
+          <Message 
+            text={message.message}
+            sender={message.sender}
+            receiver={message.receiver}
+            current_user={this.props.current_user}
+          />
+          )}
+      </div>
+    )
+  }
 }
 
 

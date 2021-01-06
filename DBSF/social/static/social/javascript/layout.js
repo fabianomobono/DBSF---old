@@ -88,6 +88,31 @@ friends.onload = () => {
 
     message(friend, profile_pic) {
       document.getElementById('message_box').style.display = 'block';
+      
+      // get friendship id for chatSocket
+      const data = {sender: response.user, receiver: friend}
+      const friendship = new XMLHttpRequest()
+      const csrftoken = Cookies.get('csrftoken');
+      friendship.open("POST", "/friendship_id", true)
+      friendship.setRequestHeader('X-CSRFToken',csrftoken);
+      friendship.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
+      friendship.onload = () => {
+        const answer = JSON.parse(friendship.responseText)
+        const friendship_id = answer.id
+        console.log(answer.id)
+
+        // create messaging app
+      const receiver = friend
+      const sender = response.user
+      const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chat/'
+        + friendship_id
+        + '/'
+      );
+
+      
 
       class Message_app extends React.Component {
         constructor(props) {
@@ -101,30 +126,33 @@ friends.onload = () => {
         }
         
         componentDidMount() {
-          const receiver = this.state.receiver
-          const sender = this.state.user
-          const chatSocket = new WebSocket(
-             'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + sender
-            + '/'
-            + receiver
-            + '/'
-          );
-         
+          chatSocket.onmessage = (e) => {
+            const data = JSON.parse(e.data)
+            console.log(data)
+            this.setState({
+              messages: [...this.state.messages, {'message': data.message, 'sender': data.sender, 'receiver':data.receiver}]
+            })
+          }  
         }
+        
         sendMessage() {
+          
           const message = document.querySelector("#message_text").value;
-          this.setState({
-            messages: [...this.state.messages, {'message': message }]
-          })
+          //send the message via the chatsocket
+          chatSocket.send(JSON.stringify({
+            message: message,
+            sender: this.state.user,
+            receiver: this.state.receiver
+          }));
+
+          
           document.querySelector("#message_text").value = '';
         }
 
         close() {
           document.getElementById('message_box').style.display = 'none';
         }
+
         render() {
           return(
             <div>
@@ -135,6 +163,7 @@ friends.onload = () => {
             />
             <Message_screen 
               messages={this.state.messages}
+              current_user={this.state.user}
             />
             <Compose_message 
               send={() => this.sendMessage()}
@@ -148,6 +177,11 @@ friends.onload = () => {
 
       )
 
+
+      }
+      friendship.send(JSON.stringify(data))
+
+      
     }
     render() {
       return (
