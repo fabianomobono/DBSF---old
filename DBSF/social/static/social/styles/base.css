@@ -85,16 +85,21 @@ h1, h4 {
 .main_nav a:hover, .main_nav form:hover {
   color: black;
 }
+.main_nav a input[type=text], .main_nav form input[type=text] {
+  outline: none;
+}
+.main_nav a .search_friends_button, .main_nav form .search_friends_button {
+  margin-left: -10px;
+}
+
 .side_bar {
   float: left;
-  border: 2px solid black;
   width: 25%;
   height: 100%;
 }
 
 .friends_right_div {
   float: left;
-  border: 2px solid black;
   width: 25%;
   height: 100%;
 }
@@ -102,7 +107,6 @@ h1, h4 {
 .main {
   float: left;
   width: 49%;
-  border: 2px solid black;
 }
 
 .friendship_request {
@@ -483,7 +487,6 @@ h1, h4 {
 
 /* shadow */
 .friendship_div {
-  background-color: red;
   margin-left: 15%;
   display: flex;
   align-items: center;
@@ -497,6 +500,13 @@ h1, h4 {
 }
 .friendship_div #profile_friendname {
   display: inline;
+}
+
+.profile_div {
+  float: left;
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
 }
 
 html {

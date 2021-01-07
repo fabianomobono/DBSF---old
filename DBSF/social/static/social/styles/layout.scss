@@ -21,22 +21,25 @@ h1, h4 {
     &:hover {
       color: $black;
     }
-    &:active {
-    
+    input[type=text] {
+      outline: none;
     }
+    .search_friends_button {
+      margin-left: -10px;
+    }  
   }
 }
 
 .side_bar {
   float: left;
-  border: 2px solid black;
+  
   width: 25%;
   height: 100%;
 }
 
 .friends_right_div {
   float: left;
-  border: 2px solid black;
+  
   width: 25%;
   height: 100%;
 }
@@ -44,7 +47,6 @@ h1, h4 {
 .main {
   float: left;
   width: 49%;
-  border: 2px solid black;
 }
 
 .friendship_request {

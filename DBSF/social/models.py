@@ -38,10 +38,11 @@ class Friendship(models.Model):
 
 
 class Message(models.Model):
+    conversation = models.ForeignKey(Friendship, on_delete=models.CASCADE, related_name='between')
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='starting_user')
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiving_user')
     date_sent = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
 
     def __str__(self):
-        return f'{self.sender} to {self.receiver}: {self.text} at {self.text}'
+        return f'{self.sender} to {self.receiver}: {self.text} at {self.date_sent}'

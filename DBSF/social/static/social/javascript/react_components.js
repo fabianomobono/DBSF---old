@@ -151,7 +151,7 @@ class  Message_screen extends React.Component {
       <div id='message_screen' className='message_screen'>
         {this.props.messages.map(message =>
           <Message 
-            text={message.message}
+            text={message.text}
             sender={message.sender}
             receiver={message.receiver}
             current_user={this.props.current_user}

@@ -20,7 +20,9 @@
   <body>
     <nav class='main_nav'>
       <a href="{% url 'index' %}">DBSF</a>
-      <a href="#"><i class="fa fa-gear" style="font-size:24px"></i></a>
+      <form action="/search_friends">
+        <input type='text' placeholder='Search for friends'>
+        <input class='search_friends_button' type="submit" value='&#x1F50D;'></form>
       <a href="{% url 'profile' %}">
         {% if user.profile_pic.url != '' %}
           <img class="profile_pic_small_icon" src="{{user.profile_pic.url}}" alt="profile_pic">

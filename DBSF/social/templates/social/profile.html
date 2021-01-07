@@ -25,40 +25,42 @@
 
 
 {% block body %}
-  <div class="profile_pic_div">
-    {% if user.profile_pic.url != None %}
-      <img class='profile_pic' src="{{user.profile_pic.url}}" alt="profile_pic">
-    {% else %}
-      <img class='profile_pic' src="{% static 'social/core_images/no_image.jpg' %}" alt="{{user}} hasn't uploaded an image yet" width="300">
-      <p>You haven't uploaded a profile pic yet</p>
-    {% endif %}
-  </div>
-  <div class="user_info_div">
-    <p id='profile_username'>{{user}}</p>
-    <ul>
-      <li>{{user.first_name}} {{user.last_name}}</li>
-      <li>{{user.dob}}</li>
-      <li>{{user.email}}</li>
-    </ul>
-  </div>
-  <div class="upload_picture_div">
-    <button id='close_button' onclick='closeElement(this)' type="button" name="button">&#10006</button>
-    <h1>Upload a new Profile picture</h1>
-    {% if user.profile_pic.url != None %}
-    <div class="profile_pic_in_popup">
-      <img src="{{user.profile_pic.url}}" alt="profile_pic">
+  <div class='profile_div'>
+    <div class="profile_pic_div">
+      {% if user.profile_pic.url != None %}
+        <img class='profile_pic' src="{{user.profile_pic.url}}" alt="profile_pic">
+      {% else %}
+        <img class='profile_pic' src="{% static 'social/core_images/no_image.jpg' %}" alt="{{user}} hasn't uploaded an image yet" width="300">
+        <p>You haven't uploaded a profile pic yet</p>
+      {% endif %}
     </div>
-    {% else %}
+    <div class="user_info_div">
+      <p id='profile_username'>{{user}}</p>
+      <ul>
+        <li>{{user.first_name}} {{user.last_name}}</li>
+        <li>{{user.dob}}</li>
+        <li>{{user.email}}</li>
+      </ul>
+    </div>
+    <div class="upload_picture_div">
+      <button id='close_button' onclick='closeElement(this)' type="button" name="button">&#10006</button>
+      <h1>Upload a new Profile picture</h1>
+      {% if user.profile_pic.url != None %}
       <div class="profile_pic_in_popup">
-        <img id='no_image' src="{% static 'social/core_images/no_image.jpg' %}" alt="{{user}} hasn't uploaded an image yet" width="300">
+        <img src="{{user.profile_pic.url}}" alt="profile_pic">
       </div>
-    {% endif %}
-    <form class="upload_profile_pic_form" action="{% url 'upload_profile_pic' %}" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <p><label for="image_upload">Upload Picture</label></p>
-      <input name='profile_pic' type="file" id="image_upload" onchange="loadFile(event)" accept="image/gif, image/jpeg, image/png" name="order_pictures" multiple>
-      <button id='save_picture_button' class='btn btn-primary' type="submit" name="button" disabled>Save Picture</button>
-    </form>
+      {% else %}
+        <div class="profile_pic_in_popup">
+          <img id='no_image' src="{% static 'social/core_images/no_image.jpg' %}" alt="{{user}} hasn't uploaded an image yet" width="300">
+        </div>
+      {% endif %}
+      <form class="upload_profile_pic_form" action="{% url 'upload_profile_pic' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p><label for="image_upload">Upload Picture</label></p>
+        <input name='profile_pic' type="file" id="image_upload" onchange="loadFile(event)" accept="image/gif, image/jpeg, image/png" name="order_pictures" multiple>
+        <button id='save_picture_button' class='btn btn-primary' type="submit" name="button" disabled>Save Picture</button>
+      </form>
+    </div>
   </div>
   <div id="friends_posts_div"></div>
 {% endblock %}

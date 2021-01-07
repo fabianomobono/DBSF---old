@@ -224,10 +224,22 @@ def get_friendship_id(request):
     
     try: 
         friendship = Friendship.objects.get(sender=(User.objects.get(username=sender)),receiver=(User.objects.get(username=receiver)))
-        response = {'id': friendship.id}
+        messages_from_db = Message.objects.filter(conversation=friendship)
+        
+        messages = []
+        for message in messages_from_db:
+            messages.append({'sender': message.sender.username, 'receiver': message.receiver.username, 'text': message.text, 'date_sent': message.date_sent})
+        
+        response = {'id': friendship.id, 'messages': messages}
         return JsonResponse(response)
     
     except:
         friendship = Friendship.objects.get(sender=(User.objects.get(username=receiver)),receiver=(User.objects.get(username=sender)))
-        response = {'id': friendship.id}
+        messages_from_db = Message.objects.filter(conversation=friendship)
+        
+        messages = []
+        for message in messages_from_db:
+            messages.append({'sender': message.sender.username, 'receiver': message.receiver.username, 'text': message.text, 'date_sent': message.date_sent})
+        
+        response = {'id': friendship.id, 'messages': messages}
         return JsonResponse(response)

@@ -99,11 +99,12 @@ friends.onload = () => {
       friendship.onload = () => {
         const answer = JSON.parse(friendship.responseText)
         const friendship_id = answer.id
+        const messages_from_server = answer.messages
         console.log(answer.id)
+        console.log(messages_from_server)
 
         // create messaging app
-      const receiver = friend
-      const sender = response.user
+      
       const chatSocket = new WebSocket(
         'ws://'
         + window.location.host
@@ -118,7 +119,7 @@ friends.onload = () => {
         constructor(props) {
           super(props)
           this.state = {
-            messages: [],
+            messages: messages_from_server,
             receiver: friend,
             receiver_pic: profile_pic,
             user: response.user,
