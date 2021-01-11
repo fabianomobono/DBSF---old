@@ -140,7 +140,28 @@ def delete_post_function(request):
 def friends_profile(request, friend):
     friend_user = User.objects.get(username=friend)
     posts = Post.objects.filter(author=(User.objects.get(username=friend)))
-    return render(request, 'social/friends_profile.html', {'user': request.user, 'friend': friend_user, 'posts':posts})
+    friendship_requested = Friendship.objects.filter(sender=request.user, receiver=friend_user)
+    friendship_sent = Friendship.objects.filter(sender=friend_user)
+    friendship_status = {'status': 'False'}
+    
+
+    # check the friendship status between the two users
+    print('requested: ', friendship_requested.count())
+    print('sent: ', friendship_sent.count())
+    if friendship_requested.count() != 0:
+        if friendship_requested[0].pending == True:            
+            friendship_status['status'] = 'Pending'
+        else:
+            friendship_status['status'] = 'Friends'
+
+    elif friendship_sent.count() != 0:
+        if friendship_sent[0].pending == True:  
+            friendship_status['status'] = 'Pending'
+        else:
+            friendship_status['status'] = 'Friends'
+
+
+    return render(request, 'social/friends_profile.html', {'user': request.user, 'friend': friend_user, 'posts': posts, 'status': friendship_status['status'] })
 
 
 
@@ -243,3 +264,37 @@ def get_friendship_id(request):
         
         response = {'id': friendship.id, 'messages': messages}
         return JsonResponse(response)
+
+
+@require_http_methods(['GET'])
+@login_required
+def find_friends(request):
+    search_term = str(request.GET['search_term'])
+    results = User.objects.filter(username__contains=search_term)
+    users = []
+    for user in results:
+        # check if current user and user are friends
+        requested = Friendship.objects.filter(sender=request.user, receiver=user)
+        received = Friendship.objects.filter(sender=user, receiver=request.user)
+
+        # if a Friendship object exists
+        if requested.count() != 0:
+            # check if it is pending
+            if requested[0].pending == True:
+                users.append({'user': user, 'status': 'Pending', 'profile_pic': user.profile_pic.url})
+            else:
+                users.append({'user': user, 'status': 'Friends', 'profile_pic': user.profile_pic.url})
+
+        elif received.count() != 0:
+            # check if it is pending
+            if received[0].pending == True:
+                users.append({'user': user, 'status': 'Pending', 'profile_pic': user.profile_pic.url})
+            else:
+                users.append({'user': user, 'status': 'Friends', 'profile_pic': user.profile_pic.url})
+
+        else:
+            users.append({'user': user, 'status': "not friends", 'profile_pic': user.profile_pic.url})
+
+
+    
+    return render(request, 'social/find_friends.html', {'users': users})

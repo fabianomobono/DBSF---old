@@ -1,5 +1,6 @@
 /* shadow */
 #login_navbar {
+  width: 100%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   display: flex;
   flex-direction: row;
@@ -110,6 +111,7 @@ h1, h4 {
 }
 
 .friendship_request {
+  display: flex;
   justify-content: space-around;
   align-items: center;
   background-color: white;
@@ -135,10 +137,33 @@ h1, h4 {
 .friendship_request .accept_request_button {
   border-radius: 50%;
   margin-left: 30%;
-  margin-right: 1%;
+  color: black;
+  font-family: "Zapf Dingbats";
+  font-weight: bold;
+  background-color: white;
+  border: none;
+}
+.friendship_request .accept_request_button:focus {
+  outline: none;
+}
+.friendship_request .accept_request_button:hover {
+  background-color: #cfcfcf;
+  color: rgba(51, 218, 51, 0.904);
 }
 .friendship_request .ignore_request_button {
   border-radius: 50%;
+  color: black;
+  font-family: "Zapf Dingbats";
+  font-weight: bold;
+  background-color: white;
+  border: none;
+}
+.friendship_request .ignore_request_button:focus {
+  outline: none;
+}
+.friendship_request .ignore_request_button:hover {
+  background-color: #cfcfcf;
+  color: red;
 }
 
 .friend_box_div {
@@ -407,6 +432,7 @@ h1, h4 {
   outline: none;
 }
 .new_post_div div button {
+  color: white;
   display: inline;
   margin: -10px 10px 20px 10px;
 }
@@ -507,6 +533,20 @@ h1, h4 {
   width: 100%;
   background-color: white;
   border-radius: 5px;
+}
+
+/* shadow */
+.add_new_user_button {
+  background-color: white;
+  outline: none;
+  border: none;
+  border-radius: 50%;
+}
+.add_new_user_button:hover {
+  background-color: silver;
+}
+.add_new_user_button:focus {
+  outline: none;
 }
 
 html {

@@ -1,6 +1,7 @@
 @import 'colors';
 
 #login_navbar {
+  width: 100%;
   box-shadow: $shadow;
   display: flex;
   flex-direction: row;
@@ -13,7 +14,6 @@
     color: white;
   }
   form {
-
     padding: 20px;
     input[type=text], input[type=password]{
       padding: 5px;

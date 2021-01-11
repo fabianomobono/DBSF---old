@@ -131,7 +131,7 @@ friends.onload = () => {
             const data = JSON.parse(e.data)
             console.log(data)
             this.setState({
-              messages: [...this.state.messages, {'message': data.message, 'sender': data.sender, 'receiver':data.receiver}]
+              messages: [...this.state.messages, {'text': data.message, 'sender': data.sender, 'receiver':data.receiver}]
             })
           }  
         }

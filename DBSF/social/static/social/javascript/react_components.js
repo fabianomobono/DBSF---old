@@ -87,8 +87,8 @@ function Friendship_request(props) {
     <div className='friendship_request'>
       <img src={props.img} className='friend_request_img'/>
       <a href={profile.concat(props.sender)} className="request_sender">{props.sender}</a>
-      <button onClick={() => props.confirm()} className="accept_request_button btn btn-primary">&#10004;</button>
-      <button onClick={() => props.ignore()} className="ignore_request_button btn btn-secondary">&#10006;</button> 
+      <button onClick={() => props.confirm()} className="accept_request_button">&#10004;</button>
+      <button onClick={() => props.ignore()} className="ignore_request_button">&#10006;</button> 
     </div>
   )
 }

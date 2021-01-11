@@ -50,6 +50,7 @@ h1, h4 {
 }
 
 .friendship_request {
+  display: flex;
   justify-content: space-around;
   align-items: center;
   background-color: $white;
@@ -74,10 +75,34 @@ h1, h4 {
   .accept_request_button {
     border-radius: 50%;
     margin-left: 30%;
-    margin-right: 1%;
+    color: $black;
+    font-family: 'Zapf Dingbats';
+    font-weight: bold;
+    background-color: $white;
+    border: none;
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      background-color: $grey;
+      color: $green;
+    }
+    
   }
   .ignore_request_button {
     border-radius: 50%;
+    color: $black;
+    font-family: 'Zapf Dingbats';
+    font-weight: bold;
+    background-color: $white;
+    border: none;
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      background-color: $grey;
+      color: $red;
+    }
   }
 }
 

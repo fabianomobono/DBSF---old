@@ -1,0 +1,34 @@
+{%  extends 'social/layout.html' %}
+
+{% block title %}
+    Search results
+{% endblock %}
+
+{% block body %}
+    
+    {% for user in users %}
+        {% if request.user == user.user %}
+            
+        {% elif user.status == 'Pending' %}
+        <div class='friend_box_div'>
+            <img class='friend_img' src="{{user.profile_pic}}" />
+            <a class="friend_link" href='/profile/{{user.user}}'>{{user.user}}</a>
+            <button class='add_new_user_button' disabled >Pending</button>
+        </div>
+        {% elif user.status == "Friends" %}
+        <div class='friend_box_div'>
+            <img class='friend_img' src="{{user.profile_pic}}" />
+            <a class="friend_link" href='/profile/{{user.user}}'>{{user.user}}</a>
+            <button class='add_new_user_button'>Unfriend</button>
+        </div>
+        {% else %}
+        <div class='friend_box_div'>
+            <img class='friend_img' src="{{user.profile_pic}}" />
+            <a class="friend_link" href='/profile/{{user.user}}'>{{user.user}}</a>
+            <button class='add_new_user_button'><i class="fa fa-user-plus"></i></button>
+        </div>
+        {% endif %}
+        {% empty %}
+         <h4>No users match that username</h4>
+    {% endfor %}
+{% endblock %}
