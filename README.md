@@ -1,13 +1,45 @@
-# DBSF
+# Python: Getting Started
 
+A barebones Django app, which can easily be deployed to Heroku.
 
-Don't be a shitty friend 
+This application supports the [Getting Started with Python on Heroku](https://devcenter.heroku.com/articles/getting-started-with-python) article - check it out.
 
-DBSF is a social network app that keeps track of your interactions with other friends. 
-If you don't interact with a friend for a long period of time the app will prompt you to message or tag that friend.
-Each user has a top limit of friends, so that your friend circle doesn't become too big.
+## Running Locally
 
-In this app you can write posts, DM your friends and customize your profile page.
+Make sure you have Python 3.7 [installed locally](http://install.python-guide.org). To push to Heroku, you'll need to install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli), as well as [Postgres](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup).
 
+```sh
+$ git clone https://github.com/heroku/python-getting-started.git
+$ cd python-getting-started
 
-Built with DJANGO and React
+$ python3 -m venv getting-started
+$ pip install -r requirements.txt
+
+$ createdb python_getting_started
+
+$ python manage.py migrate
+$ python manage.py collectstatic
+
+$ heroku local
+```
+
+Your app should now be running on [localhost:5000](http://localhost:5000/).
+
+## Deploying to Heroku
+
+```sh
+$ heroku create
+$ git push heroku main
+
+$ heroku run python manage.py migrate
+$ heroku open
+```
+or
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+## Documentation
+
+For more information about using Python on Heroku, see these Dev Center articles:
+
+- [Python on Heroku](https://devcenter.heroku.com/categories/python)
