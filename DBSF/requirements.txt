@@ -1,6 +1,0 @@
-django
-django-channels
-channels_redis
-python-dotenv
-gunicorn
-django-heroku
