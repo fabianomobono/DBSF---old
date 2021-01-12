@@ -22,13 +22,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '29(oh_+b_c8x4r!&1!x_2adlxgt!wys%x+jzf&6e_nr$c+bnm-'
+SECRET_KEY = os.environ['SECRET_KEY']
 AUTH_USER_MODEL = 'social.User'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # Application definition
 
 INSTALLED_APPS = [
