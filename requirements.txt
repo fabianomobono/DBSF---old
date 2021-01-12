@@ -4,3 +4,4 @@ channels_redis
 python-dotenv
 gunicorn
 django-heroku
+djangorestframework
