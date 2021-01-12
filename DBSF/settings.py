@@ -26,7 +26,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 AUTH_USER_MODEL = 'social.User'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['https://fierce-oasis-17820.herokuapp.com/*']
+ALLOWED_HOSTS = ['https://fierce-oasis-17820.herokuapp.com/', 'localhost', '127.0.0.1']
 
 # Application definition
 
