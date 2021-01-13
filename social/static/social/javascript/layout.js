@@ -106,13 +106,13 @@ friends.onload = () => {
         // create messaging app
       
       const chatSocket = new WebSocket(
-        'wss://'
+        'ws://'
         + window.location.host
         + '/ws/chat/'
         + friendship_id
         + '/'
       );
-
+      console.log(chatSocket)
       
 
       class Message_app extends React.Component {
