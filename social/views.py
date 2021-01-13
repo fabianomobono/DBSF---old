@@ -41,14 +41,14 @@ def register_view(request):
                 return render(request, 'social/login.html', {'message': 'You must provide all the fields', 'form': LoginForm(), 'register_form': form})
 
             if password != confirmation:
-                return render(request, 'social/login.html', {'message': 'Password and confirmationdo not match'})
+                return render(request, 'social/login.html', {'message': 'Password and confirmationdo not match', 'form': LoginForm(), 'register_form': form})
 
             else:
                 try:
                     user = User.objects.create_user(username=username, first_name=first, last_name=last, email=email, password=password, dob=dob)
 
                 except IntegrityError:
-                    return render(request, 'social/login.html', {'message': 'Username is taken'})
+                    return render(request, 'social/login.html', {'message': 'Username is taken', 'form': LoginForm(), 'register_form': form})
 
                 login(request, user)
                 return HttpResponseRedirect(reverse('index'))
@@ -225,8 +225,8 @@ def ignore_friend_request(request):
 
 
 def get_friends(request):
-    friends_received = Friendship.objects.filter(receiver=request.user, pending=False)
-    friends_sent = Friendship.objects.filter(sender=request.user, pending=False)    
+    friends_received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
+    friends_sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)    
     friends = []
     for f in friends_received:
         friends.append({'user': f.sender.username, 'profile_pic': f.sender.profile_pic.url, 'id': f.id})
