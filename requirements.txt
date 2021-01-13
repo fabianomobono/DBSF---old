@@ -6,3 +6,4 @@ gunicorn
 django-heroku
 djangorestframework
 pillow
+whitenoise
