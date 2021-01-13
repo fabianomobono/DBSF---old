@@ -26,7 +26,7 @@ SECRET_KEY = '29(oh_+b_c8x4r!&1!x_2adlxgt!wys%x+jzf&6e_nr$c+bnm-'
 AUTH_USER_MODEL = 'social.User'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['desolate-lowlands-74512.herokuapp.com/', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['desolate-lowlands-74512.herokuapp.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
