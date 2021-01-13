@@ -36,7 +36,7 @@ function Post_author(props) {
             <a href={profile.concat(props.user)} className='post_author_user'>{props.user}</a>
             ) : <a href='/profile' className='post_author_user'>{props.user}</a>
           }                    
-          <small className="post_date">{props.date}</small>
+          
         </div>
       </div>
     )
@@ -151,6 +151,7 @@ class  Message_screen extends React.Component {
       <div id='message_screen' className='message_screen'>
         {this.props.messages.map(message =>
           <Message 
+            key={message.id}
             text={message.text}
             sender={message.sender}
             receiver={message.receiver}

@@ -106,7 +106,7 @@ friends.onload = () => {
         // create messaging app
       
       const chatSocket = new WebSocket(
-        'wss://'
+        'ws://'
         + window.location.host
         + '/ws/chat/'
         + friendship_id
@@ -131,7 +131,7 @@ friends.onload = () => {
             const data = JSON.parse(e.data)
             console.log(data)
             this.setState({
-              messages: [...this.state.messages, {'text': data.message, 'sender': data.sender, 'receiver':data.receiver}]
+              messages: [...this.state.messages, {'text': data.message, 'sender': data.sender, 'receiver':data.receiver, 'id': data.id}]
             })
           }  
         }

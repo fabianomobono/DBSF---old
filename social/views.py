@@ -249,7 +249,7 @@ def get_friendship_id(request):
         
         messages = []
         for message in messages_from_db:
-            messages.append({'sender': message.sender.username, 'receiver': message.receiver.username, 'text': message.text, 'date_sent': message.date_sent})
+            messages.append({'sender': message.sender.username, 'receiver': message.receiver.username, 'text': message.text, 'date_sent': message.date_sent, 'id': message.id})
         
         response = {'id': friendship.id, 'messages': messages}
         return JsonResponse(response)
