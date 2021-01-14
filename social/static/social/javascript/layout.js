@@ -103,10 +103,11 @@ friends.onload = () => {
         console.log(answer.id)
         console.log(messages_from_server)
 
-        // create messaging app
-      
+        // create messaging appnew ReconnectingWebSocket
+      var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
       const chatSocket = new WebSocket(
-        'wss://'
+        ws_scheme
+        + '://'
         + window.location.host
         + '/ws/chat/'
         + friendship_id
