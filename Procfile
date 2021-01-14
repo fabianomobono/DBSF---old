@@ -1,1 +1,1 @@
-web: gunicorn DBSF.wsgi
+daphne DBSF.asgi:application

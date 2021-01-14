@@ -17,7 +17,7 @@ import social.routing
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DBSF.settings')
 
 application = ProtocolTypeRouter({
-    "https": get_asgi_application(),
+    "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
         URLRouter(
             social.routing.websocket_urlpatterns
