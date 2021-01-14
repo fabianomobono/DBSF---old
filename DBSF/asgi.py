@@ -7,7 +7,7 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
 """
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "DBSF.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 
 import django
 django.setup()
