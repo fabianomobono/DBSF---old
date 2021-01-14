@@ -106,7 +106,7 @@ friends.onload = () => {
         // create messaging app
       
       const chatSocket = new WebSocket(
-        'wss://'
+        'ws://'
         + window.location.host
         + '/ws/chat/'
         + friendship_id
