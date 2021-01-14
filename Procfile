@@ -1,1 +1,1 @@
-daphne DBSF.asgi:application
+web: daphne DBSF.asgi:application
