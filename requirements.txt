@@ -7,3 +7,4 @@ django-heroku
 djangorestframework
 pillow
 whitenoise
+daphne
