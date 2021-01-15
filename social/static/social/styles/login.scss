@@ -28,7 +28,6 @@
 }
 
 .register_form {
-  border: 2px solid $grey;
   padding: 10px;
   border-radius: 20px;
   float: right;
@@ -40,10 +39,11 @@
   flex-direction: column;
   background-color: $background;
   input {
-    background-color: $background_input;
+    background-color: $background;
+    box-shadow: $shadow;
     border-radius: 10px;
     padding: 10px;
-    margin: 1%;
+    margin: 2%;
     text-align: center;
     font-size: 15px;
     font-size: 15px;
@@ -54,9 +54,9 @@
   input[type=submit] {
     background-color: $blue;
     padding: 5px;
-    margin: 5%;
+    margin-top: 5%;
     color: $white;
-    width: 90%;
+    width: 96%;
   }
   h3 {
     text-align: center;

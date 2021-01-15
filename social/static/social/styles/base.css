@@ -27,7 +27,6 @@
 }
 
 .register_form {
-  border: 2px solid #cfcfcf;
   padding: 10px;
   border-radius: 20px;
   float: right;
@@ -40,10 +39,11 @@
   background-color: #f0f2f5;
 }
 .register_form input {
-  background-color: #e4e7eb;
+  background-color: #f0f2f5;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 10px;
   padding: 10px;
-  margin: 1%;
+  margin: 2%;
   text-align: center;
   font-size: 15px;
   font-size: 15px;
@@ -54,9 +54,9 @@
 .register_form input[type=submit] {
   background-color: #104099;
   padding: 5px;
-  margin: 5%;
+  margin-top: 5%;
   color: white;
-  width: 90%;
+  width: 96%;
 }
 .register_form h3 {
   text-align: center;
