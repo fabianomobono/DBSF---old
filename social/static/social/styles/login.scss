@@ -1,6 +1,7 @@
 @import 'colors';
 
 #login_navbar {
+  margin: none !important;
   width: 100%;
   box-shadow: $shadow;
   display: flex;
@@ -27,18 +28,19 @@
 }
 
 .register_form {
-  box-shadow: $shadow;
+  border: 2px solid $grey;
   padding: 10px;
   border-radius: 20px;
   float: right;
   width: 30%;
   margin-right: 5%;
   margin-top: 1%;
-  background-color: silver;
+  background-color: $white;
   display: flex;
   flex-direction: column;
-  border: 2px solid $grey;
+  background-color: $background;
   input {
+    background-color: $background_input;
     border-radius: 10px;
     padding: 10px;
     margin: 1%;
@@ -46,6 +48,8 @@
     font-size: 15px;
     font-size: 15px;
     font-weight: bold;
+    border: none;
+    outline: none;
   }
   input[type=submit] {
     background-color: $blue;

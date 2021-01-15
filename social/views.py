@@ -45,7 +45,7 @@ def register_view(request):
 
             else:
                 try:
-                    user = User.objects.create_user(username=username, first_name=first, last_name=last, email=email, password=password, dob=dob)
+                    user = User.objects.create_user(username=username, first_name=first, last_name=last, email=email, password=password, dob=dob, profile_pic='profile_pictures/no_profile_pic/no_image.jpg')
 
                 except IntegrityError:
                     return render(request, 'social/login.html', {'message': 'Username is taken', 'form': LoginForm(), 'register_form': form})
@@ -138,10 +138,11 @@ def delete_post_function(request):
 @login_required
 @require_http_methods(['GET'])
 def friends_profile(request, friend):
+    print('hello')
     friend_user = User.objects.get(username=friend)
     posts = Post.objects.filter(author=(User.objects.get(username=friend)))
     friendship_requested = Friendship.objects.filter(sender=request.user, receiver=friend_user)
-    friendship_sent = Friendship.objects.filter(sender=friend_user)
+    friendship_sent = Friendship.objects.filter(sender=friend_user, receiver=request.user)
     friendship_status = {'status': 'False'}
     
 
@@ -159,13 +160,14 @@ def friends_profile(request, friend):
             friendship_status['status'] = 'Pending'
         else:
             friendship_status['status'] = 'Friends'
-
+    print(friendship_status['status'])
 
     return render(request, 'social/friends_profile.html', {'user': request.user, 'friend': friend_user, 'posts': posts, 'status': friendship_status['status'] })
 
 
 
 def get_posts(request):
+    
     response = {'response': [], 'username': request.user.username, 'profile_pic': request.user.profile_pic.url}
     posts = Post.objects.all().order_by('-date')
     for post in posts:
