@@ -28,6 +28,7 @@ AUTH_USER_MODEL = 'social.User'
 DEBUG = True
 ALLOWED_HOSTS = ['desolate-lowlands-74512.herokuapp.com', 'localhost', '127.0.0.1']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 # Application definition
 
 INSTALLED_APPS = [
