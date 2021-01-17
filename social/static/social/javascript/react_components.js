@@ -28,6 +28,7 @@ function Post_body(props) {
 
 function Post_author(props) { 
   const profile = 'profile/'
+  if (props.date[1] > 10){
     return ( 
       <div className="author_info_div">
         <img className='post_author_pic' src={props.picture}/>
@@ -35,11 +36,35 @@ function Post_author(props) {
           {props.current_user !== props.user ? (
             <a href={profile.concat(props.user)} className='post_author_user'>{props.user}</a>
             ) : <a href='/profile' className='post_author_user'>{props.user}</a>
-          }                    
+          } 
+          {props.date[0] < 10 ? (
+          <p className='post_date'>0{props.date[0]}:{props.date[1]} on {props.date[2]}/{props.date[3]}</p>):
+          <p className='post_date'>Written at {props.date[0]}:{props.date[1]} on {props.date[2]}/{props.date[3]}</p>
+          }                  
           
         </div>
       </div>
     )
+  }
+  else {
+    return ( 
+      <div className="author_info_div">
+        <img className='post_author_pic' src={props.picture}/>
+        <div className='post_info'>
+          {props.current_user !== props.user ? (
+            <a href={profile.concat(props.user)} className='post_author_user'>{props.user}</a>
+            ) : <a href='/profile' className='post_author_user'>{props.user}</a>
+          } 
+          {props.date[0] < 10 ? (
+          <p className='post_date'>0{props.date[0]}:0{props.date[1]} on {props.date[2]}/{props.date[3]}</p>):
+          <p className='post_date'>Written at {props.date[0]}:0{props.date[1]} on {props.date[2]}/{props.date[3]}</p>
+          }                  
+          
+        </div>
+      </div>
+    )
+  }
+    
 }
 
 
@@ -86,6 +111,7 @@ function Friendship_request(props) {
   return (
     <div className='friendship_request'>
       <img src={props.img} className='friend_request_img'/>
+      
       <a href={profile.concat(props.sender)} className="request_sender">{props.sender}</a>
       <button onClick={() => props.confirm()} className="accept_request_button">&#10004;</button>
       <button onClick={() => props.ignore()} className="ignore_request_button">&#10006;</button> 

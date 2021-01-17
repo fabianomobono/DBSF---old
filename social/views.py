@@ -113,7 +113,11 @@ def create_new_post(request):
     text = data['text']
     new_post = Post(author=request.user, text=text)
     new_post.save() 
-    response = {'author': new_post.author.username, 'date': new_post.date, 'id': new_post.id, 'text': text}
+    response = {
+        'author': new_post.author.username, 
+        'date': [new_post.date.hour, new_post.date.minute, new_post.date.month, new_post.date.day], 
+        'id': new_post.id, 
+        'text': text}
     return JsonResponse(response)
 
 
@@ -171,7 +175,16 @@ def get_posts(request):
     response = {'response': [], 'username': request.user.username, 'profile_pic': request.user.profile_pic.url}
     posts = Post.objects.all().order_by('-date')
     for post in posts:
-        response['response'].append({'id': post.id, 'author': post.author.username, 'text': post.text, 'date': post.date, 'author_picture': post.author.profile_pic.url})   
+        print(post.date.month)
+        print(post.date.day)
+        print(post.date.hour)
+        print(post.date.minute)
+        response['response'].append({
+            'id': post.id, 
+            'author': post.author.username, 
+            'text': post.text, 
+            'date': [post.date.hour, post.date.minute, post.date.month, post.date.day], 
+            'author_picture': post.author.profile_pic.url})   
     return JsonResponse(response)
     
 

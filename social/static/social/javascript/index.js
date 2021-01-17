@@ -19,6 +19,7 @@ posts.onload = () => {
     handleClick() {
       const text = document.querySelector('#new_post_text').value;
       if (text.length > 1) {
+        
         const data = {author: this.state.user, text: text}
         // send that post to the server to save it
         const csrftoken = Cookies.get('csrftoken');

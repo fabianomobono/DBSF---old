@@ -392,6 +392,8 @@ h1, h4 {
 }
 .post .author_info_div .post_info .post_date {
   display: inline;
+  color: silver;
+  font-size: 12px;
 }
 .post .post_body {
   padding-left: 12%;

@@ -14,7 +14,7 @@ class User(AbstractUser):
 
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(default=timezone.now)
     text = models.TextField()
     likes = models.IntegerField(default=0)
     def __str__(self):
