@@ -95,7 +95,7 @@ function Friendship_request(props) {
 
 
 function Friend_box(props) {
-  const profile = 'profile/'
+  const profile = '/profile/'
   return (
     <div className='friend_box_div'>
       <img className='friend_img' src={props.profile_pic} />
@@ -127,7 +127,7 @@ function Message(props) {
 
  
 function Top_bar(props) {
-  const profile = 'profile/'
+  const profile = '/profile/'
   return(
     <div className='top_bar'>
       <div className='user_info_div'>
