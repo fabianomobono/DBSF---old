@@ -193,7 +193,7 @@ h1, h4 {
 
 .message_box {
   display: none;
-  position: absolute;
+  position: fixed;
   border-radius: 5px;
   border: 1px solid #cfcfcf;
   bottom: 0;
@@ -474,7 +474,6 @@ h1, h4 {
 .user_info_div ul li {
   list-style: none;
   padding: 20px;
-  font-family: Georgia, serif;
   font-weight: bold;
 }
 

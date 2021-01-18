@@ -130,7 +130,7 @@ h1, h4 {
 
 .message_box {
   display: none;
-  position: absolute;
+  position: fixed;
   border-radius: 5px;
   border: 1px solid $grey;
   bottom: 0;
