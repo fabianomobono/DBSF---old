@@ -5,16 +5,6 @@
     
     <script>
        var username = "{{user}}"      
-        {% if user.profile_pic.url != '' %}
-        const profile_pic_url = "{{user.profile_pic.url|escapejs}}"
-        {% else %}
-        const profile_pic_url = "{% static 'social/core_images/no_image.jpg' %}"
-        {% endif %}
-        var posts_from_server = []
-        {% for post in posts %}
-        
-        posts_from_server.push({id:'{{post.id}}', author: "{{post.author}}", author_picture: "{{post.author.profile_pic.url}}", text: '{{post.text| escapejs}}', date: "{{post.date}}"})
-        {% endfor %}
     </script>
     <script type="text/babel" src="{% static 'social/javascript/profile.js' %}"></script>
 {% endblock %}

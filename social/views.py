@@ -5,6 +5,7 @@ from .models import User, Post, Friendship, Message
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 import json
@@ -111,7 +112,7 @@ def create_new_post(request):
     data = json.loads(request.body.decode("utf-8"))
     print(data)
     text = data['text']
-    new_post = Post(author=request.user, text=text)
+    new_post = Post(author=request.user, text=text)  
     new_post.save() 
     response = {
         'author': new_post.author.username, 
@@ -149,10 +150,8 @@ def friends_profile(request, friend):
     friendship_sent = Friendship.objects.filter(sender=friend_user, receiver=request.user)
     friendship_status = {'status': 'False'}
     
-
     # check the friendship status between the two users
-    print('requested: ', friendship_requested.count())
-    print('sent: ', friendship_sent.count())
+
     if friendship_requested.count() != 0:
         if friendship_requested[0].pending == True:            
             friendship_status['status'] = 'Pending'
@@ -175,10 +174,6 @@ def get_posts(request):
     response = {'response': [], 'username': request.user.username, 'profile_pic': request.user.profile_pic.url}
     posts = Post.objects.all().order_by('-date')
     for post in posts:
-        print(post.date.month)
-        print(post.date.day)
-        print(post.date.hour)
-        print(post.date.minute)
         response['response'].append({
             'id': post.id, 
             'author': post.author.username, 
@@ -313,3 +308,20 @@ def find_friends(request):
 
     
     return render(request, 'social/find_friends.html', {'users': users})
+
+
+def get_own_posts(request):
+    posts = Post.objects.filter(author=request.user)
+    response = {'response': []}
+    for post in posts:
+        response['response'].append({
+            'id': post.id, 
+            'author': post.author.username, 
+            'text': post.text, 
+            'date':[post.date.hour, post.date.minute, post.date.month, post.date.day],
+            'author_picture': request.user.profile_pic.url
+            })
+
+    return JsonResponse(response)
+
+

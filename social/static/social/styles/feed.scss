@@ -31,7 +31,6 @@
       object-fit: cover;
     }
     .post_info {
-      
       display: inline-flex;
       flex-direction: column;
       margin: 0px 0% 0% 2%;
@@ -106,3 +105,7 @@
   }
 }
 
+#feed {
+  max-height: 100vh;
+  overflow-y: scroll;
+}

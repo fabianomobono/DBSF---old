@@ -443,6 +443,11 @@ h1, h4 {
   margin: -10px 10px 20px 10px;
 }
 
+#feed {
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
 /* shadow */
 .profile_pic_div, .user_info_div {
   float: left;
@@ -470,6 +475,7 @@ h1, h4 {
   list-style: none;
   padding: 20px;
   font-family: Georgia, serif;
+  font-weight: bold;
 }
 
 .upload_picture_div {
@@ -537,6 +543,7 @@ h1, h4 {
 .profile_div {
   float: left;
   width: 100%;
+  margin: none;
   background-color: white;
   border-radius: 5px;
 }

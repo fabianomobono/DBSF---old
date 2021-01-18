@@ -20,14 +20,14 @@ function Post_body(props) {
   const new_text = text.split('\n')
   let result = []
   for(let i = 0; i < new_text.length; i++) {
-    result.push(<p key={i}>{new_text[i]}</p>)
+    result.push(<p key={i} className='post_body'>{new_text[i]}</p>)
   }
     return result 
 }
 
 
 function Post_author(props) { 
-  const profile = 'profile/'
+  const profile = '/profile/'
   if (props.date[1] > 10){
     return ( 
       <div className="author_info_div">
@@ -39,7 +39,7 @@ function Post_author(props) {
           } 
           {props.date[0] < 10 ? (
           <p className='post_date'>0{props.date[0]}:{props.date[1]} on {props.date[2]}/{props.date[3]}</p>):
-          <p className='post_date'>Written at {props.date[0]}:{props.date[1]} on {props.date[2]}/{props.date[3]}</p>
+          <p className='post_date'>{props.date[0]}:{props.date[1]} on {props.date[2]}/{props.date[3]}</p>
           }                  
           
         </div>
@@ -57,7 +57,7 @@ function Post_author(props) {
           } 
           {props.date[0] < 10 ? (
           <p className='post_date'>0{props.date[0]}:0{props.date[1]} on {props.date[2]}/{props.date[3]}</p>):
-          <p className='post_date'>Written at {props.date[0]}:0{props.date[1]} on {props.date[2]}/{props.date[3]}</p>
+          <p className='post_date'>{props.date[0]}:0{props.date[1]} on {props.date[2]}/{props.date[3]}</p>
           }                  
           
         </div>
@@ -107,7 +107,7 @@ class Post extends React.Component {
 
 
 function Friendship_request(props) {
-  const profile = 'profile/'
+  const profile = '/profile/'
   return (
     <div className='friendship_request'>
       <img src={props.img} className='friend_request_img'/>

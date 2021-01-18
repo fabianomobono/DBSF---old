@@ -19,60 +19,64 @@ var loadFile = function(event){
   document.querySelector("#save_picture_button").removeAttribute('disabled');
 }
 
-
-class Post_list extends React.Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-          posts: posts_from_server,
-          user: username,
-      }
-  }
-
-  deletePost(post_id, author) {
-    const post = document.getElementById(post_id)
-    post.style.animationPlayState = 'running';
-    setTimeout(() =>{
-      this.setState({
-        posts: this.state.posts.filter(post => post.id != post_id)
-      })
-    }, 1000)
-
-     // delete the post from the server
-     const data = {'post_author': author, 'id': post_id}
-     const csrftoken = Cookies.get('csrftoken');
-     const request = new XMLHttpRequest();
-     request.open('POST', '/delete_post', true);
-     request.setRequestHeader('X-CSRFToken', csrftoken);
-     request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-     request.onload = () => {
-       const response = JSON.parse(request.responseText);
-       console.log(response)
-     }
-     request.send(JSON.stringify(data))
-
+const request = new XMLHttpRequest()
+request.open("GET", '/get_own_posts', true)
+request.onload = () => {
+  const answer = JSON.parse(request.responseText)
+  class Post_list extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            posts: answer.response,
+            user: username,
+        }
     }
-
-  render() {
-      return (
-          <div>
-              {this.state.posts.map(post => <Post
-              onClick={() => this.deletePost(post.id, post.author)}
-              current_user={this.state.user}
-              key={post.id}
-              post_id={post.id}
-              user={post.author}
-              profile_pic={post.author_picture}
-              text={post.text}
-              date={post.date}
-              />)}
-          </div>
-      )
+  
+    deletePost(post_id, author) {
+      const post = document.getElementById(post_id)
+      post.style.animationPlayState = 'running';
+      setTimeout(() =>{
+        this.setState({
+          posts: this.state.posts.filter(post => post.id != post_id)
+        })
+      }, 1000)
+  
+       // delete the post from the server
+       const data = {'post_author': author, 'id': post_id}
+       const csrftoken = Cookies.get('csrftoken');
+       const request = new XMLHttpRequest();
+       request.open('POST', '/delete_post', true);
+       request.setRequestHeader('X-CSRFToken', csrftoken);
+       request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+       request.onload = () => {
+         const response = JSON.parse(request.responseText);
+         console.log(response)
+       }
+       request.send(JSON.stringify(data))
+  
+      }
+  
+    render() {
+        return (
+            <div>
+                {this.state.posts.map(post => <Post
+                onClick={() => this.deletePost(post.id, post.author)}
+                current_user={this.state.user}
+                key={post.id}
+                post_id={post.id}
+                user={post.author}
+                profile_pic={post.author_picture}
+                text={post.text}
+                date={post.date}
+                />)}
+            </div>
+        )
+    }
   }
+  
+  ReactDOM.render(
+    <Post_list />,
+    document.getElementById('friends_posts_div')
+  );
 }
-
-
-ReactDOM.render(
-  <Post_list />,
-  document.getElementById('friends_posts_div')
-);
+request.send()
