@@ -126,6 +126,7 @@ function Friend_box(props) {
     <div className='friend_box_div'>
       <img className='friend_img' src={props.profile_pic} />
       <a className="friend_link" href={profile.concat(props.name)}>{props.name}</a>
+      <p>{props.last_contact}</p>
       <button onClick={() => props.message(props.name, props.profile_pic)} id={props.friend} className="btn btn-primary"><i className="fa fa-paper-plane"></i></button>
   </div>
   ) 

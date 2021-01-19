@@ -77,7 +77,7 @@ const friends = new XMLHttpRequest()
 friends.open('GET', '/get_friends', true)
 friends.onload = () => {
   const response = JSON.parse(friends.responseText)
-  
+  console.log(response)
   class Friends extends React.Component {
     constructor(props){
       super(props)
@@ -179,7 +179,6 @@ friends.onload = () => {
 
       )
 
-
       }
       friendship.send(JSON.stringify(data))
 
@@ -194,6 +193,7 @@ friends.onload = () => {
             profile_pic={friend.profile_pic}
             friend={friend.id}
             message={() => this.message(friend.user, friend.profile_pic)}
+            last_contact={friend.last_message_date}
           />)}
         </div>
         )

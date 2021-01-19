@@ -235,6 +235,7 @@ def ignore_friend_request(request):
 
 
 def get_friends(request):
+    # get all of the user's friends 
     friends_received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
     friends_sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)    
     friends = []
@@ -244,6 +245,17 @@ def get_friends(request):
     for s in friends_sent:
         friends.append({'user': s.receiver.username, 'profile_pic':s.receiver.profile_pic.url, 'id': s.id})
 
+    # get the last message (if it exists) that was sent to each friend
+    for f in friends:
+        friendship = Friendship.objects.get(id=f['id']) 
+        message = Message.objects.filter(conversation=friendship).order_by('-date_sent')
+        if len(message) != 0:
+            print(f)
+            f['last_message_date'] = message[0].date_sent.strftime("%b,%d")
+        else:
+            f['last_message_date'] = 'No message was sent yet'
+        print('added: ', f)
+       
     response = {'response': friends, 'user': request.user.username}
     return JsonResponse(response)
 
