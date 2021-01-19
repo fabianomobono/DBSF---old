@@ -1,6 +1,6 @@
 django
 django-channels
-channels_redis
+channels-redis
 python-dotenv
 gunicorn
 django-heroku
