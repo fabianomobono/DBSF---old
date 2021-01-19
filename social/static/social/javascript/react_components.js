@@ -124,10 +124,13 @@ function Friend_box(props) {
   const profile = '/profile/'
   return (
     <div className='friend_box_div'>
-      <img className='friend_img' src={props.profile_pic} />
-      <a className="friend_link" href={profile.concat(props.name)}>{props.name}</a>
-      <p>{props.last_contact}</p>
-      <button onClick={() => props.message(props.name, props.profile_pic)} id={props.friend} className="btn btn-primary"><i className="fa fa-paper-plane"></i></button>
+     <img className='friend_img' src={props.profile_pic} />
+     <div className='interaction'>
+        <a className="friend_link" href={profile.concat(props.name)}>{props.name}</a>
+        <p className='last_contacted'>Last contact:</p>
+        <p className='last_contacted'>{props.last_contact}</p>
+     </div>
+     <button onClick={() => props.message(props.name, props.profile_pic)} id={props.friend} className="btn btn-primary"><i className="fa fa-paper-plane"></i></button>
   </div>
   ) 
 }

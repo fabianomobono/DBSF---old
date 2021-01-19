@@ -1,6 +1,6 @@
 @import 'colors';
 .friends_right_div {
- 
+ overflow: auto;
 }
 
 h1, h4 {
@@ -106,11 +106,14 @@ h1, h4 {
   }
 }
 
-.friend_box_div {
+.friend_box_div { 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   margin: 1%;
   padding: 20px;
   background-color: $white;
-  border-radius: 5%;
+  border-radius: 5px;
 
   .friend_img {
     width: 40px;
@@ -119,12 +122,22 @@ h1, h4 {
     object-fit: cover;
     margin-right: 2%;
   }
-  .friend_link {
-    color: $black;
-    font-weight: bold;
+  .interaction {
+    flex-direction: column;
+    .friend_link {
+      color: $black;
+      font-weight: bold;
+      
+    }
+    .last_contacted {
+      font-size: smaller;
+      color: $silver;
+      margin-bottom: 0px;
+    }
   }
   button {
-    float: right;
+    margin-left: auto;
+    height: 40px;
   }
 }
 

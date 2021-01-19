@@ -85,11 +85,8 @@ REST_FRAMEWORK = {
 WSGI_APPLICATION = 'DBSF.wsgi.application'
 ASGI_APPLICATION = 'DBSF.asgi.application'
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("redis-16891.c52.us-east-1-4.ec2.cloud.redislabs.com", 16891)],
-        },
+    'default': {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
     },
 }
 
