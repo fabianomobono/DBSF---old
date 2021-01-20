@@ -191,6 +191,7 @@ h1, h4 {
   margin-right: 2%;
 }
 .friend_box_div .interaction {
+  margin: 1%;
   flex-direction: column;
 }
 .friend_box_div .interaction .friend_link {
@@ -201,6 +202,20 @@ h1, h4 {
   font-size: smaller;
   color: silver;
   margin-bottom: 0px;
+}
+.friend_box_div .DBSF_interaction {
+  flex-direction: column;
+  margin: 1%;
+}
+.friend_box_div .DBSF_interaction .friend_link {
+  color: black;
+  font-weight: bold;
+}
+.friend_box_div .DBSF_interaction .last_contacted {
+  font-size: smaller;
+  color: silver;
+  margin-bottom: 0px;
+  text-decoration: underline red;
 }
 .friend_box_div button {
   margin-left: auto;

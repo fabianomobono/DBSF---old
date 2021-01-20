@@ -123,6 +123,7 @@ h1, h4 {
     margin-right: 2%;
   }
   .interaction {
+    margin: 1%;
     flex-direction: column;
     .friend_link {
       color: $black;
@@ -134,6 +135,21 @@ h1, h4 {
       color: $silver;
       margin-bottom: 0px;
     }
+  }
+    .DBSF_interaction {
+      flex-direction: column;
+      margin: 1%;
+      .friend_link {
+        color: $black;
+        font-weight: bold;
+        
+      }
+      .last_contacted {
+        font-size: smaller;
+        color: $silver;
+        margin-bottom: 0px;
+        text-decoration: underline $red;
+      }
   }
   button {
     margin-left: auto;

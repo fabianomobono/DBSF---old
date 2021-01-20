@@ -134,6 +134,11 @@ friends.onload = () => {
             this.setState({
               messages: [...this.state.messages, {'text': data.message, 'sender': data.sender, 'receiver':data.receiver, 'id': data.id}]
             })
+          }
+          document.querySelector('#message_text').onkeyup = function (e) {
+            if (e.keyCode === 13) {
+              document.querySelector("#send_message_button").click() 
+            }
           }  
         }
         
@@ -141,14 +146,14 @@ friends.onload = () => {
           
           const message = document.querySelector("#message_text").value;
           //send the message via the chatsocket
-          chatSocket.send(JSON.stringify({
-            message: message,
-            sender: this.state.user,
-            receiver: this.state.receiver
-          }));
-
-          
-          document.querySelector("#message_text").value = '';
+          if (message.length > 0){
+            chatSocket.send(JSON.stringify({
+              message: message,
+              sender: this.state.user,
+              receiver: this.state.receiver
+            }));
+            document.querySelector("#message_text").value = '';
+          }
         }
 
         close() {
