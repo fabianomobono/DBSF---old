@@ -124,15 +124,16 @@ function Friend_box(props) {
   const profile = '/profile/'
   const date = new Date(props.last_contact)
   var now = new Date()
-  now -= date 
-  if (now > 3600000){
+  now -= date
+  console.log(now, props.name) 
+  if (now > 10000 || isNaN(now)){
     return (
       <div className='friend_box_div'>
         <img className='friend_img' src={props.profile_pic} />
-        <div className='interaction'>
+        <div className='DBSF_interaction'>
           <a className="friend_link" href={profile.concat(props.name)}>{props.name}</a>
           <p className='last_contacted'>Last contact:</p>
-          <p className='last_contacted'>{props.last_contact}</p>
+          {isNaN(now) ? <p className='last_contacted'>{props.last_contact}</p>:<p className='last_contacted'>{props.last_contact.substring(0, props.last_contact.length - 9)}</p>}
         </div>
         <button onClick={() => props.message(props.name, props.profile_pic)} id={props.friend} className="btn btn-primary"><i className="fa fa-paper-plane"></i></button>
     </div>
@@ -142,10 +143,10 @@ function Friend_box(props) {
     return (
       <div className='friend_box_div'>
         <img className='friend_img' src={props.profile_pic} />
-        <div className='DBSF_interaction'>
+        <div className='interaction'>
           <a className="friend_link" href={profile.concat(props.name)}>{props.name}</a>
           <p className='last_contacted'>Last contact:</p>
-          <p className='last_contacted'>{props.last_contact}</p>
+          <p className='last_contacted'>{props.last_contact.substring(0, props.last_contact.length -9)}</p>
         </div>
         <button onClick={() => props.message(props.name, props.profile_pic)} id={props.friend} className="btn btn-primary"><i className="fa fa-paper-plane"></i></button>
     </div>

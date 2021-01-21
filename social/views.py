@@ -251,7 +251,7 @@ def get_friends(request):
         message = Message.objects.filter(conversation=friendship).order_by('-date_sent')
         if len(message) != 0:
             print(f)
-            f['last_message_date'] = message[0].date_sent.strftime("%b %d, %Y")
+            f['last_message_date'] = message[0].date_sent.strftime("%b %d, %Y %H:%M:%S")
         else:
             f['last_message_date'] = 'No message was sent yet'
         print('added: ', f)
