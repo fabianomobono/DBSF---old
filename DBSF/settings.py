@@ -99,21 +99,7 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
 
-    'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-        'NAME': 'd7ed7b0ji0n0s7',
-
-        'USER': 'fjqjuwrjifwbqz',
-
-        'PASSWORD': 'e3651e424b99df64625dd5cecb678481aaee8664a08f480990ed9f3839b3f5d7',
-
-        'HOST': 'ec2-107-23-191-123.compute-1.amazonaws.com',
-
-        'PORT': '5432',
-
-    }
+    'default': {}
 
 }
 
@@ -159,3 +145,5 @@ STATIC_URL = '/static/'
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media/')
 MEDIA_URL= "/media/"
 
+import dj_database_url
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
