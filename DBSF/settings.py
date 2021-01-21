@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['desolate-lowlands-74512.herokuapp.com', 'localhost', '127.0.0.
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_HSTS_SECONDS = 3600
 SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = False
 # Application definition
 
