@@ -117,7 +117,9 @@ h1, h4 {
   float: left;
   width: 49%;
 }
-.main .no_posts_p {
+
+.no_results_p {
+  padding: 5%;
   text-align: center;
   color: silver;
   font-weight: bold;
@@ -342,6 +344,20 @@ h1, h4 {
 }
 .compose_message .send_message_div button:hover {
   background-color: silver;
+}
+
+.friend_link {
+  color: black;
+  font-weight: bold;
+}
+.friend_link:hover {
+  color: black;
+}
+
+.name_in_result {
+  font-weight: bold;
+  color: silver;
+  margin: 5%;
 }
 
 /* shadow */

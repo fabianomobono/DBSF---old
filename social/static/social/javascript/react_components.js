@@ -109,7 +109,7 @@ class Post extends React.Component {
 function Friendship_request(props) {
   const profile = '/profile/'
   return (
-    <div className='friendship_request'>
+    <div id={props.id} className='friendship_request'>
       <img src={props.img} className='friend_request_img'/>
       
       <a href={profile.concat(props.sender)} className="request_sender">{props.sender}</a>
@@ -196,6 +196,12 @@ class  Message_screen extends React.Component {
     var screen = document.getElementById('message_screen')
     screen.scrollTop = screen.scrollHeight;
   }
+
+  componentDidMount(){
+    var screen = document.getElementById('message_screen')
+    screen.scrollTop = screen.scrollHeight;
+  }
+
   render() {
     return(
       <div id='message_screen' className='message_screen'>

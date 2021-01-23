@@ -168,7 +168,6 @@ def friends_profile(request, friend):
     return render(request, 'social/friends_profile.html', {'user': request.user, 'friend': friend_user, 'posts': posts, 'status': friendship_status['status'] })
 
 
-
 def get_posts(request):
     
     response = {'response': [], 'username': request.user.username, 'profile_pic': request.user.profile_pic.url}
@@ -282,7 +281,7 @@ def get_friendship_id(request):
         
         messages = []
         for message in messages_from_db:
-            messages.append({'sender': message.sender.username, 'receiver': message.receiver.username, 'text': message.text, 'date_sent': message.date_sent})
+            messages.append({'sender': message.sender.username, 'receiver': message.receiver.username, 'text': message.text, 'date_sent': message.date_sent, 'id': message.id})
         
         response = {'id': friendship.id, 'messages': messages}
         return JsonResponse(response)

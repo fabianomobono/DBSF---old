@@ -30,6 +30,16 @@ f_requests.onload = () => {
       confirm.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
       confirm.onload = () => {
         const response = JSON.parse(confirm.responseText)
+        console.log(response)
+        if (response.response === 'friendship confirmed'){
+          const box = document.getElementById(id)
+          const message = document.createElement("P");
+          message.setAttribute("class", "no_results_p");
+          message.innerHTML = response.response
+          box.innerHTML = ''
+          box.appendChild(message)
+          console.log(message)
+        }
        
       }
       confirm.send(id)
@@ -43,21 +53,30 @@ f_requests.onload = () => {
       ignore.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
       ignore.onload = () => {
         const response = JSON.parse(ignore.responseText)
-        
+        if (response.response === 'request ignored'){
+          const box = document.getElementById(id)
+          const message = document.createElement("P");
+          message.setAttribute("class", "no_results_p");
+          message.innerHTML = response.response
+          box.innerHTML = ''
+          box.appendChild(message)
+          console.log(message)
+        }
       }
       ignore.send(id)
     }
     render() {
       return (
         <div>
-          {this.state.pending.map(x => <Friendship_request
+          {this.state.pending.length ? this.state.pending.map(x => <Friendship_request
             key={x.id}
             img={x.sender_profile_pic}
             sender={x.sender}
+            id={x.id}
             ignore={() => this.ignore_request(x.id)}
             confirm={() => this.confirm_request(x.id)}
             />
-          )}
+          ): <p className='no_results_p'>No pending Friendship requests.</p>}
         </div>
       );
     }
@@ -103,7 +122,7 @@ friends.onload = () => {
         console.log(answer.id)
         console.log(messages_from_server)
 
-        // create messaging appnew ReconnectingWebSocket
+      // create messaging appnew ReconnectingWebSocket
       var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
       const chatSocket = new WebSocket(
         ws_scheme
@@ -192,14 +211,15 @@ friends.onload = () => {
     render() {
       return (
         <div>
-          {this.state.friends.map(friend => <Friend_box
+          {this.state.friends.length ? this.state.friends.map(friend => <Friend_box
             key={friend.id}
             name={friend.user}
             profile_pic={friend.profile_pic}
             friend={friend.id}
             message={() => this.message(friend.user, friend.profile_pic)}
             last_contact={friend.last_message_date}
-          />)}
+          />): <p className='no_results_p'>Uh Oh! You don't have any Friends yet.
+          Try to add them via the search box and they will appear here when they accept your friend request.</p>}
         </div>
         )
       }

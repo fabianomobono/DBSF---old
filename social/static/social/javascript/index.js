@@ -81,7 +81,7 @@ posts.onload = () => {
             profile_pic={post.author_picture}
             text={post.text}
             date={post.date}  
-          />): <p className="no_posts_p">No posts here. Try to search for friends in the search box and add them as friends. You'll see posts appear over time!</p>}
+          />): <p className="no_results_p">No posts here. Try to search for friends in the search box and add them as friends. You'll see posts appear over time!</p>}
         </div>
       )
     }
