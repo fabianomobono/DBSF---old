@@ -47,6 +47,13 @@ h1, h4 {
 .main {
   float: left;
   width: 49%;
+  .no_posts_p {
+    text-align: center;
+    color: silver;
+    font-weight: bold;
+    font-size: large;
+    
+  }
 }
 
 .friendship_request {

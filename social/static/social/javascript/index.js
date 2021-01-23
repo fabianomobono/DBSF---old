@@ -72,7 +72,7 @@ posts.onload = () => {
             picture={this.state.profile_pic}
             onClick={() => this.handleClick()} />
   
-          {this.state.posts.map(post => <Post
+          {this.state.posts.length ?  this.state.posts.map(post => <Post
             onClick={() => this.deletePost(post.id, post.author)} 
             key={post.id}
             post_id={post.id}
@@ -81,7 +81,7 @@ posts.onload = () => {
             profile_pic={post.author_picture}
             text={post.text}
             date={post.date}  
-          />)}
+          />): <p className="no_posts_p">No posts here. Try to search for friends in the search box and add them as friends. You'll see posts appear over time!</p>}
         </div>
       )
     }

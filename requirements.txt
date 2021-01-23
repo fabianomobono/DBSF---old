@@ -12,3 +12,5 @@ daphne
 django-sslserver
 psycopg2-binary
 dj-database-url
+django-storages
+boto3
