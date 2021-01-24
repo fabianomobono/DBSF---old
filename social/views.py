@@ -15,10 +15,23 @@ import datetime
 
 def index(request):
     if request.user.is_authenticated:
+        # get all friends
+        posts = []
+        sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)
+        received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
+        for s in sent:
+            posts.append(Post.objects.filter(author=s.receiver))
+
+        for r in received:
+            posts.append(Post.objects.filter(author=r.sender))
+
+        # sort posts in date order
+        posts.sort(key = lambda x:x['date']) 
+        posts.reverse()
         context = {
             'user': request.user,
             'requests': Friendship.objects.filter(receiver=request.user, pending=True),
-            'posts': Post.objects.all().order_by("-date")}
+            'posts': posts}
         return render(request, 'social/index.html', context)
     else:
         login_form = LoginForm()
@@ -156,29 +169,56 @@ def friends_profile(request, friend):
         if friendship_requested[0].pending == True:            
             friendship_status['status'] = 'Pending'
         else:
-            friendship_status['status'] = 'Friends'
+            if friendship_requested[0].rejected == True:
+                friendship_status['status'] = 'Rejected'
+            else: 
+                friendship_status['status'] = 'Friends'
 
     elif friendship_sent.count() != 0:
         if friendship_sent[0].pending == True:  
             friendship_status['status'] = 'Pending'
         else:
-            friendship_status['status'] = 'Friends'
+            if friendship_sent[0].rejected == True:
+                friendship_status['status'] = 'Rejected'
+            else:
+                friendship_status['status'] = 'Friends'
     print(friendship_status['status'])
 
     return render(request, 'social/friends_profile.html', {'user': request.user, 'friend': friend_user, 'posts': posts, 'status': friendship_status['status'] })
 
 
 def get_posts(request):
-    
+    # prepare response
     response = {'response': [], 'username': request.user.username, 'profile_pic': request.user.profile_pic.url}
-    posts = Post.objects.all().order_by('-date')
+    
+    # get friends
+    sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)
+    received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
+    
+    # get posts from all friends
+    posts = []
+    own_posts = Post.objects.filter(author=request.user)
+    for o in own_posts:
+        posts.append(o)
+
+    for s in sent:
+        posts.append(Post.objects.filter(author=s.receiver))
+
+    for r in received:
+        posts.append(Post.objects.filter(author=r.sender))
+
+    
     for post in posts:
         response['response'].append({
             'id': post.id, 
             'author': post.author.username, 
             'text': post.text, 
             'date': [post.date.hour, post.date.minute, post.date.month, post.date.day], 
-            'author_picture': post.author.profile_pic.url})   
+            'author_picture': post.author.profile_pic.url}) 
+    
+    # sort by -date
+    response['response'].sort(key = lambda x:x['date'])
+    response['response'].reverse()  
     return JsonResponse(response)
     
 
@@ -231,6 +271,25 @@ def ignore_friend_request(request):
     response = {'response': 'request ignored'}
     print(friendship)
     return JsonResponse(response)
+
+
+#delete friendship
+@login_required
+@require_http_methods(['POST'])
+def unfriend(request):
+    user = request.body.decode('utf-8')
+    sent_friendships = Friendship.objects.filter(sender=(User.objects.get(username=user)), receiver=request.user, pending=False)
+    received_friendships = Friendship.objects.filter(sender=request.user, receiver=(User.objects.get(username=user)), pending=False)
+    try:
+        to_delete = sent_friendships[0]
+        to_delete.delete()
+        response = {'response': 'unfirended_sent'}
+        return JsonResponse(response)
+    except:
+        to_delete = received_friendships[0]
+        to_delete.delete()
+        response = {'response': 'unfirended_received'}
+        return JsonResponse(response)
 
 
 def get_friends(request):
@@ -302,16 +361,16 @@ def find_friends(request):
         if requested.count() != 0:
             # check if it is pending
             if requested[0].pending == True:
-                users.append({'user': user, 'status': 'Pending', 'profile_pic': user.profile_pic.url})
+                users.append({'user': user, 'status': 'Pending', 'profile_pic': user.profile_pic.url, 'rejected': False})
             else:
-                users.append({'user': user, 'status': 'Friends', 'profile_pic': user.profile_pic.url})
+                users.append({'user': user, 'status': 'Friends', 'profile_pic': user.profile_pic.url, 'rejected': requested[0].rejected})
 
         elif received.count() != 0:
             # check if it is pending
             if received[0].pending == True:
-                users.append({'user': user, 'status': 'Pending', 'profile_pic': user.profile_pic.url})
+                users.append({'user': user, 'status': 'Pending', 'profile_pic': user.profile_pic.url , 'rejected': False})
             else:
-                users.append({'user': user, 'status': 'Friends', 'profile_pic': user.profile_pic.url})
+                users.append({'user': user, 'status': 'Friends', 'profile_pic': user.profile_pic.url, 'rejected': received[0].rejected})
 
         else:
             users.append({'user': user, 'status': "not friends", 'profile_pic': user.profile_pic.url})

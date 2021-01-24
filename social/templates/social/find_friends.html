@@ -1,37 +1,46 @@
 {%  extends 'social/layout.html' %}
-
+{% load static %}
 {% block title %}
     Search results
 {% endblock %}
 
+{% block head%}
+    <script type="text/javascript" src="{% static 'social/javascript/find_friends.js' %}"></script>
+{% endblock %}
+
 {% block body %}
-    
-    {% for user in users %}
-        {% if request.user == user.user %}
-            
-        {% elif user.status == 'Pending' %}
-        <div class='friend_box_div'>
-            <img class='friend_img' src="{{user.profile_pic}}" />
-            <a class="friend_link" href='/profile/{{user.user}}'>{{user.user}}</a>
-            <p class='name_in_result'>{{user.user.first_name}} {{user.user.last_name}}</p>
-            
-        </div>
-        {% elif user.status == "Friends" %}
-        <div class='friend_box_div'>
-            <img class='friend_img' src="{{user.profile_pic}}" />
-            <a class="friend_link" href='/profile/{{user.user}}'>{{user.user}}</a>
-            <p class='name_in_result'>{{user.user.first_name}} {{user.user.last_name}}</p>
-           
-        </div>
-        {% else %}
-        <div class='friend_box_div'>
-            <img class='friend_img' src="{{user.profile_pic}}" />
-            <a class="friend_link" href='/profile/{{user.user}}'>{{user.user}}</a>
-            <p class='name_in_result'>{{user.user.first_name}} {{user.user.last_name}}</p>
-            
-        </div>
-        {% endif %}
-        {% empty %}
-         <h4>No users match that username</h4>
-    {% endfor %}
+    <div class='search_results'>
+        {% for user in users %}
+            {% if request.user == user.user %}
+            <div class='friend_box_div'>
+                <img class='friend_img' src="{{user.profile_pic}}" />
+                <a class="friend_link" href='/profile'>{{user.user}}</a>
+                <p class='name_in_result'>{{user.user.first_name}} {{user.user.last_name}}</p>  
+            </div>
+            {% elif user.status == 'Pending' or user.rejected %}
+            <div class='friend_box_div'>
+                <img class='friend_img' src="{{user.profile_pic}}" />
+                <a class="friend_link" href='/profile/{{user.user}}'>{{user.user}}</a>
+                <p class='name_in_result'>{{user.user.first_name}} {{user.user.last_name}}</p>
+                <button class='add_new_user_button' disabled >Pending</button>
+            </div>
+            {% elif user.status == "Friends" %}
+            <div class='friend_box_div'>
+                <img class='friend_img' src="{{user.profile_pic}}" />
+                <a class="friend_link" href='/profile/{{user.user}}'>{{user.user}}</a>
+                <p class='name_in_result'>{{user.user.first_name}} {{user.user.last_name}}</p>
+                <button  onclick='unfriend(this)' data-name='{{user.user}}' class='add_new_user_button'>Unfriend</button>
+            </div>
+            {% else %}
+            <div class='friend_box_div'>
+                <img class='friend_img' src="{{user.profile_pic}}" />
+                <a class="friend_link" href='/profile/{{user.user}}'>{{user.user}}</a>
+                <p class='name_in_result'>{{user.user.first_name}} {{user.user.last_name}}</p>
+                <button onclick='add_friend(this)' data-name={{user.user}} class='add_new_user_button'><i class="fa fa-user-plus"></i></button>
+            </div>
+            {% endif %}
+            {% empty %}
+            <h4>No users match that username</h4>
+        {% endfor %}
+    </div>
 {% endblock %}
