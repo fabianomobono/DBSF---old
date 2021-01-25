@@ -148,7 +148,7 @@ def friends_profile(request, friend):
     friendship_sent = Friendship.objects.filter(sender=friend_user, receiver=request.user)
     friendship_status = {'status': 'False'}
     
-    # check the friendship status between the two users
+    # check the friendship status between the two users for button
 
     if friendship_requested.count() != 0:
         if friendship_requested[0].pending == True:            
