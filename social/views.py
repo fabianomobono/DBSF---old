@@ -10,29 +10,14 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 import json
 import datetime
+
+
 # Create your views here.
 
 
 def index(request):
-    if request.user.is_authenticated:
-        # get all friends
-        posts = []
-        sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)
-        received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
-        for s in sent:
-            posts.append(Post.objects.filter(author=s.receiver))
-
-        for r in received:
-            posts.append(Post.objects.filter(author=r.sender))
-
-        # sort posts in date order
-        posts.sort(key = lambda x:x['date']) 
-        posts.reverse()
-        context = {
-            'user': request.user,
-            'requests': Friendship.objects.filter(receiver=request.user, pending=True),
-            'posts': posts}
-        return render(request, 'social/index.html', context)
+    if request.user.is_authenticated:        
+        return render(request, 'social/index.html')
     else:
         login_form = LoginForm()
         register_form = RegisterForm()
@@ -195,18 +180,35 @@ def get_posts(request):
     sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)
     received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
     
-    # get posts from all friends
+    
     posts = []
+
+    # get your own posts
     own_posts = Post.objects.filter(author=request.user)
     for o in own_posts:
-        posts.append(o)
+        # if it is a post and not an empty Queryset
+        if type(o) == Post:
+            posts.append(o)
 
+    # get posts from friendships you've sent
     for s in sent:
-        posts.append(Post.objects.filter(author=s.receiver))
+        post = Post.objects.filter(author=s.receiver)
 
+        # if the QuerySet is not empty
+        if len(post) != 0:
+            for p in post:
+                posts.append(p)
+
+    # get posts from  friendships you've received
     for r in received:
-        posts.append(Post.objects.filter(author=r.sender))
+        post = Post.objects.filter(author=r.sender)
 
+        # if the queryset is not empty
+        if len(post) != 0:
+            for p in post:
+                posts.append(p)
+
+    print(posts)
     
     for post in posts:
         response['response'].append({
