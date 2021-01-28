@@ -1,12 +1,13 @@
 from django.urls import path
 from . import views
+from social.views import Index
 
 
 urlpatterns = [
     path("profile/<str:friend>", views.friends_profile, name='friends_profile'),
-    path('', views.index, name='login'),
+    path('', Index.as_view(), name='login'),
     path('login', views.login_view, name='login'),
-    path('index', views.index, name='index'),
+    path('index', Index.as_view(), name='index'),
     path('register', views.register_view, name='register'),
     path('logout', views.logout_view, name='logout'),
     path('profile', views.profile, name='profile'),

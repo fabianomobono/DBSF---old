@@ -21,9 +21,14 @@
 #login_navbar form input[type=text], #login_navbar form input[type=password] {
   padding: 5px;
   text-align: center;
+  font-weight: bold;
+  outline: none;
 }
 #login_navbar form input[type=submit] {
   padding: 5px;
+  color: white;
+  background-color: #104099;
+  font-weight: bold;
 }
 
 .register_form {

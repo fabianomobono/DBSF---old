@@ -103,11 +103,27 @@ friends.onload = () => {
       this.state = {
         friends: response.response
       }
+      this.hello = this.hello.bind(this)
+    }
+
+    hello(user){
+      var now = new Date()
+      now.toUTCString()
+      now = now.toString()
+      now = now.substring(0, now.length -33)
+      var friends = this.state.friends
+      for (let i = 0; i < friends.length; i ++){
+        if (friends[i]['user'] === user){
+          friends[i].last_message_date = now
+        }
+      }
+      this.setState({friends: friends})
+      console.log(now)
     }
 
     message(friend, profile_pic) {
       document.getElementById('message_box').style.display = 'block';
-      
+     
       // get friendship id for chatSocket
       const data = {sender: response.user, receiver: friend}
       const friendship = new XMLHttpRequest()
@@ -147,6 +163,7 @@ friends.onload = () => {
         }
         
         componentDidMount() {
+         
           chatSocket.onmessage = (e) => {
             const data = JSON.parse(e.data)
             console.log(data)
@@ -172,6 +189,7 @@ friends.onload = () => {
               receiver: this.state.receiver
             }));
             document.querySelector("#message_text").value = '';
+            this.props.greet(this.state.receiver)
           }
         }
 
@@ -199,7 +217,8 @@ friends.onload = () => {
         }
       }
       ReactDOM.render(
-        <Message_app />, document.getElementById('message_box')
+        <Message_app 
+        greet={(user) => this.hello(user)}/>, document.getElementById('message_box')
 
       )
 
@@ -231,6 +250,3 @@ friends.onload = () => {
   )
 }
 friends.send()
-
-
-//open message box

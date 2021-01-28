@@ -10,18 +10,19 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 import json
 import datetime
+from django.views import View
 
 
 # Create your views here.
+class Index(View):
 
-
-def index(request):
-    if request.user.is_authenticated:        
-        return render(request, 'social/index.html')
-    else:
-        login_form = LoginForm()
-        register_form = RegisterForm()
-        return render(request, 'social/login.html' , {'form': login_form, 'register_form': register_form})
+    def get(self, request):
+        if request.user.is_authenticated:        
+            return render(request, 'social/index.html')
+        else:
+            login_form = LoginForm()
+            register_form = RegisterForm()
+            return render(request, 'social/login.html' , {'form': login_form, 'register_form': register_form})
 
 
 def register_view(request):
@@ -295,7 +296,7 @@ def unfriend(request):
 
 
 def get_friends(request):
-    # get all of the user's friends 
+    # get all of the user's friends. Received and sent Friendships
     friends_received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
     friends_sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)    
     friends = []

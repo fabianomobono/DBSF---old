@@ -19,9 +19,15 @@
     input[type=text], input[type=password]{
       padding: 5px;
       text-align: center;
+      font-weight: bold;
+      outline: none;
     }
     input[type=submit]{
       padding: 5px;
+      color: $white;
+      background-color: $blue;
+      font-weight: bold;
+      
     }
   }
   background-color: $blue;
