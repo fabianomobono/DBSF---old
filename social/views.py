@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 import json
 import datetime
 from django.views import View
+import arrow
 
 
 # Create your views here.
@@ -45,7 +46,7 @@ def register_view(request):
 
             else:
                 try:
-                    user = User.objects.create_user(username=username, first_name=first, last_name=last, email=email, password=password, dob=dob, profile_pic='profile_pictures/no_profile_pic/no_image.jpg')
+                    user = User.objects.create_user(username=username, first_name=first, last_name=last, email=email, password=password, dob=dob)
 
                 except IntegrityError:
                     return render(request, 'social/login.html', {'message': 'Username is taken', 'form': LoginForm(), 'register_form': form})
@@ -112,10 +113,11 @@ def create_new_post(request):
     print(data)
     text = data['text']
     new_post = Post(author=request.user, text=text)  
-    new_post.save() 
+    new_post.save()
+    time_arrow = arrow.utcnow() 
     response = {
         'author': new_post.author.username, 
-        'date': [new_post.date.hour, new_post.date.minute, new_post.date.month, new_post.date.day], 
+        'date': time_arrow.humanize(), 
         'id': new_post.id, 
         'text': text}
     return JsonResponse(response)
@@ -142,7 +144,6 @@ def delete_post_function(request):
 @login_required
 @require_http_methods(['GET'])
 def friends_profile(request, friend):
-    print('hello')
     friend_user = User.objects.get(username=friend)
     posts = Post.objects.filter(author=(User.objects.get(username=friend)))
     friendship_requested = Friendship.objects.filter(sender=request.user, receiver=friend_user)
@@ -168,7 +169,6 @@ def friends_profile(request, friend):
                 friendship_status['status'] = 'Rejected'
             else:
                 friendship_status['status'] = 'Friends'
-    print(friendship_status['status'])
 
     return render(request, 'social/friends_profile.html', {'user': request.user, 'friend': friend_user, 'posts': posts, 'status': friendship_status['status'] })
 
@@ -212,11 +212,13 @@ def get_posts(request):
     print(posts)
     
     for post in posts:
+        human_time = arrow.get(post.date)
+        print(human_time)
         response['response'].append({
             'id': post.id, 
             'author': post.author.username, 
             'text': post.text, 
-            'date': [post.date.hour, post.date.minute, post.date.month, post.date.day], 
+            'date': str(human_time.humanize()), 
             'author_picture': post.author.profile_pic.url}) 
     
     # sort by -date
@@ -312,7 +314,7 @@ def get_friends(request):
         message = Message.objects.filter(conversation=friendship).order_by('-date_sent')
         if len(message) != 0:
             print(f)
-            f['last_message_date'] = message[0].date_sent.strftime("%b %d, %Y %H:%M:%S")
+            f['last_message_date'] = message[0].date_sent.strftime("%a %b %d, %Y %H:%M:%S")
         else:
             f['last_message_date'] = 'No message was sent yet'
         print('added: ', f)
@@ -391,7 +393,7 @@ def get_own_posts(request):
             'id': post.id, 
             'author': post.author.username, 
             'text': post.text, 
-            'date':[post.date.hour, post.date.minute, post.date.month, post.date.day],
+            'date':post.date.strftime("%a %b %d, at %I:%M %p"),
             'author_picture': request.user.profile_pic.url
             })
 

@@ -9,7 +9,7 @@ from django.utils.html import mark_safe
 class User(AbstractUser):
     dob = models.DateField(blank=True, default=timezone.now)
     friends = models.IntegerField(default=0)
-    profile_pic = models.ImageField(blank=True, upload_to='profile_pictures')
+    profile_pic = models.ImageField(blank=True, upload_to='profile_pictures', default='profile_pictures/no_profile_pic/no_image.jpg')
 
 
 class Post(models.Model):

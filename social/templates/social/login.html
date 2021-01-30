@@ -12,7 +12,7 @@
       <form class="login_form" action="{% url 'login' %}" method="post">
         {% csrf_token %}
         {{form}}
-        <input type="submit" name="" value="Log in">
+        <input id='login_submit_button' type="submit" name="" value="Log in">
       </form>
     </nav>
     <div class="message">
