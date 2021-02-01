@@ -3,7 +3,7 @@ const posts = new XMLHttpRequest()
 posts.open('GET','/get_posts', true)
 posts.onload = () => {
   const server_posts = JSON.parse(posts.responseText)
-
+  console.log(server_posts)
   class Feed extends React.Component {
     constructor(props){
       super(props);
@@ -14,8 +14,6 @@ posts.onload = () => {
       }
     }
     
-   
-  
     handleClick() {
       const text = document.querySelector('#new_post_text').value;
       if (text.length > 1) {
@@ -61,9 +59,8 @@ posts.onload = () => {
         console.log(response)
       }
       request.send(JSON.stringify(data))
-      }
-  
-    
+    }
+   
     render() {
       return (
         <div >
@@ -71,16 +68,19 @@ posts.onload = () => {
             current_user={this.state.user}
             picture={this.state.profile_pic}
             onClick={() => this.handleClick()} />
-  
+
           {this.state.posts.length ?  this.state.posts.map(post => <Post
             onClick={() => this.deletePost(post.id, post.author)} 
             key={post.id}
+            id={post}
             post_id={post.id}
             current_user={this.state.user}
             user={post.author}
             profile_pic={post.author_picture}
+            current_user_profile_pic={this.state.profile_pic}
             text={post.text}
-            date={post.date}  
+            date={post.date}
+            comments={post.comments}
           />): <p className="no_results_p">No posts here. Try to search for friends in the search box and add them as friends. You'll see posts appear over time!</p>}
         </div>
       )

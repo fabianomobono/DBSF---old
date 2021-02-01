@@ -5,6 +5,12 @@ from django.utils import timezone
 from django.utils.html import mark_safe
 # Create your models here.
 
+class Friends(models.Manager):
+    def are_they_friends(self):
+        self.hello = 'hello'
+        return self.hello
+
+
 
 class User(AbstractUser):
     dob = models.DateField(blank=True, default=timezone.now)
@@ -17,8 +23,20 @@ class Post(models.Model):
     date = models.DateTimeField(default=timezone.localtime)
     text = models.TextField()
     likes = models.IntegerField(default=0)
+
     def __str__(self):
         return f'{self.author} posted: {self.text}'
+
+
+class Comment(models.Model):
+    commentator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='person_with_an_opinion')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='commented_post')
+    text = models.TextField()
+    likes = models.IntegerField(default=0)
+    date = models.DateTimeField(default=timezone.localtime)
+
+    def __str__(self):
+        return f"{self.commentator} commented on post number {self.post}: {self.text}"
 
 
 class Friendship(models.Model):
@@ -29,7 +47,10 @@ class Friendship(models.Model):
     are_they_friends = models.BooleanField(default=False)
     date_requested = models.DateTimeField(auto_now_add=True)
     date_confirmed = models.DateTimeField(blank=True, null=True)
-   
+    
+    objects = models.Manager()
+    buddies = Friends()
+
     def __str__(self):
         if self.are_they_friends:
             return f'Are {self.sender} and {self.receiver} friends? Yes' 
@@ -46,3 +67,6 @@ class Message(models.Model):
 
     def __str__(self):
         return f'{self.sender} to {self.receiver}: {self.text} at {self.date_sent}'
+
+
+
