@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from social.views import Index
+from social.views import Index, RegisterView, Sandbox, Comment_a_post
 
 
 urlpatterns = [
@@ -8,7 +8,7 @@ urlpatterns = [
     path('', Index.as_view(), name='login'),
     path('login', views.login_view, name='login'),
     path('index', Index.as_view(), name='index'),
-    path('register', views.register_view, name='register'),
+    path('register', RegisterView.as_view(), name='register'),
     path('logout', views.logout_view, name='logout'),
     path('profile', views.profile, name='profile'),
     path('change_profile_pic', views.change_profile_pic, name='upload_profile_pic'),
@@ -24,5 +24,7 @@ urlpatterns = [
     path('friendship_id', views.get_friendship_id, name='get_friendship_id'),
     path('find_friends', views.find_friends, name='find_friends'),
     path('get_own_posts', views.get_own_posts, name='get_my_posts'),
+    path('comment', Comment_a_post.as_view(), name='comment'),
+    path('sandbox', Sandbox.as_view(), name='go_nuts'),
     
 ]

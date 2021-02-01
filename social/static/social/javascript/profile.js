@@ -28,7 +28,8 @@ request.onload = () => {
         super(props);
         this.state = {
             posts: answer.response,
-            user: username,
+            user: answer.username,
+            profile_pic: answer.profile_pic
         }
     }
   
@@ -63,11 +64,13 @@ request.onload = () => {
                 onClick={() => this.deletePost(post.id, post.author)}
                 current_user={this.state.user}
                 key={post.id}
-                post_id={post.id}
+                id={post.id}
                 user={post.author}
+                current_user_profile_pic={this.state.profile_pic}
                 profile_pic={post.author_picture}
                 text={post.text}
                 date={post.date}
+                comments={post.comments}
                 />)}
             </div>
         )

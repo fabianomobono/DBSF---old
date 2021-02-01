@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import login, logout, authenticate
-from .models import User, Post, Friendship, Message
+from .models import User, Post, Friendship, Message, Comment
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 import json
 import datetime
 from django.views import View
@@ -26,8 +27,10 @@ class Index(View):
             return render(request, 'social/login.html' , {'form': login_form, 'register_form': register_form})
 
 
-def register_view(request):
-    if request.method == 'POST':
+
+class RegisterView(View):
+
+    def post(self, request, *args, **kwargs):     
         form = RegisterForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -212,18 +215,45 @@ def get_posts(request):
     print(posts)
     
     for post in posts:
-        human_time = arrow.get(post.date)
-        print(human_time)
+        # get the comments
+        comments = Comment.objects.filter(post=post)
+        c = []
+
+        # for each comment
+        for comment in comments:
+            c.append({
+            'commentator': comment.commentator.username,
+            'profile_pic': comment.commentator.profile_pic.url, 
+            'text': comment.text, 'date':comment.date, 
+            'likes': comment.likes,
+            'id': comment.id})
+           
+        # sort the comments by date
+        c.sort(key = lambda x:x['date'])
+            
+        # humanize the date for each comment
+        for comment in c:
+            comment['date'] = arrow.get(comment['date']).humanize()
+        
+       
         response['response'].append({
             'id': post.id, 
             'author': post.author.username, 
             'text': post.text, 
-            'date': str(human_time.humanize()), 
-            'author_picture': post.author.profile_pic.url}) 
+            'date': post.date, 
+            'author_picture': post.author.profile_pic.url,
+            'comments': c,
+            'likes': post.likes
+            }) 
     
     # sort by -date
     response['response'].sort(key = lambda x:x['date'])
-    response['response'].reverse()  
+    response['response'].reverse()
+    
+    #humanize the date for each post
+    for post in response['response']:
+        post['date'] = arrow.get(post['date']).humanize()
+
     return JsonResponse(response)
     
 
@@ -386,17 +416,55 @@ def find_friends(request):
 
 
 def get_own_posts(request):
+    # get all the users's posts
     posts = Post.objects.filter(author=request.user)
-    response = {'response': []}
+    response = {'response': [], 'username': request.user.username, 'profile_pic': request.user.profile_pic.url}
+
+    
     for post in posts:
+
+        # get all the comments for each post
+        comments = Comment.objects.filter(post=post)
+        c = []
+        for comment in comments:
+            c.append({'commentator': comment.commentator.username, 'profile_pic': comment.commentator.profile_pic.url, 'text': comment.text, 'date':comment.date, 'likes': comment.likes})
+        
+        # sort the comments by date
+        c.sort(key = lambda x:x['date'])
+        
+        
+        # hmanize the date for each comment
+        for comment in c:
+            comment['date'] = arrow.get(comment['date']).humanize()
+
         response['response'].append({
             'id': post.id, 
             'author': post.author.username, 
             'text': post.text, 
             'date':post.date.strftime("%a %b %d, at %I:%M %p"),
-            'author_picture': request.user.profile_pic.url
+            'author_picture': request.user.profile_pic.url,
+            'likes': post.likes,
+            'comments': c
             })
 
     return JsonResponse(response)
 
 
+class Comment_a_post(View):
+    def post(self, request):
+        data = json.loads(request.body.decode("utf-8"))
+        post = Post.objects.get(pk=data['post_id'])
+        text = str(data['text'])
+        commentator = User.objects.get(username=data['commentator'])
+        comment = Comment(post=post, commentator=commentator, text=text)
+        comment.save()
+        response = {'response': 'Comment was saved'}
+        return JsonResponse(response)
+
+
+@method_decorator(login_required, name='dispatch')
+class Sandbox(View):
+
+    def get(self, request): 
+        manager = Friendship.buddies.are_they_friends()      
+        return render(request, 'social/sandbox.html', {'manager': manager})
