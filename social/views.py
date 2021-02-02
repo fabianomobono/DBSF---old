@@ -450,6 +450,7 @@ def get_own_posts(request):
     return JsonResponse(response)
 
 
+# save comments to a post
 class Comment_a_post(View):
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
