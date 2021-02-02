@@ -27,8 +27,9 @@ posts.onload = () => {
         request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
         request.onload = () => {
           const response = JSON.parse(request.responseText)
+          console.log(response)
           this.setState({
-            posts : [{author: response.author, author_picture: this.state.profile_pic, text: response.text, date: response.date, id:response.id}, ...this.state.posts]
+            posts : [{author: response.author, author_picture: this.state.profile_pic, text: response.text, date: response.date, id:response.id, comments: response.comments}, ...this.state.posts]
           })
           document.querySelector("#new_post_text").value = '';
           console.log(response)
@@ -64,6 +65,7 @@ posts.onload = () => {
     render() {
       return (
         <div >
+          {this.state.user}
           <Post_generator 
             current_user={this.state.user}
             picture={this.state.profile_pic}

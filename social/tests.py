@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from .models import User
+from .models import User, Post, Comment, Friendship
 from selenium import webdriver
 import pathlib
 import os
@@ -16,7 +16,10 @@ def file_uri(filename):
 
 class ModelTestCase(TestCase):
     def setUp(self):
-        User.objects.create_user(username='test_user', email='test@gmail.com',  password='1234')
+        test_user = User.objects.create_user(username='test_user', email='test@gmail.com',  password='1234')
+        test_user.save()
+        post = Post(pk= 0, text='1234', author=test_user)
+        post.save()
 
     def test_user(self):
         '''
@@ -70,13 +73,26 @@ class ModelTestCase(TestCase):
         c.login(username='test_user', password='1234')
         response = c.get('/get_friends')
         self.assertEqual(response.status_code, 200)
-<<<<<<< HEAD
 
+    def test_profile(self):
+        '''
+        Test if you can reach to profile when logged in
+        '''
+        c = Client()
+        c.login(username='test_user', password='1234')
+        response = c.get('/profile')
+        self.assertEqual(response.status_code, 200)
     
-=======
+    def test_profile(self):
+        '''
+        Test if you can't reach to profile when not logged in
+        '''
+        c = Client()
+        
+        response = c.get('/profile')
+        self.assertEqual(response.status_code, 302)
  
->>>>>>> 411596ec5e491c0ab453f70cea16ee1f9b93710e
-     
+    
 class BrowserTestCase(TestCase):
     def test_login_selenium(self):
         self.driver = webdriver.Chrome()
@@ -84,5 +100,6 @@ class BrowserTestCase(TestCase):
         self.driver.find_element_by_id('login_username').send_keys('dummyuser')
         self.driver.find_element_by_id('login_password').send_keys('dummy_password' + Keys.ENTER)    
         self.assertEqual(self.driver.title, 'DBSF | Home')
+
 
 

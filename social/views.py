@@ -27,9 +27,9 @@ class Index(View):
             return render(request, 'social/login.html' , {'form': login_form, 'register_form': register_form})
 
 
-
 class RegisterView(View):
-
+    
+    # if it is a post request
     def post(self, request, *args, **kwargs):     
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -41,6 +41,7 @@ class RegisterView(View):
             email = form.cleaned_data['email']
             dob = form.cleaned_data['dob']
 
+            # check if all the fieds are provided
             if username == '1' or first == '' or last == '' or email == '' or dob == '':
                 return render(request, 'social/login.html', {'message': 'You must provide all the fields', 'form': LoginForm(), 'register_form': form})
 
@@ -54,17 +55,19 @@ class RegisterView(View):
                 except IntegrityError:
                     return render(request, 'social/login.html', {'message': 'Username is taken', 'form': LoginForm(), 'register_form': form})
 
+                # if everything goes well log the user in and redirect to the main page
                 login(request, user)
                 return HttpResponseRedirect(reverse('index'))
 
+        # if the form is no valid
         else:
             login_form = LoginForm()
             register_form = RegisterForm()
             return render(request, 'social/login.html' , {'form': login_form, 'register_form': register_form})
 
 
-def login_view(request):
-    if request.method == 'POST':
+class LoginView(View):
+    def post(self, request, *args, **kwargs):        
         form = LoginForm(request.POST)
         if form.is_valid():
             print('form is valid')
@@ -82,7 +85,7 @@ def login_view(request):
         else:
             return render(request, 'social/login.html', {'message': "You have to provide all the fields", 'form': form, 'register_form': RegisterForm()})
 
-    elif request.method == 'GET':
+    def get(self, request):
         login_form = LoginForm()
         register_form = RegisterForm()
         return render(request, 'social/login.html' , {'form': login_form, 'register_form': register_form})
@@ -92,10 +95,12 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
-@login_required
-def profile(request):
-    posts = Post.objects.filter(author=request.user)
-    return render(request, 'social/profile.html', {'user': request.user, 'posts': posts})
+
+@method_decorator(login_required, name='dispatch')
+class Profile(View):
+    def get(self, request):      
+        posts = Post.objects.filter(author=request.user)
+        return render(request, 'social/profile.html', {'user': request.user, 'posts': posts})
 
 
 @login_required
@@ -109,21 +114,22 @@ def change_profile_pic(request):
     return HttpResponseRedirect(reverse('profile'))
 
 
-@login_required
-@require_http_methods(['POST'])
-def create_new_post(request):
-    data = json.loads(request.body.decode("utf-8"))
-    print(data)
-    text = data['text']
-    new_post = Post(author=request.user, text=text)  
-    new_post.save()
-    time_arrow = arrow.utcnow() 
-    response = {
-        'author': new_post.author.username, 
-        'date': time_arrow.humanize(), 
-        'id': new_post.id, 
-        'text': text}
-    return JsonResponse(response)
+@method_decorator(login_required, name='dispatch')
+class Create_new_post(View):
+    def post(self, request):
+        data = json.loads(request.body.decode("utf-8"))
+        print(data)
+        text = data['text']
+        new_post = Post(author=request.user, text=text)  
+        new_post.save()
+        time_arrow = arrow.utcnow() 
+        response = {
+            'author': new_post.author.username, 
+            'date': time_arrow.humanize(), 
+            'id': new_post.id, 
+            'text': text,
+            'comments': []}
+        return JsonResponse(response)
 
 
 # delete post 
@@ -224,7 +230,8 @@ def get_posts(request):
             c.append({
             'commentator': comment.commentator.username,
             'profile_pic': comment.commentator.profile_pic.url, 
-            'text': comment.text, 'date':comment.date, 
+            'text': comment.text, 
+            'date':comment.date, 
             'likes': comment.likes,
             'id': comment.id})
            
@@ -452,14 +459,21 @@ def get_own_posts(request):
 
 # save comments to a post
 class Comment_a_post(View):
+
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
         post = Post.objects.get(pk=data['post_id'])
         text = str(data['text'])
-        commentator = User.objects.get(username=data['commentator'])
+        commentator = request.user
         comment = Comment(post=post, commentator=commentator, text=text)
         comment.save()
-        response = {'response': 'Comment was saved'}
+        response = {
+            'id': comment.id, 
+            'text': comment.text, 
+            'commentator': comment.commentator.username, 
+            'profile_pic': request.user.profile_pic.url, 
+            'date': comment.date,
+            'likes': comment.likes}
         return JsonResponse(response)
 
 
