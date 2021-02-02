@@ -70,6 +70,8 @@ class ModelTestCase(TestCase):
         c.login(username='test_user', password='1234')
         response = c.get('/get_friends')
         self.assertEqual(response.status_code, 200)
+
+    
      
 class BrowserTestCase(TestCase):
     def test_login_selenium(self):
