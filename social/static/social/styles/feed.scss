@@ -109,3 +109,52 @@
   max-height: 100vh;
   overflow-y: scroll;
 }
+
+.feeling {
+  margin: 3%;
+  font-size: large;
+  
+  text-align: center;
+  .like, .dislike {
+    width: 50%;
+    padding: 3%;
+    display: inline-block;
+    &:hover {
+      background-color: $silver;
+      cursor: pointer;
+    }
+  }
+
+}
+
+.comment_section {
+  background-color: $white;
+  border: 1px solid black;
+  padding: 5%;
+  .comment {  
+    width: fit-content;
+    background-color: $silver;
+    padding: 5px;
+    border-radius: 5px;
+    .image_in_comment {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .user_link_in_comment {
+      color: $black;
+      font-weight: bold;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline $black;
+      }
+    }   
+  }
+  input[type=text] {
+    
+    margin-top: 3%;
+    border: none;
+    outline: none;
+  }
+}

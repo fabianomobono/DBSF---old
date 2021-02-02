@@ -46,10 +46,93 @@ function Post_author(props) {
 }
 
 
-class Post extends React.Component {
+function Comment(props) {
+  const profile = '/profile'
+  return (
+    <div className='comment'>
+      <img className='image_in_comment' src={props.profile_pic} />
+      <a href={profile} className="user_link_in_comment"> {props.commentator} </a>
+      {props.text}
+    </div>
+  )
+}
 
-  componentWillUnmount() {
-    console.log('COMPONENT WILL UNMOUNT')
+
+class CreateComment extends React.Component {
+  
+  render() {
+    return(
+      <div className='create_comment'>
+        <input  type='text' placeholder='Comment...' />
+        <button onClick={(e) => this.props.add_comment(e.target.previousSibling.value)}>Comment</button>
+      </div> 
+    )
+  }
+}
+
+
+class CommentSection extends React.Component {
+  render() {
+    return(
+      <div className='comment_section'>
+        {this.props.comments.map(comment => <Comment 
+          commentator={comment.commentator}
+          profile_pic={comment.profile_pic}
+          text={comment.text}
+          key={comment.id}
+        />)}
+        
+        <CreateComment
+          add_comment={this.props.add_comment} 
+        />
+      </div>
+    )
+  }
+}
+
+
+class Feeling extends React.Component {
+  render(){
+    return (
+      <div className='feeling'>
+        <div className='like'>👍</div>
+        <div className='dislike'>👎</div>
+      </div>
+    )
+  }
+}
+
+
+class Post extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      comments: this.props.comments,
+      current_user: this.props.current_user,
+      current_user_profile_pic: this.props.current_user_profile_pic,
+      id: this.props.id
+    }
+    this.add_comment = this.add_comment.bind(this)
+  }
+
+  
+  
+  add_comment(text){
+    const data = {'post_id': this.state.id, 'commentator': this.state.current_user, 'text': text}
+    const csrftoken = Cookies.get('csrftoken');
+    const request = new XMLHttpRequest()
+    request.open('POST', '/comment', true)
+    request.setRequestHeader('X-CSRFToken', csrftoken);
+    request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    request.onload = () => {
+      const response = JSON.parse(request.responseText)
+      console.log(response)
+    }
+    request.send(JSON.stringify(data))
+    this.setState({
+      comments: [...this.state.comments,{text: text, commentator: this.state.current_user, profile_pic: this.state.current_user_profile_pic}]
+    })
+    
   }
 
   render() {
@@ -64,12 +147,18 @@ class Post extends React.Component {
             date={this.props.date}
           />
           <Post_body text={this.props.text}/>
+          <Feeling />
+          <CommentSection
+            comments={this.state.comments}
+            add_comment={this.add_comment}  
+          />
         </div>
       )
     }
     else {
       return (
         <div id={this.props.post_id} className="post">
+          <button onClick={() => this.props.onClick()} className="delete_post_button">&#10006;</button>
           <Post_author 
             current_user={this.props.current_user}
             picture={this.props.profile_pic}
@@ -77,6 +166,11 @@ class Post extends React.Component {
             date={this.props.date}
           />
           <Post_body text={this.props.text}/>
+          <Feeling />
+          <CommentSection
+            add_comment={this.add_comment}
+            comments={this.state.comments}
+          />
         </div>
       )
     }
