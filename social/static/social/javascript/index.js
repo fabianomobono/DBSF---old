@@ -72,7 +72,7 @@ posts.onload = () => {
           {this.state.posts.length ?  this.state.posts.map(post => <Post
             onClick={() => this.deletePost(post.id, post.author)} 
             key={post.id}
-            id={post}
+            id={post.id}
             post_id={post.id}
             current_user={this.state.user}
             user={post.author}

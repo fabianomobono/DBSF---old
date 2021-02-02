@@ -66,7 +66,7 @@ request.onload = () => {
                 key={post.id}
                 id={post.id}
                 user={post.author}
-                current_user_profile_pic={this.state.profile}
+                current_user_profile_pic={this.state.profile_pic}
                 profile_pic={post.author_picture}
                 text={post.text}
                 date={post.date}
