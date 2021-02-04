@@ -551,20 +551,30 @@ class Like_a_post(View):
     def post(self, request):
         post_id = json.loads(request.body.decode('utf-8'))['post_id']
         post = Post.objects.get(pk=post_id)
-        like = Like(user=request.user, post=post)
-        like.save()
-        response = {'response': 'like created'}
-        return JsonResponse(response)
+        try: 
+            already_liked = Like.objects.get(post=post, user=request.user)
+            response = {'response': 'you already liked this post'}
+            return JsonResponse(response)
+        except:
+            like = Like(user=request.user, post=post)
+            like.save()
+            response = {'response': 'like created'}
+            return JsonResponse(response)
 
 
 class Dislike_a_post(View):
     def post(self,request):
         post_id = json.loads(request.body.decode('utf-8'))['post_id']
         post = Post.objects.get(pk=post_id)
-        dislike = Dislike(user=request.user, post=post)
-        dislike.save()
-        response = {'response': 'dislike created'}
-        return JsonResponse(response)
+        try: 
+            already_disliked = Dislike.objects.get(post=post, user=request.user)
+            response = {'response': 'you already disliked this post'}
+            return JsonResponse(response)
+        except:
+            dislike = Dislike(user=request.user, post=post)
+            dislike.save()
+            response = {'response': 'dislike created'}
+            return JsonResponse(response)
 
 
 @method_decorator(login_required, name='dispatch')

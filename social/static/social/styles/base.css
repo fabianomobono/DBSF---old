@@ -520,6 +520,21 @@ h1, h4 {
   background-color: silver;
   cursor: pointer;
 }
+.feeling .likeNumber, .feeling .dislikeNumber {
+  width: 50%;
+  padding: 3%;
+  display: inline-block;
+}
+.feeling .likeNumber:hover, .feeling .dislikeNumber:hover {
+  background-color: silver;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.feeling .lovers, .feeling .haters {
+  width: 50%;
+  padding: 3%;
+  display: none;
+}
 
 .comment_section {
   background-color: white;

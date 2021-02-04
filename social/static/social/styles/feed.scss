@@ -113,7 +113,6 @@
 .feeling {
   margin: 3%;
   font-size: large;
-  
   text-align: center;
   .like, .dislike {
     width: 50%;
@@ -121,10 +120,24 @@
     display: inline-block;
     &:hover {
       background-color: $silver;
+      cursor: pointer;     
+    }   
+  }
+  .likeNumber, .dislikeNumber {
+    width: 50%;
+    padding: 3%;
+    display: inline-block;
+    &:hover{
+      background-color: $silver;
       cursor: pointer;
+      text-decoration: underline;
     }
   }
-
+  .lovers, .haters {
+    width: 50%;
+    padding: 3%;
+    display: none;
+  }
 }
 
 .comment_section {
@@ -165,7 +178,5 @@
     font-weight: bold;
     outline: none;
     border: none;
-
-
   }
 }

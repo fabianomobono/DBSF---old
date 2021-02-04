@@ -117,8 +117,12 @@ class Feeling extends React.Component {
   render(){
     return (
       <div className='feeling'>
-        <div className='like' onClick={() =>this.props.like()} >👍</div>
-        <div className='dislike' onClick={() =>this.props.dislike()}>👎</div>
+        <div className='like' onClick={() => this.props.like()} >👍</div>
+        <div className='dislike' onClick={() => this.props.dislike()}>👎</div>
+        <div className='likeNumber' onMouseLeave={(e) => this.props.hide_lovers(e.target.nextSibling.nextSibling)} onMouseEnter={(e) => this.props.show_lovers(e.target.nextSibling.nextSibling)} title='who liked this post'>{this.props.likes.length}</div>
+        <div className='dislikeNumber' onMouseLeave={(e) => this.props.hide_lovers(e.target.nextSibling.nextSibling)} onMouseEnter={(e) => this.props.show_haters(e.target.nextSibling.nextSibling)} title="who didn't like this post">{this.props.dislikes.length}</div>
+        <div className='lovers'>Lovers</div>
+        <div className='haters'>Haters</div>
       </div>
     )
   }
@@ -132,7 +136,9 @@ class Post extends React.Component {
       comments: this.props.comments,
       current_user: this.props.current_user,
       current_user_profile_pic: this.props.current_user_profile_pic,
-      id: this.props.id
+      id: this.props.id,
+      likes: this.props.likes,
+      dislikes: this.props.dislikes
     }
     
   }
@@ -147,8 +153,29 @@ class Post extends React.Component {
     request.onload = () => {
       const response = JSON.parse(request.responseText)
       console.log(response)
+      if (response['response'] !== 'you already liked this post'){
+        this.setState({
+          likes: [...this.state.likes, 
+            {post_id: this.state.id, 
+             user: this.state.current_user, 
+             profile_pic: this.state.current_user_profile_pic
+            }]
+        })
+      }
+      else{
+        alert(response['response'])
+      }
+      
     }
     request.send(JSON.stringify(data))
+  }
+
+  show_lovers = (div) => {
+    div.style.display = 'inline-block'
+  }
+
+  hide_lovers = (div) => {
+    div.style.display = 'none'
   }
 
   dislike_post = () => {
@@ -161,9 +188,30 @@ class Post extends React.Component {
     request.onload = () => {
       const response = JSON.parse(request.responseText)
       console.log(response)
+      if (response['response'] !== 'you already disliked this post'){
+        this.setState({
+          dislikes: [...this.state.dislikes, 
+            {post_id: this.state.id, 
+             user: this.state.current_user, 
+             profile_pic: this.state.current_user_profile_pic
+            }]
+        })
+      }
+      else{
+        alert(response['response'])
+      }
     }
     request.send(JSON.stringify(data))
   }
+  
+  show_haters = (div) => {
+    div.style.display = 'inline-block'
+  }
+
+  hide_haters = (div) => {
+    div.style.display = 'none'
+  }
+  
   
   add_comment(text){
     
@@ -208,6 +256,12 @@ class Post extends React.Component {
           <Feeling
             like={this.like_post}
             dislike={this.dislike_post}
+            likes={this.state.likes}
+            dislikes={this.state.dislikes}
+            show_lovers={this.show_lovers}
+            show_haters={this.show_haters}
+            hide_haters={this.hide_haters}
+            hide_lovers={this.hide_lovers}
           />
           <CommentSection
             current_user={this.state.current_user}
@@ -229,9 +283,14 @@ class Post extends React.Component {
           />
           <Post_body text={this.props.text}/>
           <Feeling 
-            like={this.like_post}
-            dislike={this.dislike_post}
-
+             like={this.like_post}
+             dislike={this.dislike_post}
+             likes={this.state.likes}
+             dislikes={this.state.dislikes}
+             show_lovers={this.show_lovers}
+             show_haters={this.show_haters}
+             hide_haters={this.hide_haters}
+             hide_lovers={this.hide_lovers}
           />
           <CommentSection
             current_user={this.state.current_user}

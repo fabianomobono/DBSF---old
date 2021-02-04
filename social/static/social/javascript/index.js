@@ -29,7 +29,7 @@ posts.onload = () => {
           const response = JSON.parse(request.responseText)
           console.log(response)
           this.setState({
-            posts : [{author: response.author, author_picture: this.state.profile_pic, text: response.text, date: response.date, id:response.id, comments: response.comments}, ...this.state.posts]
+            posts : [{likes: [], dislikes: [], author: response.author, author_picture: this.state.profile_pic, text: response.text, date: response.date, id:response.id, comments: response.comments}, ...this.state.posts]
           })
           document.querySelector("#new_post_text").value = '';
           console.log(response)
@@ -83,6 +83,8 @@ posts.onload = () => {
             text={post.text}
             date={post.date}
             comments={post.comments}
+            likes={post.likes}
+            dislikes={post.dislikes}
           />): <p className="no_results_p">No posts here. Try to search for friends in the search box and add them as friends. You'll see posts appear over time!</p>}
         </div>
       )
