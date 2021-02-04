@@ -4,16 +4,7 @@
 {% block head %}
     
     <script >   
-        var username = "{{friend}}"      
-        {% if friend.profile_pic.url != '' %}
-        const profile_pic_url = "{{friend.profile_pic.url|escapejs}}"
-        {% else %}
-        const profile_pic_url = "{% static 'social/core_images/no_image.jpg' %}"
-        {% endif %}
-        var posts_from_server = []
-        {% for post in posts %}
-        posts_from_server.push({id: '{{post.id}}', author: "{{post.author}}", author_picture: "{{post.author.profile_pic.url}}", text: "{{post.text}}", date: "{{post.date}}"})
-        {% endfor %}
+        var username = "{{friend}}"
        </script>
     
     <script type="text/babel" src="{% static 'social/javascript/friends_profile.js' %}"></script>   
@@ -53,18 +44,5 @@
       </ul>
     </div>
   </div> 
-  <div >
-    {% for post in posts %} 
-     <div class='post'>
-      <div class='author_info_div'>
-        <img class='post_author_pic' src="{{friend.profile_pic.url}}"/>
-        <div class="post_info">
-          <a class='post_author_user' href="/profile/{{friend}}">{{friend}}</a>
-          <p class='post_date'>{{post.date}}</p>
-          <p>{{post.text}}</p>
-        </div>
-      </div>
-     </div>
-    {% endfor %}
-  </div>
+  <div id="friends_posts_div"></div>
 {% endblock %}

@@ -83,9 +83,7 @@ class CreateComment extends React.Component {
     return(
       <div className='create_comment'>
         <input  type='text' placeholder='Comment...' />
-        <button onClick={(e) => this.props.add_comment(e.target.previousSibling)}
-          
-        >Comment</button>
+        <button onClick={(e) => this.props.add_comment(e.target.previousSibling)}>Comment</button>
       </div> 
     )
   }
@@ -119,8 +117,8 @@ class Feeling extends React.Component {
   render(){
     return (
       <div className='feeling'>
-        <div className='like'>👍</div>
-        <div className='dislike'>👎</div>
+        <div className='like' onClick={() =>this.props.like()} >👍</div>
+        <div className='dislike' onClick={() =>this.props.dislike()}>👎</div>
       </div>
     )
   }
@@ -136,10 +134,36 @@ class Post extends React.Component {
       current_user_profile_pic: this.props.current_user_profile_pic,
       id: this.props.id
     }
-    this.add_comment = this.add_comment.bind(this)
+    
   }
 
-  
+  like_post = () => {
+    const data = {post_id: this.state.id}
+    const  csrftoken = Cookies.get('csrftoken');
+    const request = new XMLHttpRequest();
+    request.open('POST', '/like_a_post', true)
+    request.setRequestHeader('X-CSRFToken', csrftoken);
+    request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    request.onload = () => {
+      const response = JSON.parse(request.responseText)
+      console.log(response)
+    }
+    request.send(JSON.stringify(data))
+  }
+
+  dislike_post = () => {
+    const data = {post_id: this.state.id}
+    const  csrftoken = Cookies.get('csrftoken');
+    const request = new XMLHttpRequest();
+    request.open('POST', '/dislike_a_post', true)
+    request.setRequestHeader('X-CSRFToken', csrftoken);
+    request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    request.onload = () => {
+      const response = JSON.parse(request.responseText)
+      console.log(response)
+    }
+    request.send(JSON.stringify(data))
+  }
   
   add_comment(text){
     
@@ -181,7 +205,10 @@ class Post extends React.Component {
             date={this.props.date}
           />
           <Post_body text={this.props.text}/>
-          <Feeling />
+          <Feeling
+            like={this.like_post}
+            dislike={this.dislike_post}
+          />
           <CommentSection
             current_user={this.state.current_user}
             comments={this.state.comments}
@@ -193,7 +220,7 @@ class Post extends React.Component {
     else {
       return (
         <div id={this.props.post_id} className="post">
-          <button onClick={() => this.props.onClick()} className="delete_post_button">&#10006;</button>
+         
           <Post_author 
             current_user={this.props.current_user}
             picture={this.props.profile_pic}
@@ -201,7 +228,11 @@ class Post extends React.Component {
             date={this.props.date}
           />
           <Post_body text={this.props.text}/>
-          <Feeling />
+          <Feeling 
+            like={this.like_post}
+            dislike={this.dislike_post}
+
+          />
           <CommentSection
             current_user={this.state.current_user}
             add_comment={this.add_comment}

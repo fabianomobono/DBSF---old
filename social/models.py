@@ -28,6 +28,8 @@ class Post(models.Model):
         return f'{self.author} posted: {self.text}'
 
 
+
+
 class Comment(models.Model):
     commentator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='person_with_an_opinion')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='commented_post')
@@ -70,3 +72,19 @@ class Message(models.Model):
 
 
 
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='what_was_liked')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='who_liked_it')
+    
+
+    def __str__(self):
+        return f'{self.user} liked {self.post}'
+
+
+class Dislike(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='what_was_disliked')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='who_disliked_it')
+    
+
+    def __str__(self):
+        return f'{self.user} disliked {self.post}'

@@ -65,7 +65,7 @@ posts.onload = () => {
     render() {
       return (
         <div >
-          {this.state.user}
+          
           <Post_generator 
             current_user={this.state.user}
             picture={this.state.profile_pic}

@@ -129,7 +129,6 @@
 
 .comment_section {
   background-color: $white;
-  border: 1px solid black;
   padding: 5%;
   .comment {  
     width: fit-content;
@@ -153,9 +152,20 @@
     }   
   }
   input[type=text] {
-    
+    width: 80%;
     margin-top: 3%;
     border: none;
     outline: none;
+  }
+  button {
+    color: white;
+    background-color: $blue;
+    padding: 1%;
+    border-radius: 5px;
+    font-weight: bold;
+    outline: none;
+    border: none;
+
+
   }
 }

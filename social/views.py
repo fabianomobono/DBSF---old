@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import login, logout, authenticate
-from .models import User, Post, Friendship, Message, Comment
+from .models import User, Post, Friendship, Message, Comment, Like, Dislike
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
@@ -135,8 +135,7 @@ class Create_new_post(View):
 # delete post 
 @login_required
 @require_http_methods(['POST'])
-def delete_post_function(request):
-    
+def delete_post_function(request):    
     data = json.loads(request.body.decode("utf-8"))
     print(data['post_author'])
     print(request.user)
@@ -153,7 +152,11 @@ def delete_post_function(request):
 @login_required
 @require_http_methods(['GET'])
 def friends_profile(request, friend):
+
+    # get the friend user
     friend_user = User.objects.get(username=friend)
+
+    # get all the users posts 
     posts = Post.objects.filter(author=(User.objects.get(username=friend)))
     friendship_requested = Friendship.objects.filter(sender=request.user, receiver=friend_user)
     friendship_sent = Friendship.objects.filter(sender=friend_user, receiver=request.user)
@@ -179,8 +182,50 @@ def friends_profile(request, friend):
             else:
                 friendship_status['status'] = 'Friends'
 
-    return render(request, 'social/friends_profile.html', {'user': request.user, 'friend': friend_user, 'posts': posts, 'status': friendship_status['status'] })
+    return render(request, 'social/friends_profile.html', {'posts': posts, 'user': request.user, 'friend': friend_user, 'status': friendship_status['status']})
 
+
+class Friends_posts(View):
+    def post(self, request):
+        friend = User.objects.get(username=request.body.decode('ascii'))
+        posts = Post.objects.filter(author=(friend))
+        response = {'response': [], 'username': request.user.username, 'profile_pic': friend.profile_pic.url}
+
+        # get all the posts from that user and store it in the response dict
+        for post in posts:
+
+            # get all the comments for each post
+            comments = Comment.objects.filter(post=post)
+            c = []
+            for comment in comments:
+                c.append({
+                    'commentator': comment.commentator.username, 
+                    'profile_pic': comment.commentator.profile_pic.url, 
+                    'text': comment.text, 
+                    'date':comment.date, 
+                    'likes': comment.likes,
+                    'id': comment.id})
+            
+            # sort the comments by date
+            c.sort(key = lambda x:x['date'])
+            
+            
+            # hmanize the date for each comment
+            for comment in c:
+                comment['date'] = arrow.get(comment['date']).humanize()
+
+            response['response'].append({
+                'id': post.id, 
+                'author': post.author.username, 
+                'text': post.text, 
+                'date':post.date.strftime("%a %b %d, at %I:%M %p"),
+                'author_picture': friend.profile_pic.url,
+                'likes': post.likes,
+                'comments': c
+                })
+
+        return JsonResponse(response)
+        
 
 def get_posts(request):
     # prepare response
@@ -189,7 +234,6 @@ def get_posts(request):
     # get friends
     sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)
     received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
-    
     
     posts = []
 
@@ -217,8 +261,6 @@ def get_posts(request):
         if len(post) != 0:
             for p in post:
                 posts.append(p)
-
-    print(posts)
     
     for post in posts:
         # get the comments
@@ -242,7 +284,28 @@ def get_posts(request):
         for comment in c:
             comment['date'] = arrow.get(comment['date']).humanize()
         
-       
+
+        # get all the likes for this post
+        l = Like.objects.filter(post=post)
+        likes = []
+        for like in l:
+            likes.append({
+                'post_id': like.post.id,
+                'user': like.user.username,
+                'profile_pic': like.user.profile_pic.url
+            })
+
+        # get all the dislikes for this post
+        d = Dislike.objects.filter(post=post)
+        dislikes = []
+        for dislike in d: 
+            dislikes.append({
+                'post_id': dislike.post.id,
+                'user': like.user.username,
+                'profile_pic': like.user.profile_pic.url
+            })
+        
+        # store all the data necessary for the post in response['response']
         response['response'].append({
             'id': post.id, 
             'author': post.author.username, 
@@ -250,7 +313,8 @@ def get_posts(request):
             'date': post.date, 
             'author_picture': post.author.profile_pic.url,
             'comments': c,
-            'likes': post.likes
+            'likes': likes,
+            'dislikes': dislikes,
             }) 
     
     # sort by -date
@@ -434,7 +498,13 @@ def get_own_posts(request):
         comments = Comment.objects.filter(post=post)
         c = []
         for comment in comments:
-            c.append({'commentator': comment.commentator.username, 'profile_pic': comment.commentator.profile_pic.url, 'text': comment.text, 'date':comment.date, 'likes': comment.likes})
+            c.append({
+                'commentator': comment.commentator.username, 
+                'profile_pic': comment.commentator.profile_pic.url, 
+                'text': comment.text, 
+                'date':comment.date, 
+                'likes': comment.likes,
+                'id': comment.id})
         
         # sort the comments by date
         c.sort(key = lambda x:x['date'])
@@ -474,6 +544,26 @@ class Comment_a_post(View):
             'profile_pic': request.user.profile_pic.url, 
             'date': comment.date,
             'likes': comment.likes}
+        return JsonResponse(response)
+
+
+class Like_a_post(View):
+    def post(self, request):
+        post_id = json.loads(request.body.decode('utf-8'))['post_id']
+        post = Post.objects.get(pk=post_id)
+        like = Like(user=request.user, post=post)
+        like.save()
+        response = {'response': 'like created'}
+        return JsonResponse(response)
+
+
+class Dislike_a_post(View):
+    def post(self,request):
+        post_id = json.loads(request.body.decode('utf-8'))['post_id']
+        post = Post.objects.get(pk=post_id)
+        dislike = Dislike(user=request.user, post=post)
+        dislike.save()
+        response = {'response': 'dislike created'}
         return JsonResponse(response)
 
 

@@ -4,6 +4,7 @@ from selenium import webdriver
 import pathlib
 import os
 from selenium.webdriver.common.keys import Keys
+import json
 
 
 # Create your tests here.
@@ -18,7 +19,7 @@ class ModelTestCase(TestCase):
     def setUp(self):
         test_user = User.objects.create_user(username='test_user', email='test@gmail.com',  password='1234')
         test_user.save()
-        post = Post(pk= 0, text='1234', author=test_user)
+        post = Post(text='1234', author=test_user)
         post.save()
 
     def test_user(self):
@@ -83,7 +84,7 @@ class ModelTestCase(TestCase):
         response = c.get('/profile')
         self.assertEqual(response.status_code, 200)
     
-    def test_profile(self):
+    def test_not_profile(self):
         '''
         Test if you can't reach to profile when not logged in
         '''
@@ -91,6 +92,17 @@ class ModelTestCase(TestCase):
         
         response = c.get('/profile')
         self.assertEqual(response.status_code, 302)
+
+    def test_comments(self):
+        '''
+        Test if comments are loading
+        '''
+        c = Client()
+        post = Post.objects.get(text='1234')
+        c.login(username='test_user', password='1234')
+        data = {'post_id': post.id, 'text': '1234', 'commentator': 'test_user'}
+        response = c.post('/comment/', json.dumps(data))
+        self.assertEqual(response.status_code, 200)
  
     
 class BrowserTestCase(TestCase):

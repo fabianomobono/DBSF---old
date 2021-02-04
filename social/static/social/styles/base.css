@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: #104099;
+  background-color: #1aa1f0;
 }
 #login_navbar a {
   padding: 20px;
@@ -27,7 +27,7 @@
 #login_navbar form input[type=submit] {
   padding: 5px;
   color: white;
-  background-color: #104099;
+  background-color: #1aa1f0;
   font-weight: bold;
 }
 
@@ -57,7 +57,7 @@
   outline: none;
 }
 .register_form input[type=submit] {
-  background-color: #104099;
+  background-color: #1aa1f0;
   padding: 5px;
   margin-top: 5%;
   color: white;
@@ -84,7 +84,7 @@ h1, h4 {
 }
 
 .main_nav {
-  background-color: #104099;
+  background-color: #1aa1f0;
   display: flex;
   justify-content: space-around;
 }
@@ -253,7 +253,7 @@ h1, h4 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: #104099;
+  background-color: #1aa1f0;
   padding: 10px 10px 10px 2px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -270,7 +270,7 @@ h1, h4 {
   font-weight: bold;
 }
 .top_bar button {
-  background-color: #104099;
+  background-color: #1aa1f0;
   outline: none;
   border: none;
   color: white;
@@ -339,7 +339,7 @@ h1, h4 {
   margin-left: 3%;
 }
 .compose_message .send_message_div button {
-  color: #104099;
+  color: #1aa1f0;
   font-family: "Zapf Dingbats";
   font-size: large;
   border: none;
@@ -523,7 +523,6 @@ h1, h4 {
 
 .comment_section {
   background-color: white;
-  border: 1px solid black;
   padding: 5%;
 }
 .comment_section .comment {
@@ -548,9 +547,19 @@ h1, h4 {
   text-decoration: underline black;
 }
 .comment_section input[type=text] {
+  width: 80%;
   margin-top: 3%;
   border: none;
   outline: none;
+}
+.comment_section button {
+  color: white;
+  background-color: #1aa1f0;
+  padding: 1%;
+  border-radius: 5px;
+  font-weight: bold;
+  outline: none;
+  border: none;
 }
 
 /* shadow */
