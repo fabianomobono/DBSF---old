@@ -115,14 +115,46 @@ class CommentSection extends React.Component {
 
 class Feeling extends React.Component {
   render(){
+    const profile = '/profile/'
     return (
+      
       <div className='feeling'>
+       
         <div className='like' onClick={() => this.props.like()} >👍</div>
         <div className='dislike' onClick={() => this.props.dislike()}>👎</div>
-        <div className='likeNumber' onMouseLeave={(e) => this.props.hide_lovers(e.target.nextSibling.nextSibling)} onMouseEnter={(e) => this.props.show_lovers(e.target.nextSibling.nextSibling)} title='who liked this post'>{this.props.likes.length}</div>
-        <div className='dislikeNumber' onMouseLeave={(e) => this.props.hide_lovers(e.target.nextSibling.nextSibling)} onMouseEnter={(e) => this.props.show_haters(e.target.nextSibling.nextSibling)} title="who didn't like this post">{this.props.dislikes.length}</div>
-        <div className='lovers'>Lovers</div>
-        <div className='haters'>Haters</div>
+        <div className='likeNumber'  onClick={(e) => this.props.show(e.target.nextSibling.nextSibling)} title='who liked this post'>{this.props.likes.length}</div>
+        <div className='dislikeNumber' onClick={(e) => this.props.show(e.target.nextSibling.nextSibling)}  title="who didn't like this post">{this.props.dislikes.length}</div>
+        <div className='lovers'>
+          <div className='close_lovers'><button onClick={(e) => this.props.hide(e.target.parentNode.parentNode)}>&#10006;</button></div>
+          {this.props.likes.length > 0 ? this.props.likes.map(lover =>
+            <div>
+              <img src={lover.profile_pic} className='lover_picture' />
+              {this.props.current_user !== lover.user ? 
+                  <a href={profile.concat(lover.user)} className='lover_link'>{lover.user}</a>
+                  :
+                  <a href='/profile' className='lover_link'>{lover.user}</a>
+                }
+            </div>
+            ):
+            <p>No likes yet...</p>
+          }
+        </div>
+        <div className='haters'>
+          <div className='close_lovers'><button onClick={(e) => this.props.hide(e.target.parentNode.parentNode)}>&#10006;</button></div>
+            {this.props.dislikes.length > 0 ? this.props.likes.map(lover =>
+              <div>
+                <img src={lover.profile_pic} className='lover_picture' />
+                {this.props.current_user !== lover.user ? 
+                  <a href={profile.concat(lover.user)} className='lover_link'>{lover.user}</a>
+                  :
+                  <a href='/profile' className='lover_link'>{lover.user}</a>
+                }
+                
+              </div>
+              ):
+              <p>No hates yet...</p>
+          }
+        </div>
       </div>
     )
   }
@@ -170,11 +202,12 @@ class Post extends React.Component {
     request.send(JSON.stringify(data))
   }
 
-  show_lovers = (div) => {
-    div.style.display = 'inline-block'
+  show = (div) => {
+    div.style.display = 'block'
+    
   }
 
-  hide_lovers = (div) => {
+  hide = (div) => {
     div.style.display = 'none'
   }
 
@@ -204,17 +237,10 @@ class Post extends React.Component {
     request.send(JSON.stringify(data))
   }
   
-  show_haters = (div) => {
-    div.style.display = 'inline-block'
-  }
-
-  hide_haters = (div) => {
-    div.style.display = 'none'
-  }
   
   
-  add_comment(text){
-    
+  add_comment = (text) =>{
+    console.log(this.state.id)
     const data = {'post_id': this.state.id, 'commentator': this.state.current_user, 'text': text.value}
     const csrftoken = Cookies.get('csrftoken');
     const request = new XMLHttpRequest()
@@ -254,14 +280,14 @@ class Post extends React.Component {
           />
           <Post_body text={this.props.text}/>
           <Feeling
+            current_user={this.state.current_user}
             like={this.like_post}
             dislike={this.dislike_post}
             likes={this.state.likes}
             dislikes={this.state.dislikes}
-            show_lovers={this.show_lovers}
-            show_haters={this.show_haters}
-            hide_haters={this.hide_haters}
-            hide_lovers={this.hide_lovers}
+            show={this.show}
+            hide={this.hide}
+           
           />
           <CommentSection
             current_user={this.state.current_user}
@@ -274,7 +300,7 @@ class Post extends React.Component {
     else {
       return (
         <div id={this.props.post_id} className="post">
-         
+
           <Post_author 
             current_user={this.props.current_user}
             picture={this.props.profile_pic}
@@ -283,14 +309,14 @@ class Post extends React.Component {
           />
           <Post_body text={this.props.text}/>
           <Feeling 
+            current_user={this.state.current_user}
              like={this.like_post}
              dislike={this.dislike_post}
              likes={this.state.likes}
              dislikes={this.state.dislikes}
-             show_lovers={this.show_lovers}
-             show_haters={this.show_haters}
-             hide_haters={this.hide_haters}
-             hide_lovers={this.hide_lovers}
+             show={this.show}            
+             hide={this.hide}
+             
           />
           <CommentSection
             current_user={this.state.current_user}
@@ -352,7 +378,6 @@ function Friend_box(props) {
   }
 }
   
-
 
 function Message(props) {
   if (props.current_user === props.sender){

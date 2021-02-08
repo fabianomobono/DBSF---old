@@ -74,6 +74,11 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.message {
+  margin: 2%;
+  text-align: center;
+}
+
 /* shadow */
 .friends_right_div {
   overflow: auto;
@@ -114,6 +119,7 @@ h1, h4 {
 
 .friends_right_div {
   float: left;
+  overflow-y: scroll;
   width: 25%;
   height: 100%;
 }
@@ -138,6 +144,7 @@ h1, h4 {
   background-color: white;
   border-radius: 5%;
   padding: 1%;
+  overflow-y: scroll;
 }
 .friendship_request .friend_request_img {
   display: inline;
@@ -530,10 +537,56 @@ h1, h4 {
   cursor: pointer;
   text-decoration: underline;
 }
-.feeling .lovers, .feeling .haters {
-  width: 50%;
+.feeling .lovers {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: white;
+  border-radius: 5px;
+  margin-left: -6%;
+  position: absolute;
+  z-index: 3;
+  width: 49%;
   padding: 3%;
   display: none;
+}
+.feeling .haters {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: white;
+  border-radius: 5px;
+  margin-left: 45%;
+  position: absolute;
+  z-index: 3;
+  width: 49%;
+  padding: 3%;
+  display: none;
+}
+.feeling div {
+  text-align: left;
+}
+.feeling div .close_lovers {
+  text-align: right;
+  width: 100%;
+}
+.feeling div .close_lovers button {
+  background-color: white;
+  border: none;
+  outline: none;
+}
+.feeling div .lover_picture {
+  margin: 5%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.feeling div .lover_link {
+  margin: 5%;
+  display: inline-block;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
+.feeling div .lover_link:hover {
+  text-decoration: underline;
 }
 
 .comment_section {
@@ -576,6 +629,9 @@ h1, h4 {
   outline: none;
   border: none;
 }
+.comment_section button:hover {
+  background-color: #5858da;
+}
 
 /* shadow */
 .profile_pic_div, .user_info_div {
@@ -587,7 +643,7 @@ h1, h4 {
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 10%;
+  margin: 30% 0% 0% 10%;
   border: 2px solid #1b92e2;
   filter: drop-shadow(10px 10px 4px rgba(41, 47, 79, 0.5));
 }
@@ -674,6 +730,21 @@ h1, h4 {
   margin: none;
   background-color: white;
   border-radius: 5px;
+}
+
+#friend_request_button {
+  background-color: white;
+  border: none;
+  outline: none;
+  padding: 3%;
+  border-radius: 5px;
+  font-weight: bold;
+}
+#friend_request_button:hover {
+  background-color: #cfcfcf;
+}
+#friend_request_button:active {
+  outline: 2px solid silver;
 }
 
 /* shadow */

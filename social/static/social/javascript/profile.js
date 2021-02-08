@@ -71,6 +71,8 @@ request.onload = () => {
                 text={post.text}
                 date={post.date}
                 comments={post.comments}
+                likes={post.likes}
+                dislikes={post.dislikes}
                 />)}
             </div>
         )

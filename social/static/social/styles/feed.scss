@@ -133,10 +133,56 @@
       text-decoration: underline;
     }
   }
-  .lovers, .haters {
-    width: 50%;
+  .lovers {
+    box-shadow: $shadow;
+    background-color: $white;
+    border-radius: 5px;
+    margin-left: -6%;
+    position: absolute;
+    z-index: 3;
+    width: 49%;
     padding: 3%;
     display: none;
+  }
+  .haters {
+    box-shadow: $shadow;
+    background-color: $white;
+    border-radius: 5px;
+    margin-left: 45%;
+    position: absolute;
+    z-index: 3;
+    width: 49%;
+    padding: 3%;
+    display: none;
+  }
+  div {
+    text-align: left;
+    .close_lovers {
+      text-align: right;
+      width: 100%;
+      button {
+        background-color: $white;
+        border: none;
+        outline: none;
+      }
+    }
+    .lover_picture {
+      margin: 5%;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .lover_link {
+      margin: 5%;
+      display: inline-block;
+      color: $black;
+      text-decoration: none;
+      font-weight: bold;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
 
@@ -178,5 +224,8 @@
     font-weight: bold;
     outline: none;
     border: none;
+    &:hover {
+      background-color: $dark_blue;
+    }
   }
 }

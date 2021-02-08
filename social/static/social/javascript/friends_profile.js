@@ -1,17 +1,35 @@
-document.querySelector('#friend_request_button').addEventListener('click', () =>{
+document.querySelector('#friend_request_button').addEventListener('click', () => {
+    const button_text = document.querySelector('#friend_request_button').innerHTML
     const  csrftoken = Cookies.get('csrftoken');
     const request = new XMLHttpRequest();
-    request.open('POST', '/request_friendship', true)
-    request.setRequestHeader('X-CSRFToken', csrftoken);
-    request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    if (button_text === 'Unfriend') {
+      request.open('POST', '/unfriend', true)
+      request.setRequestHeader('X-CSRFToken', csrftoken);
+      request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
 
-    request.onload = () => {
+      request.onload = () => {
+        const response = JSON.parse(request.responseText)
+        console.log(response)
+        alert("Unfriended")
+        document.querySelector('#friend_request_button').innerHTML = '<i class="fa fa-user-plus"> Add';
+        
+    }
+    request.send(username);
+    }
+    else {
+      request.open('POST', '/request_friendship', true)
+      request.setRequestHeader('X-CSRFToken', csrftoken);
+      request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+
+      request.onload = () => {
         const response = JSON.parse(request.responseText)
         console.log(response)
         document.querySelector('#friend_request_button').innerHTML = 'Request Sent';
         document.querySelector('#friend_request_button').setAttribute('disabled', 'true');
     }
     request.send(username);
+    }
+    
 })
 
 
@@ -72,6 +90,8 @@ request.onload = () => {
                     text={post.text}
                     date={post.date}
                     comments={post.comments}
+                    likes={post.likes}
+                    dislikes={post.dislikes}
                     />)}
                 </div>
             )

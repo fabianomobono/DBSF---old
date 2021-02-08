@@ -24,3 +24,20 @@
     background-color: $white;
     border-radius: 5px;
 }
+
+#friend_request_button {
+    background-color: $white;
+    border: none;
+    outline: none;
+    padding: 3%;
+    border-radius: 5px;
+    font-weight: bold;
+    &:hover {
+        background-color: $grey;
+    }
+    &:active {
+        outline: 2px solid silver;
+       
+    }
+
+}

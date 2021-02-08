@@ -39,7 +39,7 @@ h1, h4 {
 
 .friends_right_div {
   float: left;
-  
+  overflow-y: scroll;
   width: 25%;
   height: 100%;
 }
@@ -68,6 +68,8 @@ h1, h4 {
   background-color: $white;
   border-radius: 5%;
   padding: 1%;
+  overflow-y: scroll;
+
   .friend_request_img {
     display: inline;
     width: 50px;

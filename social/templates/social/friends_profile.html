@@ -29,11 +29,11 @@
      <div class="friendship_div">
       <p id='profile_friendname'>{{friend}}</p>
       {% if status == 'False' %}
-        <button  id='friend_request_button' class="btn btn-primary"><i class="fa fa-user-plus"></i>Add</button> 
+        <button  id='friend_request_button'><i class="fa fa-user-plus"></i> Add</button> 
       {% elif status == 'Pending' or status == 'Rejected' %}
-        <button  id='friend_request_button' class="btn btn-primary" disabled>Request is pending</button> 
+        <button  id='friend_request_button' disabled>Request is pending</button> 
       {% else %}
-        <button  id='friend_request_button' class="btn btn-primary">Unfriend</button> 
+        <button  id='friend_request_button'>Unfriend</button> 
       {% endif %}
       
      </div>

@@ -99,7 +99,7 @@ def logout_view(request):
 @method_decorator(login_required, name='dispatch')
 class Profile(View):
     def get(self, request):      
-        posts = Post.objects.filter(author=request.user)
+        posts = Post.objects.filter(author=request.user).order_by('-date')
         return render(request, 'social/profile.html', {'user': request.user, 'posts': posts})
 
 
@@ -214,16 +214,39 @@ class Friends_posts(View):
             for comment in c:
                 comment['date'] = arrow.get(comment['date']).humanize()
 
+            # get all the likes for this post
+            l = Like.objects.filter(post=post)
+            likes = []
+            for like in l:
+                likes.append({
+                    'post_id': like.post.id,
+                    'user': like.user.username,
+                    'profile_pic': like.user.profile_pic.url
+                })
+
+            # get all the dislikes for this post
+            d = Dislike.objects.filter(post=post)
+            dislikes = []
+            for dislike in d: 
+                dislikes.append({
+                    'post_id': dislike.post.id,
+                    'user': like.user.username,
+                    'profile_pic': like.user.profile_pic.url
+                })
+
             response['response'].append({
                 'id': post.id, 
                 'author': post.author.username, 
                 'text': post.text, 
-                'date':post.date.strftime("%a %b %d, at %I:%M %p"),
+                'date': post.date.strftime("%a %b %d, at %I:%M %p"),
                 'author_picture': friend.profile_pic.url,
-                'likes': post.likes,
+                'likes': likes,
+                'dislikes': dislikes,
                 'comments': c
                 })
 
+        response['response'].sort(key = lambda x:x['date'])
+        response['response'].reverse()
         return JsonResponse(response)
         
 
@@ -394,7 +417,7 @@ def unfriend(request):
     except:
         to_delete = received_friendships[0]
         to_delete.delete()
-        response = {'response': 'unfirended_received'}
+        response = {'response': 'unfriended_received'}
         return JsonResponse(response)
 
 
@@ -514,16 +537,41 @@ def get_own_posts(request):
         for comment in c:
             comment['date'] = arrow.get(comment['date']).humanize()
 
+        
+        # get all the likes for this post
+        l = Like.objects.filter(post=post)
+        likes = []
+        for like in l:
+            likes.append({
+                'post_id': like.post.id,
+                'user': like.user.username,
+                'profile_pic': like.user.profile_pic.url
+            })
+
+        # get all the dislikes for this post
+        d = Dislike.objects.filter(post=post)
+        dislikes = []
+        for dislike in d: 
+            dislikes.append({
+                'post_id': dislike.post.id,
+                'user': like.user.username,
+                'profile_pic': like.user.profile_pic.url
+            })
+
         response['response'].append({
             'id': post.id, 
             'author': post.author.username, 
             'text': post.text, 
             'date':post.date.strftime("%a %b %d, at %I:%M %p"),
             'author_picture': request.user.profile_pic.url,
-            'likes': post.likes,
+            'likes': likes,
+            'dislikes': dislikes,
             'comments': c
             })
 
+    # order posts -date
+    response['response'].sort(key = lambda x:x['date'])
+    response['response'].reverse()
     return JsonResponse(response)
 
 
