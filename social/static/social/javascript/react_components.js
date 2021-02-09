@@ -141,7 +141,7 @@ class Feeling extends React.Component {
         </div>
         <div className='haters'>
           <div className='close_lovers'><button onClick={(e) => this.props.hide(e.target.parentNode.parentNode)}>&#10006;</button></div>
-            {this.props.dislikes.length > 0 ? this.props.likes.map(lover =>
+            {this.props.dislikes.length > 0 ? this.props.dislikes.map(lover =>
               <div>
                 <img src={lover.profile_pic} className='lover_picture' />
                 {this.props.current_user !== lover.user ? 

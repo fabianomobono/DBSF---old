@@ -324,8 +324,8 @@ def get_posts(request):
         for dislike in d: 
             dislikes.append({
                 'post_id': dislike.post.id,
-                'user': like.user.username,
-                'profile_pic': like.user.profile_pic.url
+                'user': dislike.user.username,
+                'profile_pic': dislike.user.profile_pic.url
             })
         
         # store all the data necessary for the post in response['response']
