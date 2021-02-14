@@ -89,6 +89,8 @@ h1, h4 {
 }
 
 .main_nav {
+  grid-column-start: 1;
+  grid-column-end: 4;
   background-color: #1aa1f0;
   display: flex;
   justify-content: space-around;
@@ -117,6 +119,10 @@ h1, h4 {
   height: 100%;
 }
 
+.friends_sandbox {
+  grid-column-start: 3;
+}
+
 .friends_right_div {
   float: left;
   overflow-y: scroll;
@@ -125,8 +131,19 @@ h1, h4 {
 }
 
 .main {
+  grid-column-start: 2;
+  grid-column-end: 3;
   float: left;
   width: 49%;
+}
+
+.main_sandbox {
+  grid-column-start: 2;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  overflow-y: auto;
+  justify-self: center;
+  width: 90%;
 }
 
 .no_results_p {
@@ -137,6 +154,18 @@ h1, h4 {
   font-size: large;
 }
 
+#friend_request_title {
+  grid-column-start: 1;
+  grid-row-start: 2;
+}
+
+.f_requests_sandbox {
+  grid-column-start: 1;
+  grid-row-start: 3;
+  justify-self: center;
+  width: 90%;
+}
+
 .friendship_request {
   display: flex;
   justify-content: space-around;
@@ -144,7 +173,8 @@ h1, h4 {
   background-color: white;
   border-radius: 5%;
   padding: 1%;
-  overflow-y: scroll;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .friendship_request .friend_request_img {
   display: inline;
@@ -194,7 +224,14 @@ h1, h4 {
   color: red;
 }
 
+#friends_title {
+  grid-row-start: 3;
+  grid-column-start: 3;
+}
+
 .friend_box_div {
+  justify-self: center;
+  width: 90%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -202,6 +239,7 @@ h1, h4 {
   padding: 20px;
   background-color: white;
   border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .friend_box_div .friend_img {
   width: 40px;
@@ -614,6 +652,9 @@ h1, h4 {
 .comment_section .comment .user_link_in_comment:hover {
   text-decoration: underline black;
 }
+.comment_section .comment .comment_text {
+  display: inline-block;
+}
 .comment_section input[type=text] {
   width: 80%;
   margin-top: 3%;
@@ -706,6 +747,9 @@ h1, h4 {
 .upload_picture_div form input {
   display: none;
 }
+.upload_picture_div #save_picture_button {
+  display: none;
+}
 
 /* shadow */
 .friendship_div {
@@ -759,6 +803,15 @@ h1, h4 {
 }
 .add_new_user_button:focus {
   outline: none;
+}
+
+/* shadow */
+#app {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  grid-template-rows: 70px 30px 90%;
+  width: 100%;
+  height: 100vh;
 }
 
 html {

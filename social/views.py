@@ -106,12 +106,16 @@ class Profile(View):
 @login_required
 @require_http_methods(['POST'])
 def change_profile_pic(request):
+    print('here is the request')
+    print(request)
+    print('here is request.FILES')
+    print(request.FILES)
     picture = request.FILES['profile_pic']
     print(picture)
     user = User.objects.get(username=request.user)
     user.profile_pic = picture
     user.save()
-    return HttpResponseRedirect(reverse('profile'))
+    return HttpResponseRedirect('sandbox')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -562,7 +566,7 @@ def get_own_posts(request):
             'id': post.id, 
             'author': post.author.username, 
             'text': post.text, 
-            'date':post.date.strftime("%a %b %d, at %I:%M %p"),
+            'date': post.date,
             'author_picture': request.user.profile_pic.url,
             'likes': likes,
             'dislikes': dislikes,
@@ -572,6 +576,11 @@ def get_own_posts(request):
     # order posts -date
     response['response'].sort(key = lambda x:x['date'])
     response['response'].reverse()
+
+    # humanize the date
+    for post in response['response']:
+        post['date'] = arrow.get(post['date']).humanize()
+
     return JsonResponse(response)
 
 
@@ -580,18 +589,22 @@ class Comment_a_post(View):
 
     def post(self, request):
         data = json.loads(request.body.decode("utf-8"))
-        post = Post.objects.get(pk=data['post_id'])
-        text = str(data['text'])
+        post = Post.objects.get(pk=data["post_id"])
+        text = str(data["text"])
         commentator = request.user
         comment = Comment(post=post, commentator=commentator, text=text)
         comment.save()
         response = {
-            'id': comment.id, 
-            'text': comment.text, 
-            'commentator': comment.commentator.username, 
-            'profile_pic': request.user.profile_pic.url, 
-            'date': comment.date,
-            'likes': comment.likes}
+            "id": comment.id, 
+            "text": comment.text, 
+            "commentator": comment.commentator.username, 
+            "profile_pic": request.user.profile_pic.url, 
+            "date": comment.date,
+            "likes": comment.likes}
+        return JsonResponse(response)
+
+    def get(self, request):
+        response = {'response': 'this worked'}
         return JsonResponse(response)
 
 
@@ -628,6 +641,145 @@ class Dislike_a_post(View):
 @method_decorator(login_required, name='dispatch')
 class Sandbox(View):
 
-    def get(self, request): 
-        manager = Friendship.buddies.are_they_friends()      
-        return render(request, 'social/sandbox.html', {'manager': manager})
+    def get(self, request):
+        return render( request, 'social/sandbox.html')
+    
+    def post(self, request):
+        # declare the user
+        user = request.user
+
+        # prepare respone object
+        response = {
+            'user': user.username,
+            'profile_pic': user.profile_pic.url,
+            'posts': [],
+            'friend_requests':[],
+            'friends': [],
+            'first': user.first_name,
+            'last': user.last_name,
+            'email': user.email,
+            'dob': user.dob
+            }
+        print(response)
+        
+        # get friends
+        sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)
+        received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
+        friends = []
+
+        for f in received:
+            friends.append({'user': f.sender.username, 'profile_pic': f.sender.profile_pic.url, 'id': f.id})
+    
+        for s in sent:
+            friends.append({'user': s.receiver.username, 'profile_pic':s.receiver.profile_pic.url, 'id': s.id})
+
+        # get the last message (if it exists) that was sent to each friend
+        for f in friends:
+            friendship = Friendship.objects.get(id=f['id']) 
+            message = Message.objects.filter(conversation=friendship).order_by('-date_sent')
+            if len(message) != 0:
+                print(f)
+                f['last_message_date'] = message[0].date_sent.strftime("%a %b %d, %Y %H:%M:%S")
+            else:
+                f['last_message_date'] = 'No message was sent yet'
+
+        response['friends'] = friends
+
+        # get all posts
+        posts = []
+
+        # get your own posts
+        own_posts = Post.objects.filter(author=request.user)
+        for o in own_posts:
+            # if it is a post and not an empty Queryset
+            if type(o) == Post:
+                posts.append(o)
+
+        # get posts from friendships you've sent
+        for s in sent:
+            post = Post.objects.filter(author=s.receiver)
+
+            # if the QuerySet is not empty
+            if len(post) != 0:
+                for p in post:
+                    posts.append(p)
+
+        # get posts from  friendships you've received
+        for r in received:
+            post = Post.objects.filter(author=r.sender)
+
+            # if the queryset is not empty
+            if len(post) != 0:
+                for p in post:
+                    posts.append(p)
+        
+        for post in posts:
+            # get the comments
+            comments = Comment.objects.filter(post=post)
+            c = []
+
+            # for each comment
+            for comment in comments:
+                c.append({
+                'commentator': comment.commentator.username,
+                'profile_pic': comment.commentator.profile_pic.url, 
+                'text': comment.text, 
+                'date':comment.date, 
+                'likes': comment.likes,
+                'id': comment.id})
+            
+            # sort the comments by date
+            c.sort(key = lambda x:x['date'])
+                
+            # humanize the date for each comment
+            for comment in c:
+                comment['date'] = arrow.get(comment['date']).humanize()
+            
+
+            # get all the likes for this post
+            l = Like.objects.filter(post=post)
+            likes = []
+            for like in l:
+                likes.append({
+                    'post_id': like.post.id,
+                    'user': like.user.username,
+                    'profile_pic': like.user.profile_pic.url
+                })
+
+            # get all the dislikes for this post
+            d = Dislike.objects.filter(post=post)
+            dislikes = []
+            for dislike in d: 
+                dislikes.append({
+                    'post_id': dislike.post.id,
+                    'user': dislike.user.username,
+                    'profile_pic': dislike.user.profile_pic.url
+                })
+            
+            # store all the data necessary for the post in response['response']
+            response['posts'].append({
+                'id': post.id, 
+                'author': post.author.username, 
+                'text': post.text, 
+                'date': post.date, 
+                'author_picture': post.author.profile_pic.url,
+                'comments': c,
+                'likes': likes,
+                'dislikes': dislikes,
+                }) 
+        
+        # sort by -date
+        response['posts'].sort(key = lambda x:x['date'])
+        response['posts'].reverse()
+        
+        #humanize the date for each post
+        for post in response['posts']:
+            post['date'] = arrow.get(post['date']).humanize()
+
+        # get friend requests
+        requests = Friendship.objects.filter(receiver=request.user, pending=True)
+       
+        for request in requests:
+            response['friend_requests'].append({'sender': request.sender.username, 'sender_profile_pic': request.sender.profile_pic.url, 'id': request.id})
+        
+        return JsonResponse(response)

@@ -208,6 +208,9 @@
       &:hover {
         text-decoration: underline $black;
       }
+    }
+    .comment_text {
+      display: inline-block;
     }   
   }
   input[type=text] {

@@ -6,7 +6,7 @@ class Post_generator extends React.Component {
     <img className="post_author_pic" src={this.props.picture} alt="profile_pic" />
     <div>
       <textarea name="new_post_text" id="new_post_text" placeholder="Say something to your close friends"></textarea>
-      <button onClick={() => this.props.onClick()} className='btn btn-primary'>&#10002;</button>
+      <button onClick={() => this.props.onClick()} id='post_new_post_button' className='btn btn-primary'>&#10002;</button>
     </div>
   </div>
     )
@@ -56,8 +56,7 @@ function Comment(props) {
       <div className='comment'>
         <img className='image_in_comment' src={props.profile_pic} />
         <a href={profile} className="user_link_in_comment"> {props.commentator} </a>
-        {props.text}
-  
+        <p className='comment_text'>{props.text}</p>
       </div>
     )
   }
@@ -82,8 +81,8 @@ class CreateComment extends React.Component {
   render() {
     return(
       <div className='create_comment'>
-        <input  type='text' placeholder='Comment...' />
-        <button onClick={(e) => this.props.add_comment(e.target.previousSibling)}>Comment</button>
+        <input className='comment_input' type='text' placeholder='Comment...' />
+        <button onClick={(e) => this.props.add_comment(e.target.previousSibling)} className='submit_comment'>Comment</button>
       </div> 
     )
   }
@@ -454,4 +453,425 @@ function Compose_message(props) {
       </div>
     </div>
   )
+}
+
+
+class Navbar extends React.Component {
+  
+  render() {
+    return(
+      <nav id='navbar' className='main_nav'>
+        <a href="#" onClick={() => this.props.main()} title='homepage'>DBSF</a>
+        <form action="/find_friends" method="GET">
+          <input id='search_input' name='search_term' type='text' placeholder='Search for friends' />
+          <input className='search_friends_button' type="submit" value='&#x1F50D;' />
+        </form>
+        <a href="#" onClick={() => this.props.profile()}>      
+          <img className="profile_pic_small_icon" src={this.props.profile_pic} alt="profile_pic" />      
+          {this.props.user}
+        </a>
+        <form className="logout_form" action='/logout' method="get">
+          
+          <a className='logout_a' href="/logout">Log out</a>
+        </form>
+      </nav>
+    )
+  }
+}
+
+
+class Main extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      posts: this.props.posts,
+      user: this.props.user,
+      profile_pic: this.props.profile_pic,
+      page: this.props.page
+    }
+  }
+
+  render() {
+    if (this.props.page === 'main') {
+      return (
+        <div className='main_sandbox'>
+          <Feed
+          user={this.props.user}
+          posts={this.props.posts} 
+          profile_pic={this.state.profile_pic}
+        />
+        </div>
+        
+      )
+    }
+    else if (this.props.page === 'profile') {
+
+      return(
+        <div className='main_sandbox'>
+          <Profile 
+            user={this.props.user}
+            first={this.props.first}
+            last={this.props.last}
+            email={this.props.email}
+            profile_pic={this.props.profile_pic}
+            dob={this.props.dob}
+            update_profile_pic={this.props.update_profile_pic}
+            save_new_pic={this.props.save_new_pic}
+          />
+          <Feed
+            profile_pic={this.props.profile_pic}
+            user={this.props.user}
+            posts={this.props.posts}
+          />
+        </div>
+      ) 
+    } 
+  }
+}
+ 
+class Profile extends React.Component {
+   
+  render() {
+    const csrftoken = Cookies.get('csrftoken');
+    return (
+      <div className='profile_div'>
+        <div className="profile_pic_div">     
+          <img className='profile_pic' src={this.props.profile_pic} alt="profile_pic" onClick={() => document.querySelector('.upload_picture_div').style.display = 'block'}/>
+        </div>
+        <div className="user_info_div">
+          <p id='profile_username'>{this.props.user}</p>
+          <ul>
+            <li>{this.props.first} {this.props.last}</li>
+            <li>{this.props.dob}</li>
+            <li>{this.props.email}</li>
+          </ul>
+        </div>
+    <div className="upload_picture_div">
+      <button id='close_button' type="button" name="button" onClick={(e) => e.target.parentNode.style.display = 'none'}>&#10006;</button>
+      <h1>Upload a new Profile picture</h1>
+      
+      <div className="profile_pic_in_popup">
+        <img src={this.props.profile_pic} alt="profile_pic" /> 
+      </div>
+     
+      <form className="upload_profile_pic_form" action="change_profile_pic" method="post" encType="multipart/form-data">
+          <input type='hidden' name='csrfmiddlewaretoken' value={csrftoken} />
+          <p><label>Upload profile picture
+          <input name='profile_pic' type="file" id="image_upload" onChange={(e) => this.props.update_profile_pic(e)} accept="image/gif, image/jpeg, image/png" multiple />
+          </label></p>        
+      </form>
+      <button onClick={() => this.props.save_new_pic()}  id='save_picture_button' type='submit'  className='btn btn-primary' name="button" >Save Picture</button>
+    </div>
+  </div>
+  
+    )
+  }
+}
+
+class Feed extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      profile_pic: this.props.profile_pic,
+      user: this.props.user,
+      posts: this.props.posts,
+    }
+  }
+  
+  handleClick() {
+    const text = document.querySelector('#new_post_text').value;
+    if (text.length > 1) {
+      
+      const data = {author: this.state.user, text: text}
+      // send that post to the server to save it
+      const csrftoken = Cookies.get('csrftoken');
+      const request = new XMLHttpRequest();
+      request.open('POST', '/create_new_post', true);
+      request.setRequestHeader('X-CSRFToken', csrftoken);
+      request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+      request.onload = () => {
+        const response = JSON.parse(request.responseText)
+        console.log(response)
+        this.setState({
+          posts : [{likes: [], dislikes: [], author: response.author, author_picture: this.state.profile_pic, text: response.text, date: response.date, id:response.id, comments: response.comments}, ...this.state.posts]
+        })
+        document.querySelector("#new_post_text").value = '';
+        console.log(response)
+      }
+      request.send(JSON.stringify(data))
+    }
+  }
+
+  deletePost(post_id, author) {
+    const post = document.getElementById(post_id)
+    post.style.animationPlayState = 'running';
+    setTimeout(() =>{
+      this.setState({
+        posts: this.state.posts.filter(post => post.id != post_id)
+      })
+    }, 1000)
+
+    // delete the post from the server
+    const data = {'post_author': author, 'id': post_id}
+    const csrftoken = Cookies.get('csrftoken');
+    const request = new XMLHttpRequest();
+    request.open('POST', '/delete_post', true);
+    request.setRequestHeader('X-CSRFToken', csrftoken);
+    request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    request.onload = () => {
+      const response = JSON.parse(request.responseText);
+                            
+      console.log(response)
+    }
+    request.send(JSON.stringify(data))
+  }
+ 
+  render() {  
+    return (
+      <div >
+        <Post_generator 
+          current_user={this.state.user}
+          picture={this.state.profile_pic}
+          onClick={() => this.handleClick()} />
+
+        {this.state.posts.length ?  this.state.posts.map(post => <Post
+          onClick={() => this.deletePost(post.id, post.author)} 
+          key={post.id}
+          id={post.id}
+          post_id={post.id}
+          current_user={this.state.user}
+          user={post.author}
+          profile_pic={post.author_picture}
+          current_user_profile_pic={this.state.profile_pic}
+          text={post.text}
+          date={post.date}
+          comments={post.comments}
+          likes={post.likes}
+          dislikes={post.dislikes}
+        />): <p className="no_results_p">No posts here. Try to search for friends in the search box and add them as friends. You'll see posts appear over time!</p>}
+      </div>
+    ) 
+  }
+}
+
+
+class Friends extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      friends: this.props.friends,
+      user: this.props.user
+    }
+    this.hello = this.hello.bind(this)
+  }
+
+  hello(user){
+    var now = new Date()
+    now.toUTCString()
+    now = now.toString()
+    now = now.substring(0, now.length -33)
+    var friends = this.state.friends
+    for (let i = 0; i < friends.length; i ++){
+      if (friends[i]['user'] === user){
+        friends[i].last_message_date = now
+      }
+    }
+    this.setState({friends: friends})
+    console.log(now)
+  }
+
+  message(friend, profile_pic) {
+    document.getElementById('message_box').style.display = 'block';
+   
+    // get friendship id for chatSocket
+    const data = {sender: this.state.user, receiver: friend}
+    const friendship = new XMLHttpRequest()
+    const csrftoken = Cookies.get('csrftoken');
+    friendship.open("POST", "/friendship_id", true)
+    friendship.setRequestHeader('X-CSRFToken',csrftoken);
+    friendship.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
+    friendship.onload = () => {
+      const answer = JSON.parse(friendship.responseText)
+      const friendship_id = answer.id
+      const messages_from_server = answer.messages
+      console.log(answer.id)
+      console.log(messages_from_server)
+
+    // create messaging appnew ReconnectingWebSocket
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    const chatSocket = new WebSocket(
+      ws_scheme
+      + '://'
+      + window.location.host
+      + '/wss/chat/'
+      + friendship_id
+      + '/'
+    );
+    console.log(chatSocket)
+    
+
+    class Message_app extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          messages: messages_from_server,
+          receiver: friend,
+          receiver_pic: profile_pic,
+          user: this.props.user,
+        }
+      }
+      
+      componentDidMount() {
+       
+        chatSocket.onmessage = (e) => {
+          const data = JSON.parse(e.data)
+          console.log(data)
+          this.setState({
+            messages: [...this.state.messages, {'text': data.message, 'sender': data.sender, 'receiver':data.receiver, 'id': data.id}]
+          })
+        }
+        document.querySelector('#message_text').onkeyup = function (e) {
+          if (e.keyCode === 13) {
+            document.querySelector("#send_message_button").click() 
+          }
+        }  
+      }
+      
+      sendMessage() {
+        
+        const message = document.querySelector("#message_text").value;
+        //send the message via the chatsocket
+        if (message.length > 0){
+          chatSocket.send(JSON.stringify({
+            message: message,
+            sender: this.state.user,
+            receiver: this.state.receiver
+          }));
+          document.querySelector("#message_text").value = '';
+          this.props.greet(this.state.receiver)
+        }
+      }
+
+      close() {
+        document.getElementById('message_box').style.display = 'none';
+      }
+
+      render() {
+        return(
+          <div>
+          <Top_bar
+            user={this.state.receiver}
+            profile_pic={this.state.receiver_pic}
+            close={() => this.close()}
+          />
+          <Message_screen 
+            messages={this.state.messages}
+            current_user={this.state.user}
+          />
+          <Compose_message 
+            send={() => this.sendMessage()}
+          />
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(
+      <Message_app 
+      user={this.state.user}
+      greet={(user) => this.hello(user)}/>, document.getElementById('message_box')
+
+    )
+
+    }
+    friendship.send(JSON.stringify(data))
+
+    
+  }
+  render() {
+    return (
+      <div className="friends_sandbox">
+        
+        {this.state.friends.length ? this.state.friends.map(friend => <Friend_box
+          key={friend.id}
+          name={friend.user}
+          profile_pic={friend.profile_pic}
+          friend={friend.id}
+          message={() => this.message(friend.user, friend.profile_pic)}
+          last_contact={friend.last_message_date}
+        />): <p className='no_results_p'>Uh Oh! You don't have any Friends yet.
+        Try to add them via the search box and they will appear here when they accept your friend request.</p>}
+      </div>
+      )
+    }
+}
+
+
+class Friendship_requests_div extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+     pending: this.props.friend_requests
+    }
+  }
+
+  confirm_request(id) {
+    const confirm = new XMLHttpRequest()
+    const csrftoken = Cookies.get('csrftoken');
+    
+    confirm.open('POST', '/confirm_friend_request', true);
+    confirm.setRequestHeader('X-CSRFToken', csrftoken);
+    confirm.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    confirm.onload = () => {
+      const response = JSON.parse(confirm.responseText)
+      console.log(response)
+      if (response.response === 'friendship confirmed'){
+        const box = document.getElementById(id)
+        const message = document.createElement("P");
+        message.setAttribute("class", "no_results_p");
+        message.innerHTML = response.response
+        box.innerHTML = ''
+        box.appendChild(message)
+        console.log(message)
+      }
+     
+    }
+    confirm.send(id)
+  }
+
+  ignore_request(id) {
+    const ignore = new XMLHttpRequest();
+    const csrftoken = Cookies.get('csrftoken');
+    ignore.open('POST', '/ignore_friend_request', true);
+    ignore.setRequestHeader('X-CSRFToken',csrftoken);
+    ignore.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
+    ignore.onload = () => {
+      const response = JSON.parse(ignore.responseText)
+      if (response.response === 'request ignored'){
+        const box = document.getElementById(id)
+        const message = document.createElement("P");
+        message.setAttribute("class", "no_results_p");
+        message.innerHTML = response.response
+        box.innerHTML = ''
+        box.appendChild(message)
+        console.log(message)
+      }
+    }
+    ignore.send(id)
+  }
+  render() {
+    return (
+      <div className='f_requests_sandbox'>
+        {this.state.pending.length ? this.state.pending.map(x => <Friendship_request
+          key={x.id}
+          img={x.sender_profile_pic}
+          sender={x.sender}
+          id={x.id}
+          ignore={() => this.ignore_request(x.id)}
+          confirm={() => this.confirm_request(x.id)}
+          />
+        ): <p className='no_results_p'>No pending Friendship requests.</p>}
+        
+      </div>
+    );
+  }
 }

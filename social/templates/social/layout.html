@@ -22,7 +22,7 @@
     <nav class='main_nav'>
       <a href="{% url 'index' %}" title='homepage'>DBSF</a>
       <form action="/find_friends" method="GET">
-        <input name='search_term' type='text' placeholder='Search for friends'>
+        <input id='search_input' name='search_term' type='text' placeholder='Search for friends'>
         <input class='search_friends_button' type="submit" value='&#x1F50D;'></form>
       <a href="{% url 'profile' %}">
         {% if user.profile_pic.url != '' %}

@@ -8,9 +8,12 @@ h1, h4 {
 }
 
 .main_nav {
+  grid-column-start: 1;
+  grid-column-end: 4;
   background-color: $blue;
   display: flex;
   justify-content: space-around;
+  
   a, form  {
     color: $grey;
     padding: 15px;
@@ -37,6 +40,10 @@ h1, h4 {
   height: 100%;
 }
 
+.friends_sandbox {
+  grid-column-start: 3;
+}
+
 .friends_right_div {
   float: left;
   overflow-y: scroll;
@@ -45,9 +52,19 @@ h1, h4 {
 }
 
 .main {
+  grid-column-start: 2;
+  grid-column-end: 3;  
   float: left;
-  width: 49%;
-  
+  width: 49%; 
+}
+
+.main_sandbox {
+  grid-column-start: 2;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  overflow-y: auto;
+  justify-self: center;
+  width: 90%;
 }
 
 .no_results_p {
@@ -60,6 +77,17 @@ h1, h4 {
 }
 
 
+#friend_request_title{
+  grid-column-start: 1;
+  grid-row-start: 2;
+}
+
+.f_requests_sandbox {
+  grid-column-start: 1;
+  grid-row-start: 3;
+  justify-self: center;
+  width: 90%;
+}
 
 .friendship_request {
   display: flex;
@@ -68,7 +96,8 @@ h1, h4 {
   background-color: $white;
   border-radius: 5%;
   padding: 1%;
-  overflow-y: scroll;
+  overflow-y: auto;
+  box-shadow: $shadow;
 
   .friend_request_img {
     display: inline;
@@ -120,7 +149,15 @@ h1, h4 {
   }
 }
 
+
+#friends_title{
+grid-row-start: 3;
+grid-column-start: 3;
+}
+
 .friend_box_div { 
+  justify-self: center;
+  width: 90%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -128,7 +165,7 @@ h1, h4 {
   padding: 20px;
   background-color: $white;
   border-radius: 5px;
-
+  box-shadow: $shadow;
   .friend_img {
     width: 40px;
     height: 40px;

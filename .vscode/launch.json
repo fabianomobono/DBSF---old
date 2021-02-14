@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${workspaceFolder}\\manage.py",
             "args": [
-                "runserver"
+                "test"
             ],
             "django": true
         }
