@@ -309,7 +309,7 @@ friends.onload = () => {
 
         render() {
           return(
-            <div>
+            <div className='inner_container'>
             <Top_bar
               user={this.state.receiver}
               profile_pic={this.state.receiver_pic}

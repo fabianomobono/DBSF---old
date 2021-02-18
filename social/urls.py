@@ -26,7 +26,9 @@ urlpatterns = [
     path('get_friends', views.get_friends, name='users_friends'),
     path('friendship_id', views.get_friendship_id, name='get_friendship_id'),
     path('find_friends', views.find_friends, name='find_friends'),
+    path('find_friendss', views.find_friendss, name='find_friendss'),
     path('get_own_posts', views.get_own_posts, name='get_my_posts'),
     path('comment', Comment_a_post.as_view(), name='comment'),
-    path('sandbox', Sandbox.as_view(), name='go_nuts'),    
+    path('sandbox', Sandbox.as_view(), name='go_nuts'),
+    path('friends_profile_sandbox', views.friends_profile_sandbox, name='friends_profile_sandbox')    
 ]
