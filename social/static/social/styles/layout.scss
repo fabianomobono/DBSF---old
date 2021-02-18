@@ -221,6 +221,12 @@ grid-column-start: 3;
   box-shadow: $shadow;
 }
 
+
+.inner_container {
+  height: 100%;
+}
+
+
 .top_bar {
   display: flex;
   flex-direction: row;
@@ -263,8 +269,8 @@ grid-column-start: 3;
 
 .message_screen {
   border: 1px solid $grey;
-  height: 227px;
   background-color: $white;
+  height: 73%;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   overflow-y: auto;
@@ -338,6 +344,7 @@ grid-column-start: 3;
   font-weight: bold;
   &:hover {
     color:  $black;
+    text-decoration: underline!important;
   }
 }
 

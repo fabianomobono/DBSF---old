@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import login, logout, authenticate
-from .models import User, Post, Friendship, Message, Comment, Like, Dislike
+from .models import User, Post, Friendship, Message, Comment, Like, Dislike, Get_info
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.urls import reverse
@@ -115,7 +115,7 @@ def change_profile_pic(request):
     user = User.objects.get(username=request.user)
     user.profile_pic = picture
     user.save()
-    return HttpResponseRedirect('sandbox')
+    return JsonResponse({'profile_pic': user.profile_pic.url})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -354,9 +354,9 @@ def get_posts(request):
 
     return JsonResponse(response)
     
-
+@login_required
 def request_friendship(request):
-    # get the firend user  
+    # get the friend user  
     receiver = User.objects.get(username=(request.body.decode('ascii')))
 
     # check if this Friendship (or it's opposite already exists)
@@ -390,7 +390,9 @@ def confirm_friend_request(request):
     friendship.date_confirmed = now
     friendship.pending = False
     friendship.save()
-    response = {'response': 'friendship confirmed'}
+    a = Get_info()
+    response = {'response': 'friendship confirmed', 'updated_info': a.info(request)}
+    
     return JsonResponse(response)
 
 
@@ -416,7 +418,7 @@ def unfriend(request):
     try:
         to_delete = sent_friendships[0]
         to_delete.delete()
-        response = {'response': 'unfirended_sent'}
+        response = {'response': 'unfriended_sent'}
         return JsonResponse(response)
     except:
         to_delete = received_friendships[0]
@@ -483,6 +485,7 @@ def get_friendship_id(request):
 @login_required
 def find_friends(request):
     search_term = str(request.GET['search_term'])
+    print(search_term)
     results = User.objects.filter(username__contains=search_term)
     users = []
     for user in results:
@@ -511,6 +514,42 @@ def find_friends(request):
 
     
     return render(request, 'social/find_friends.html', {'users': users})
+
+
+@require_http_methods(['GET'])
+@login_required
+def find_friendss(request):
+    search_term = str(request.GET['search_term'])
+    print(search_term)
+    results = User.objects.filter(username__contains=search_term)
+    users = []
+    for user in results:
+        # check if current user and user are friends
+        requested = Friendship.objects.filter(sender=request.user, receiver=user)
+        received = Friendship.objects.filter(sender=user, receiver=request.user)
+
+        # if a Friendship object exists
+        if requested.count() != 0:
+            # check if it is pending
+            if requested[0].pending == True:
+                users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': 'Pending', 'profile_pic': user.profile_pic.url, 'rejected': False})
+            else:
+                users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': 'Friends', 'profile_pic': user.profile_pic.url, 'rejected': requested[0].rejected})
+
+        elif received.count() != 0:
+            # check if it is pending
+            if received[0].pending == True:
+                users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': 'Pending', 'profile_pic': user.profile_pic.url , 'rejected': False})
+            else:
+                users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': 'Friends', 'profile_pic': user.profile_pic.url, 'rejected': received[0].rejected})
+
+        else:
+            users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': "not friends", 'profile_pic': user.profile_pic.url})
+
+
+    
+    return JsonResponse({'users': users})
+
 
 
 def get_own_posts(request):
@@ -558,8 +597,8 @@ def get_own_posts(request):
         for dislike in d: 
             dislikes.append({
                 'post_id': dislike.post.id,
-                'user': like.user.username,
-                'profile_pic': like.user.profile_pic.url
+                'user': dislike.user.username,
+                'profile_pic': dislike.user.profile_pic.url
             })
 
         response['response'].append({
@@ -642,144 +681,119 @@ class Dislike_a_post(View):
 class Sandbox(View):
 
     def get(self, request):
+        print('here')
+        print(request.body)
         return render( request, 'social/sandbox.html')
     
     def post(self, request):
         # declare the user
-        user = request.user
-
-        # prepare respone object
-        response = {
-            'user': user.username,
-            'profile_pic': user.profile_pic.url,
-            'posts': [],
-            'friend_requests':[],
-            'friends': [],
-            'first': user.first_name,
-            'last': user.last_name,
-            'email': user.email,
-            'dob': user.dob
-            }
-        print(response)
-        
-        # get friends
-        sent = Friendship.objects.filter(sender=request.user, pending=False, rejected=False)
-        received = Friendship.objects.filter(receiver=request.user, pending=False, rejected=False)
-        friends = []
-
-        for f in received:
-            friends.append({'user': f.sender.username, 'profile_pic': f.sender.profile_pic.url, 'id': f.id})
-    
-        for s in sent:
-            friends.append({'user': s.receiver.username, 'profile_pic':s.receiver.profile_pic.url, 'id': s.id})
-
-        # get the last message (if it exists) that was sent to each friend
-        for f in friends:
-            friendship = Friendship.objects.get(id=f['id']) 
-            message = Message.objects.filter(conversation=friendship).order_by('-date_sent')
-            if len(message) != 0:
-                print(f)
-                f['last_message_date'] = message[0].date_sent.strftime("%a %b %d, %Y %H:%M:%S")
-            else:
-                f['last_message_date'] = 'No message was sent yet'
-
-        response['friends'] = friends
-
-        # get all posts
-        posts = []
-
-        # get your own posts
-        own_posts = Post.objects.filter(author=request.user)
-        for o in own_posts:
-            # if it is a post and not an empty Queryset
-            if type(o) == Post:
-                posts.append(o)
-
-        # get posts from friendships you've sent
-        for s in sent:
-            post = Post.objects.filter(author=s.receiver)
-
-            # if the QuerySet is not empty
-            if len(post) != 0:
-                for p in post:
-                    posts.append(p)
-
-        # get posts from  friendships you've received
-        for r in received:
-            post = Post.objects.filter(author=r.sender)
-
-            # if the queryset is not empty
-            if len(post) != 0:
-                for p in post:
-                    posts.append(p)
-        
-        for post in posts:
-            # get the comments
-            comments = Comment.objects.filter(post=post)
-            c = []
-
-            # for each comment
-            for comment in comments:
-                c.append({
-                'commentator': comment.commentator.username,
-                'profile_pic': comment.commentator.profile_pic.url, 
-                'text': comment.text, 
-                'date':comment.date, 
-                'likes': comment.likes,
-                'id': comment.id})
-            
-            # sort the comments by date
-            c.sort(key = lambda x:x['date'])
-                
-            # humanize the date for each comment
-            for comment in c:
-                comment['date'] = arrow.get(comment['date']).humanize()
-            
-
-            # get all the likes for this post
-            l = Like.objects.filter(post=post)
-            likes = []
-            for like in l:
-                likes.append({
-                    'post_id': like.post.id,
-                    'user': like.user.username,
-                    'profile_pic': like.user.profile_pic.url
-                })
-
-            # get all the dislikes for this post
-            d = Dislike.objects.filter(post=post)
-            dislikes = []
-            for dislike in d: 
-                dislikes.append({
-                    'post_id': dislike.post.id,
-                    'user': dislike.user.username,
-                    'profile_pic': dislike.user.profile_pic.url
-                })
-            
-            # store all the data necessary for the post in response['response']
-            response['posts'].append({
-                'id': post.id, 
-                'author': post.author.username, 
-                'text': post.text, 
-                'date': post.date, 
-                'author_picture': post.author.profile_pic.url,
-                'comments': c,
-                'likes': likes,
-                'dislikes': dislikes,
-                }) 
-        
-        # sort by -date
-        response['posts'].sort(key = lambda x:x['date'])
-        response['posts'].reverse()
-        
-        #humanize the date for each post
-        for post in response['posts']:
-            post['date'] = arrow.get(post['date']).humanize()
-
-        # get friend requests
-        requests = Friendship.objects.filter(receiver=request.user, pending=True)
-       
-        for request in requests:
-            response['friend_requests'].append({'sender': request.sender.username, 'sender_profile_pic': request.sender.profile_pic.url, 'id': request.id})
-        
+        info = Get_info()
+        response = info.info(request)
         return JsonResponse(response)
+
+
+def friends_profile_sandbox(request):
+
+    # get the friend user
+    friend = json.loads(request.body.decode('utf-8'))
+    print(friend)
+    friend_user = User.objects.get(username=friend)
+    response = {'posts': []}
+    # get all the users p osts 
+    posts = Post.objects.filter(author=(User.objects.get(username=friend)))
+    for post in posts:
+        # get the comments
+        comments = Comment.objects.filter(post=post)
+        c = []
+
+        # for each comment
+        for comment in comments:
+            c.append({
+            'commentator': comment.commentator.username,
+            'profile_pic': comment.commentator.profile_pic.url, 
+            'text': comment.text, 
+            'date':comment.date, 
+            'likes': comment.likes,
+            'id': comment.id})
+        
+        # sort the comments by date
+        c.sort(key = lambda x:x['date'])
+            
+        # humanize the date for each comment
+        for comment in c:
+            comment['date'] = arrow.get(comment['date']).humanize()
+        
+
+        # get all the likes for this post
+        l = Like.objects.filter(post=post)
+        likes = []
+        for like in l:
+            likes.append({
+                'post_id': like.post.id,
+                'user': like.user.username,
+                'profile_pic': like.user.profile_pic.url
+            })
+
+        # get all the dislikes for this post
+        d = Dislike.objects.filter(post=post)
+        dislikes = []
+        for dislike in d: 
+            dislikes.append({
+                'post_id': dislike.post.id,
+                'user': dislike.user.username,
+                'profile_pic': dislike.user.profile_pic.url
+            })
+        
+        # store all the data necessary for the post in response['response']
+        response['posts'].append({
+            'id': post.id, 
+            'author': post.author.username, 
+            'text': post.text, 
+            'date': arrow.get(post.date).humanize(), 
+            'author_picture': post.author.profile_pic.url,
+            'comments': c,
+            'likes': likes,
+            'dislikes': dislikes,
+            }) 
+    
+    # sort by -date
+    response['posts'].sort(key = lambda x:x['date'])
+    response['posts'].reverse()
+
+    friendship_requested = Friendship.objects.filter(sender=request.user, receiver=friend_user)
+    friendship_sent = Friendship.objects.filter(sender=friend_user, receiver=request.user)
+    friendship_status = {'status': 'False'}
+    
+    # check the friendship status between the two users for button
+
+    if friendship_requested.count() != 0:
+        if friendship_requested[0].pending == True:            
+            friendship_status['status'] = 'Pending'
+        else:
+            if friendship_requested[0].rejected == True:
+                friendship_status['status'] = 'Rejected'
+            else: 
+                friendship_status['status'] = 'Friends'
+
+    elif friendship_sent.count() != 0:
+        if friendship_sent[0].pending == True:  
+            friendship_status['status'] = 'Pending'
+        else:
+            if friendship_sent[0].rejected == True:
+                friendship_status['status'] = 'Rejected'
+            else:
+                friendship_status['status'] = 'Friends'
+
+    answer = {
+        'posts': response['posts'],
+        'user': request.user.username, 
+        'profile_pic': friend_user.profile_pic.url, 
+        'friend': friend_user.username, 
+        'status': friendship_status['status'],
+        'first': friend_user.first_name,
+        'last': friend_user.last_name,
+        'dob': friend_user.dob,
+        'email': friend_user.email
+        }
+
+    return JsonResponse(answer)
