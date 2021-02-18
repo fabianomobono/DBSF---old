@@ -63,7 +63,7 @@ request.onload = () => {
             image.width = 200
             image.src = URL.createObjectURL(e.target.files['0']);
             document.querySelector(".profile_pic_in_popup").appendChild(image)
-            document.querySelector("#save_picture_button").style.display= 'inline-block';
+            document.querySelector("#save_picture_button").style.display= 'inline- block';
         }
 
         save_new_pic  = () => {
