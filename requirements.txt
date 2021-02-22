@@ -17,5 +17,5 @@ boto3
 selenium
 chromedriver-py
 arrow
-dotenv
+
 django-storages
