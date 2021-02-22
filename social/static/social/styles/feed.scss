@@ -234,3 +234,17 @@
     }
   }
 }
+
+
+
+.load_more_posts_p {
+  float: left;
+  padding: 15%;
+  width: 100%;
+  text-align: center;
+  color: $blue;
+  &:hover{
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

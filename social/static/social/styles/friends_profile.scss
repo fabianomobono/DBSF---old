@@ -18,8 +18,10 @@
 }
 
 .profile_div {
+    box-shadow: $shadow;
     float: left;
-    width: 100%;
+    margin: 1%;
+    width: 98%;
     margin: none;
     background-color: $white;
     border-radius: 5px;

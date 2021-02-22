@@ -91,7 +91,7 @@ function Comment_sandbox(props) {
     <div className='comment'>
         <img className='image_in_comment' src={props.profile_pic} />
         <a onClick={(e) => props.friends_profile(e)} className="user_link_in_comment">{props.commentator}</a>
-        {props.text}
+        <p className='comment_text'>{props.text}</p>
       </div>
   )
 }
@@ -381,6 +381,7 @@ class Main extends React.Component {
           handleClick={this.props.handleClick}
           deletePost={this.props.deletePost}
           friends_profile={this.props.friends_profile}
+          load_more_posts={this.props.load_more_posts}
         />
         </div>
         
@@ -409,6 +410,10 @@ class Main extends React.Component {
             handleClick={this.props.handleClick}
             deletePost={this.props.deletePost}
             friends_profile={this.props.friends_profile}
+            load_more_posts={this.props.load_more_posts}
+            page={this.props.page}
+            load_more_own_posts={this.props.load_more_own_posts}
+            load_more_friends_posts={this.props.load_more_friends_posts}
           />
         </div>
       ) 
@@ -423,6 +428,7 @@ class Main extends React.Component {
           <p className='name_in_result'>{user.first} {user.last}</p>  
         </div>
          )}
+         <p className='load_more_posts_p' onClick={() => load_more_posts()}>Load more posts...</p>
       </div>
      )
     }
@@ -430,10 +436,13 @@ class Main extends React.Component {
         return(
           <Friends_profile_sandbox 
             friend={this.props.friend}
+            posts={this.props.posts}
             friends_profile={this.props.friends_profile}
             request_friendship={this.props.request_friendship}
             unfriend={this.props.unfriend}
             friends_profile={this.props.friends_profile}
+            load_more_posts={this.props.load_more_posts}
+            load_more_friends_posts={this.props.load_more_friends_posts}
           />
         )
     } 
@@ -547,7 +556,14 @@ class Feed_sandbox extends React.Component {
           likes={post.likes}
           dislikes={post.dislikes}
           friends_profile={this.props.friends_profile}
-        />): <p className="no_results_p">No posts here. Try to search for friends in the search box and add them as friends. You'll see posts appear over time!</p>}
+          load_more_posts={this.props.load_more_posts}
+          />): <p className="no_results_p">No posts here. Try to search for friends in the search box and add them as friends. You'll see posts appear over time!</p>}
+          {
+            this.props.page === 'profile' ?<p className='load_more_posts_p' onClick={() => this.props.load_more_friends_posts()}>Load more posts </p>:
+            <p className='load_more_posts_p' onClick={() => this.props.load_more_posts()}>Load more posts </p> 
+          }
+          
+          <div className='loader'></div>       
       </div>
     ) 
   }
@@ -784,13 +800,16 @@ class Post_sandbox extends React.Component {
       const response = JSON.parse(request.responseText)
       console.log(response)
       if (response['response'] !== 'you already disliked this post'){
+        
         this.setState({
           dislikes: [...this.state.dislikes, 
             {post_id: this.state.id, 
              user: this.state.current_user, 
              profile_pic: this.state.current_user_profile_pic
             }]
+            
         })
+        
       }
       else{
         alert(response['response'])
@@ -841,7 +860,7 @@ class Post_sandbox extends React.Component {
           />
           <Post_body text={this.props.text}/>
           <Feeling_sandbox
-            current_user={this.state.current_user}
+            current_user={this.props.current_user}
             like={this.like_post}
             dislike={this.dislike_post}
             likes={this.state.likes}
@@ -852,7 +871,7 @@ class Post_sandbox extends React.Component {
            
           />
           <CommentSection_sandbox
-            current_user={this.state.current_user}
+            current_user={this.props.current_user}
             comments={this.state.comments}
             add_comment={this.add_comment}
             friends_profile={this.props.friends_profile}
@@ -1064,7 +1083,7 @@ function Friend_box_sandbox(props) {
       <div className='friend_box_div'>
         <img className='friend_img' src={props.profile_pic} />
         <div className='DBSF_interaction'>
-          <p className="friend_link" onClick={(e) => props.friends_profile(e)}>{props.name}</p>
+          <a className="friend_link" onClick={(e) => props.friends_profile(e)}>{props.name}</a>
           <p className='last_contacted'>Last contact:</p>
           {isNaN(now) ? <p className='last_contacted'>{props.last_contact}</p>:<p className='last_contacted'>{props.last_contact.substring(0, props.last_contact.length - 9)}</p>}
         </div>
@@ -1220,8 +1239,9 @@ class Friends_profile_sandbox extends React.Component {
           </div>
         </div>
         <Post_list_sandbox
-          posts={this.props.friend.posts}
+          posts={this.props.posts}
           friends_profile={this.props.friends_profile}
+          load_more_friends_posts={this.props.load_more_friends_posts}
         />   
       </div>
     )
@@ -1276,6 +1296,8 @@ class Post_list_sandbox extends React.Component {
          dislikes={post.dislikes}
          friends_profile={this.props.friends_profile}
       />)}
+          <p className='load_more_posts_p' onClick={() => this.props.load_more_friends_posts()}>Load more posts </p>
+          <div className='loader'></div>
     </div>
      
     )
