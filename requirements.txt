@@ -18,4 +18,8 @@ boto3
 selenium
 chromedriver-py
 arrow
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8fd38dafa6cc0c0f75777ed81c5966bdaf989a52
 django-storages

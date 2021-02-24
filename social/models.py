@@ -4,6 +4,7 @@ from datetime import date
 from django.utils import timezone
 from django.utils.html import mark_safe
 import arrow
+from django.core.paginator import Paginator
 # Create your models here.
 
 class Friends(models.Manager):
@@ -93,7 +94,7 @@ class Dislike(models.Model):
 
 
 class Get_info(models.Manager):
-    def info(self, request):
+    def info(self, request, page_number):
         user = request.user
 
         # prepare respone object
@@ -230,5 +231,129 @@ class Get_info(models.Manager):
         for request in requests:
             response['friend_requests'].append({'sender': request.sender.username, 'sender_profile_pic': request.sender.profile_pic.url, 'id': request.id})
         
+
+        p = Paginator(response['posts'], 2)
+        print('this is the page number')
+        print(page_number)
+        print(type(page_number))
+        if page_number > p.num_pages:
+            response['posts'] = 'No more posts'
+        else:
+            response['posts'] = p.page(page_number).object_list
+       
         return response
 
+
+class Get_one_persons_posts(models.Manager):
+    def posts(self, friend, request, page_number):
+        friend_user = User.objects.get(username=friend)
+        response = {'posts': []}
+        # get all the users p osts 
+        posts = Post.objects.filter(author=(User.objects.get(username=friend_user)))
+        for post in posts:
+            # get the comments
+            comments = Comment.objects.filter(post=post)
+            c = []
+
+            # for each comment
+            for comment in comments:
+                c.append({
+                'commentator': comment.commentator.username,
+                'profile_pic': comment.commentator.profile_pic.url, 
+                'text': comment.text, 
+                'date':comment.date, 
+                'likes': comment.likes,
+                'id': comment.id})
+            
+            # sort the comments by date
+            c.sort(key = lambda x:x['date'])
+                
+            # humanize the date for each comment
+            for comment in c:
+                comment['date'] = arrow.get(comment['date']).humanize()
+            
+
+            # get all the likes for this post
+            l = Like.objects.filter(post=post)
+            likes = []
+            for like in l:
+                likes.append({
+                    'post_id': like.post.id,
+                    'user': like.user.username,
+                    'profile_pic': like.user.profile_pic.url
+                })
+
+            # get all the dislikes for this post
+            d = Dislike.objects.filter(post=post)
+            dislikes = []
+            for dislike in d: 
+                dislikes.append({
+                    'post_id': dislike.post.id,
+                    'user': dislike.user.username,
+                    'profile_pic': dislike.user.profile_pic.url
+                })
+            
+            # store all the data necessary for the post in response['response']
+            response['posts'].append({
+                'id': post.id, 
+                'author': post.author.username, 
+                'text': post.text, 
+                'date': post.date, 
+                'author_picture': post.author.profile_pic.url,
+                'comments': c,
+                'likes': likes,
+                'dislikes': dislikes,
+                }) 
+        
+        # sort by -date
+        response['posts'].sort(key = lambda x:x['date'])
+        response['posts'].reverse()
+
+        # humanize the date
+        for p in response['posts']:
+            p['date'] = arrow.get(p['date']).humanize()
+
+        friendship_requested = Friendship.objects.filter(sender=request.user, receiver=friend_user)
+        friendship_sent = Friendship.objects.filter(sender=friend_user, receiver=request.user)
+        friendship_status = {'status': 'False'}
+        
+        # check the friendship status between the two users for button
+
+        if friendship_requested.count() != 0:
+            if friendship_requested[0].pending == True:            
+                friendship_status['status'] = 'Pending'
+            else:
+                if friendship_requested[0].rejected == True:
+                    friendship_status['status'] = 'Rejected'
+                else: 
+                    friendship_status['status'] = 'Friends'
+
+        elif friendship_sent.count() != 0:
+            if friendship_sent[0].pending == True:  
+                friendship_status['status'] = 'Pending'
+            else:
+                if friendship_sent[0].rejected == True:
+                    friendship_status['status'] = 'Rejected'
+                else:
+                    friendship_status['status'] = 'Friends'
+
+        answer = {
+            'posts': response['posts'],
+            'user': request.user.username, 
+            'profile_pic': friend_user.profile_pic.url, 
+            'friend': friend_user.username, 
+            'status': friendship_status['status'],
+            'first': friend_user.first_name,
+            'last': friend_user.last_name,
+            'dob': friend_user.dob,
+            'email': friend_user.email
+            }
+        
+        # organize the posts using a pginator 
+        p = Paginator(answer['posts'], 2)
+        if page_number > p.num_pages:
+            answer['posts'] = 'No more posts'
+        else:
+            answer['posts'] = p.page(page_number).object_list
+        
+        return answer

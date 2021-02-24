@@ -3,8 +3,9 @@ from .models import User, Post, Comment, Friendship
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
-
+import time
 import pathlib
 import os
 from selenium.webdriver.common.keys import Keys
@@ -148,6 +149,7 @@ class BrowserTestCase(TestCase):
         self.driver.get('http://127.0.0.1:8000/')
         self.driver.find_element_by_id('login_username').send_keys('dummyuser')
         self.driver.find_element_by_id('login_password').send_keys('dummy_password' + Keys.ENTER)
+        self.driver.implicitly_wait(10)
         self.driver.find_element_by_id('search_input').send_keys('dummyuser2' + Keys.ENTER)
         self.driver.find_element_by_link_text('dummyuser2').click()
         self.driver.find_element_by_id('friend_request_button').click()
@@ -156,11 +158,12 @@ class BrowserTestCase(TestCase):
         self.driver.find_element_by_id('login_password').send_keys('dummypassword2' + Keys.ENTER)
         self.driver.implicitly_wait(3)
         self.driver.find_element_by_class_name('accept_request_button').click()
-        self.driver.refresh()
-        self.driver.find_element_by_link_text('dummyuser').click()
+        self.driver.implicitly_wait(10)
+        self.driver.find_element_by_class_name('friend_link').click()
         self.driver.find_element_by_id("friend_request_button").click()
-        WebDriverWait(self.driver, 10).until(EC.alert_is_present(), 'waited too long')
-        alert = self.driver.switch_to.alert
-        alert.accept()
-        self.assertEqual(self.driver.find_element_by_id("friend_request_button").get_attribute('innerHTML') , '<i class="fa fa-user-plus"> Add</i>')
+        WebDriverWait(self.driver, 10)
+        
+        time.sleep(2.4)
+        
+        self.assertEqual(self.driver.find_element_by_id("friend_request_button").get_attribute('innerHTML') , '<i class="fa fa-user-plus"></i> Add')
 

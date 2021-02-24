@@ -4,12 +4,13 @@
 
 const request = new XMLHttpRequest()
 const csrftoken = Cookies.get('csrftoken');
+const data = {'page_number': 1}
 request.open('POST', '/sandbox', true)
 request.setRequestHeader('X-CSRFToken', csrftoken);
 request.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
 request.onload = () => {
     const response = JSON.parse(request.responseText)
-    console.log(response)
+    console.log(typeof(response.posts))
 
     // create the app component and put all the info into the state
     class App extends React.Component {
@@ -28,12 +29,14 @@ request.onload = () => {
                 page: 'main',
                 friend: {},
                 results: [],
+                post_page : 1,
             }
         }
 
         main = () => {
             this.setState({
-                page: 'loading'
+                page: 'loading',
+                posts: []
             })        
             const request = new XMLHttpRequest()
             request.open("GET", '/get_posts', true)
@@ -50,16 +53,20 @@ request.onload = () => {
 
         profile = () => {
             this.setState({
-                page: 'loading'
+                posts: [],
+                page: 'loading',
+                post_page: 1,
+                friend : {},
             })  
             const request = new XMLHttpRequest()
-            request.open("GET", '/get_own_posts', true)
+            request.open("GET", '/get_own_posts?page_number=1' , true)
             request.onload = () => {
                 const response = JSON.parse(request.responseText)
                 console.log(response)
-                this.setState({
+                this.setState({    
+                    posts: response.response,
                     page: 'profile',
-                    posts: response.response
+                    post_page: 1
                 })
             }
             request.send()    
@@ -69,21 +76,29 @@ request.onload = () => {
             const friend = e.target.innerHTML
             if (friend === this.state.user){
                 this.setState({
-                    page: 'loading'
+                    page: 'loading',
+                    post_page : 1,
+                    posts: [],
                 })  
                 const request = new XMLHttpRequest()
-                request.open("GET", '/get_own_posts', true)
+                request.open("GET", '/get_own_posts?page_number=1')
                 request.onload = () => {
                     const response = JSON.parse(request.responseText)
                     console.log(response)
                     this.setState({
                         page: 'profile',
-                        posts: response.response
+                        posts: response.response,
+                        post_page: 1
                     })
                 }
                 request.send()    
             }
             else {
+                this.setState({
+                    page: 'loading',
+                    post_page : 1,
+                    posts: [],
+                }) 
                 const request = new XMLHttpRequest()
                 const csrftoken = Cookies.get('csrftoken');
                 request.open('POST', '/friends_profile_sandbox', true)
@@ -94,10 +109,12 @@ request.onload = () => {
                     console.log(answer)
                     this.setState({
                         page: friend,
-                        friend: answer
+                        friend: answer,
+                        post_page: 1,
+                        posts : answer.posts
                     })
                 }
-                request.send(JSON.stringify(friend))
+                request.send(JSON.stringify({'friend': friend, 'page_number': 1}))
 
                
             }
@@ -110,7 +127,7 @@ request.onload = () => {
             image.width = 200
             image.src = URL.createObjectURL(e.target.files['0']);
             document.querySelector(".profile_pic_in_popup").appendChild(image)
-            document.querySelector("#save_picture_button").style.display= 'inline-block';
+            document.querySelector("#save_picture_button").style.display= 'inline- block';
         }
 
         save_new_pic  = (e) => {
@@ -268,7 +285,11 @@ request.onload = () => {
         confirm_request = (id) => {
             const confirm = new XMLHttpRequest()
             const csrftoken = Cookies.get('csrftoken');
-            
+            this.setState({
+                posts: [],
+                page: 'loading',
+                post_page: 1,
+            })
             confirm.open('POST', '/confirm_friend_request', true);
             confirm.setRequestHeader('X-CSRFToken', csrftoken);
             confirm.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
@@ -346,6 +367,79 @@ request.onload = () => {
             request.send()
         }
         
+        load_more_posts = () => {
+            document.querySelector('.load_more_posts_p').style.display = 'none';
+            document.querySelector('.loader').style.display = 'block';
+            const data = {page_number: this.state.post_page + 1}
+            const csrftoken = Cookies.get('csrftoken')
+            const request = new XMLHttpRequest()
+            request.open('POST', '/sandbox', true)
+            request.setRequestHeader('X-CSRFToken', csrftoken);
+            request.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
+            request.onload = () => {
+                const response  =  JSON.parse(request.responseText)
+                console.log(response.posts)
+                if (response.posts === 'No more posts'){
+                    document.querySelector('.load_more_posts_p').innerHTML = response.posts
+                    document.querySelector('.load_more_posts_p').style.display = 'block';
+                    document.querySelector('.loader').style.display = 'none';
+                }
+                else {
+                    const more_posts = this.state.posts.concat(response.posts)
+                    this.setState({
+                    posts:more_posts,
+                    post_page: this.state.post_page + 1,
+                })
+                console.log('line 364')
+                console.log(typeof(response.posts))
+                document.querySelector('.load_more_posts_p').style.display = 'block';
+                document.querySelector('.loader').style.display = 'none';
+                document.querySelector('.load_more_posts_p').innerHTML = 'Load even more posts'
+                }
+                
+            }
+            request.send(JSON.stringify(data))
+        }
+        
+        load_more_friends_posts = () => {
+            document.querySelector('.load_more_posts_p').style.display = 'none';
+            document.querySelector('.loader').style.display = 'block';
+            if (this.state.page === 'profile'){
+                var dataa = {friend: this.state.user, page_number: this.state.post_page + 1}
+            }
+            else {
+                var dataa = {friend: this.state.page, page_number: this.state.post_page + 1}
+            }
+            
+            const csrftoken = Cookies.get('csrftoken')
+            const request = new XMLHttpRequest()
+            request.open('POST', '/friends_profile_sandbox', true)
+            request.setRequestHeader('X-CSRFToken', csrftoken);
+            request.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
+            request.onload = () => {
+                const response  =  JSON.parse(request.responseText)
+                console.log(response.posts)
+                if (response.posts === 'No more posts'){
+                    document.querySelector('.load_more_posts_p').innerHTML = response.posts
+                    document.querySelector('.load_more_posts_p').style.display = 'block';
+                    document.querySelector('.loader').style.display = 'none';
+                }
+                else {
+                    const more_posts = this.state.posts.concat(response.posts)
+                    this.setState({
+                        posts: more_posts,
+                        post_page: this.state.post_page + 1,
+                    })
+                    console.log('line 364')
+                    console.log(typeof(response.posts))
+                    document.querySelector('.load_more_posts_p').style.display = 'block';
+                    document.querySelector('.loader').style.display = 'none';
+                    document.querySelector('.load_more_posts_p').innerHTML = 'Load even more posts'
+                }   
+            }
+            request.send(JSON.stringify(dataa))
+        }
+
         render() {
             return (
                 <div id='app'>
@@ -355,6 +449,7 @@ request.onload = () => {
                         profile={this.profile}
                         main={this.main}
                         search_friends={this.search_friends}
+                        
                     />
                     <Main
                         posts={this.state.posts}
@@ -374,6 +469,9 @@ request.onload = () => {
                         request_friendship={this.request_friendship}
                         unfriend={this.unfriend}
                         results={this.state.results}
+                        load_more_posts={this.load_more_posts}
+                        load_more_friends_posts={this.load_more_friends_posts}
+                        load_more_own_posts={this.load_more_own_posts}
                     />
                     <h4 >Friends</h4>
                     <Friends_sandbox
@@ -398,4 +496,4 @@ request.onload = () => {
         document.getElementById('root')
     )
 }
-request.send()
+request.send(JSON.stringify(data))
