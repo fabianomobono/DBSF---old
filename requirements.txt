@@ -1,5 +1,6 @@
 django
 django-channels
+channels
 channels-redis
 channels_redis
 python-dotenv
@@ -17,5 +18,4 @@ boto3
 selenium
 chromedriver-py
 arrow
-dotnv
 django-storages
