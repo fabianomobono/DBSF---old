@@ -1,8 +1,5 @@
 django
-django-channels
-channels
-channels-redis
-channels_redis
+django-heroku
 python-dotenv
 gunicorn
 django-heroku
@@ -18,5 +15,5 @@ boto3
 selenium
 chromedriver-py
 arrow
-dotnv
-django-storages
+channels
+channels-redis
