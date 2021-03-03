@@ -10,7 +10,7 @@ request.setRequestHeader('X-CSRFToken', csrftoken);
 request.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
 request.onload = () => {
     const response = JSON.parse(request.responseText)
-    console.log(typeof(response.posts))
+    console.log(response)
 
     // create the app component and put all the info into the state
     class App extends React.Component {
@@ -127,7 +127,7 @@ request.onload = () => {
             image.width = 200
             image.src = URL.createObjectURL(e.target.files['0']);
             document.querySelector(".profile_pic_in_popup").appendChild(image)
-            document.querySelector("#save_picture_button").style.display= 'inline- block';
+            document.querySelector("#save_picture_button").style.display= 'inline-block';
         }
 
         save_new_pic  = (e) => {
@@ -440,6 +440,24 @@ request.onload = () => {
             request.send(JSON.stringify(dataa))
         }
 
+        hello = (user) => {
+            console.log('hello is being calleDDDDD')
+            console.log('This is the user :', user)
+            var now = new Date()
+            now.setHours(now.getHours() + 5);
+            now.toUTCString()
+            now = now.toString()
+            now = now.substring(0, now.length -33)
+            var friends = this.state.friends
+            for (let i = 0; i < friends.length; i ++){
+              if (friends[i]['user'] === user){
+                friends[i].last_message_date = now
+              }
+            }
+            this.setState({friends: friends})
+            console.log(now)
+        }
+
         render() {
             return (
                 <div id='app'>
@@ -478,6 +496,7 @@ request.onload = () => {
                         friends={this.state.friends}
                         user={this.state.user}
                         friends_profile={this.friends_profile}
+                        hello={this.hello}
                     />
                     <h4 id='friend_request_title'>Friend Requests</h4>
                     <Friendship_requests_div_sandbox 

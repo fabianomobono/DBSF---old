@@ -1009,6 +1009,7 @@ class Friends extends React.Component {
             receiver: this.state.receiver
           }));
           document.querySelector("#message_text").value = '';
+
           this.props.greet(this.state.receiver)
         }
       }
@@ -1075,7 +1076,11 @@ class Friends extends React.Component {
 function Friend_box_sandbox(props) {
   const profile = '/profile/'
   const date = new Date(props.last_contact)
+  
   var now = new Date()
+  now.setHours(now.getHours() + 5);
+  console.log(now)
+  console.log(date)
   now -= date
   console.log(now, props.name) 
   if (now > 10000 || isNaN(now)){
@@ -1307,7 +1312,6 @@ class Post_list_sandbox extends React.Component {
 
 class Friendship_requests_div_sandbox extends React.Component {
 
-  
   render() {
     return (
       <div className='f_requests_sandbox'>
@@ -1337,20 +1341,8 @@ class Friends_sandbox extends React.Component {
     
   }
 
-  hello = (user) => {
-    var now = new Date()
-    now.toUTCString()
-    now = now.toString()
-    now = now.substring(0, now.length -33)
-    var friends = this.state.friends
-    for (let i = 0; i < friends.length; i ++){
-      if (friends[i]['user'] === user){
-        friends[i].last_message_date = now
-      }
-    }
-    this.setState({friends: friends})
-    console.log(now)
-  }
+  // update the last interaction display
+  
 
   message(friend, profile_pic) {
     document.getElementById('message_box').style.display = 'block';
@@ -1451,7 +1443,7 @@ class Friends_sandbox extends React.Component {
     ReactDOM.render(
       <Message_app 
       user={this.state.user}
-      greet={(user) => this.hello(user)}
+      greet={(user) => this.props.hello(user)}
       friends_profile={this.props.friends_profile}
       />, document.getElementById('message_box')
       
@@ -1465,8 +1457,7 @@ class Friends_sandbox extends React.Component {
 
   render() {
     return (
-      <div className="friends_sandbox">
-        
+      <div className="friends_sandbox">        
         {this.props.friends.length ? this.props.friends.map(friend => <Friend_box_sandbox
           key={friend.id}
           name={friend.user}
