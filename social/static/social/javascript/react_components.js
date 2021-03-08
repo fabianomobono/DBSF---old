@@ -487,7 +487,7 @@ class Profile extends React.Component {
       <form className="upload_profile_pic_form" action="change_profile_pic" method="post" encType="multipart/form-data">
           <input type='hidden' name='csrfmiddlewaretoken' value={csrftoken} />
           <p><label>Upload profile picture
-          <input name='profile_pic' type="file" id="image_upload" onChange={(e) => this.props.update_profile_pic(e)} accept="image/gif, image/jpeg, image/png" multiple />
+          <input name='profile_pic' type="file" id="image_upload" onChange={(e) => this.props.update_profile_pic(e)} accept="image/gif, image/jpeg, image/png" />
           </label></p>        
       </form>
       <button onClick={(e) => this.props.save_new_pic(e)}  id='save_picture_button' type='submit'  className='btn btn-primary' name="button" >Save Picture</button>
@@ -1082,7 +1082,9 @@ function Friend_box_sandbox(props) {
   console.log(now)
   console.log(date)
   now -= date
-  console.log(now, props.name) 
+  console.log(now, props.name)
+
+  // if you contacted the person in the last 10 seconds(low timeframe for testing) 
   if (now > 10000 || isNaN(now)){
     return (
       <div className='friend_box_div'>
@@ -1096,12 +1098,14 @@ function Friend_box_sandbox(props) {
     </div>
     ) 
   }
+
+  // if you talked recently....
   else {
     return (
       <div className='friend_box_div'>
         <img className='friend_img' src={props.profile_pic} />
         <div className='interaction'>
-          <p className="friend_link" onClick={(e) => props.friends_profile(e)}>{props.name}</p>
+          <a className="friend_link" onClick={(e) => props.friends_profile(e)}>{props.name}</a>
           <p className='last_contacted'>Last contact:</p>
           <p className='last_contacted'>{props.last_contact.substring(0, props.last_contact.length -9)}</p>
         </div>
