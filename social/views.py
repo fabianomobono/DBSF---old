@@ -136,7 +136,7 @@ class Create_new_post(View):
         return JsonResponse(response)
 
 
-# delete post from database 
+# delete post from database here 
 @login_required
 @require_http_methods(['POST'])
 def delete_post_function(request):    
