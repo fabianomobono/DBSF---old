@@ -27,7 +27,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 AUTH_USER_MODEL = 'social.User'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['desolate-lowlands-74512.herokuapp.com', 'https://dbsf.herokuapp.com/', 'localhost', '127.0.0.1', 'testserver']
+ALLOWED_HOSTS = ['desolate-lowlands-74512.herokuapp.com', 'dbsf.herokuapp.com', 'localhost', '127.0.0.1', 'testserver']
 CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_HSTS_SECONDS = 3600
