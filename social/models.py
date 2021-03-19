@@ -92,7 +92,7 @@ class Dislike(models.Model):
         return f'{self.user} disliked {self.post}'
 
 
-
+# manager to get collect all the necessary info to display if the main page
 class Get_info(models.Manager):
     def info(self, request, page_number):
         user = request.user
@@ -243,7 +243,8 @@ class Get_info(models.Manager):
        
         return response
 
-
+# manager to get the data regarding one users post -- this is used when displaying a friends profile page or the users own 
+# profile page
 class Get_one_persons_posts(models.Manager):
     def posts(self, friend, request, page_number):
         friend_user = User.objects.get(username=friend)
