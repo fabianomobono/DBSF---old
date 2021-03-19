@@ -82,7 +82,7 @@ class ModelTestCase(TestCase):
 
     def test_profile(self):
         '''
-        Test if you can reach to profile when logged in
+        Test if you can reach the profile page when logged in
         '''
         c = Client()
         c.login(username='test_user', password='1234')
@@ -112,7 +112,10 @@ class ModelTestCase(TestCase):
     
 class BrowserTestCase(TestCase):
     def test_login_selenium(self):
-        # for later username dummyuser2 password dummypassword2
+        '''
+        for later username dummyuser2 password dummypassword2
+        '''
+
         self.driver = webdriver.Chrome()
         self.driver.get('http://127.0.0.1:8000/')
         self.driver.find_element_by_id('login_username').send_keys('dummyuser')
@@ -143,8 +146,12 @@ class BrowserTestCase(TestCase):
         self.assertEqual(self.driver.title, 'DBSF | Home')
 
 
-    # test the friendship functionality
+    
     def test_friendship(self):
+        '''
+        test the friendship functionality
+        '''
+        
         self.driver = webdriver.Chrome()
         self.driver.get('http://127.0.0.1:8000/')
         self.driver.find_element_by_id('login_username').send_keys('dummyuser')

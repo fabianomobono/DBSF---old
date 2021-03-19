@@ -5,7 +5,6 @@ from social.views import *
 
 urlpatterns = [
     path("profile/<str:friend>", views.friends_profile, name='friends_profile'),
-    path('friends_posts', Friends_posts.as_view(), name='friends_posts'),
     path('like_a_post', Like_a_post.as_view(), name='like'),
     path('dislike_a_post', Dislike_a_post.as_view(), name='dislike'),
     path('', Index.as_view(), name='login'),
@@ -23,9 +22,7 @@ urlpatterns = [
     path('confirm_friend_request', views.confirm_friend_request, name='confirm_friend_request'),
     path('ignore_friend_request', views.ignore_friend_request, name='ignore_friend_request'),
     path('unfriend', views.unfriend, name='unfriend'),
-    path('get_friends', views.get_friends, name='users_friends'),
     path('friendship_id', views.get_friendship_id, name='get_friendship_id'),
-    path('find_friends', views.find_friends, name='find_friends'),
     path('find_friendss', views.find_friendss, name='find_friendss'),
     path('get_own_posts', views.get_own_posts, name='get_my_posts'),
     path('comment', Comment_a_post.as_view(), name='comment'),
