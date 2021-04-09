@@ -1,6 +1,6 @@
 // get all the necessasry info from the server 1) friend_requests 2) posts 3) friends
 
-// create the App class 
+
 
 const request = new XMLHttpRequest()
 const csrftoken = Cookies.get('csrftoken');
@@ -32,17 +32,26 @@ request.onload = () => {
                 post_page : 1,
             }
         }
-
+        
+        // switch to the main page method
         main = () => {
+
+            // set state.page to loading in order to display the loading message
             this.setState({
                 page: 'loading',
                 posts: []
-            })        
+            }) 
+            
+            // get the posts from the server
             const request = new XMLHttpRequest()
             request.open("GET", '/get_posts', true)
             request.onload = () => {
+                
+                // when the posts come back from the server...
                 const response = JSON.parse(request.responseText)
                 console.log(response)
+
+                // update the state with the new posts and display them
                 this.setState({
                     page: 'main',
                     posts: response.response
@@ -51,6 +60,7 @@ request.onload = () => {
             request.send()    
         }
 
+        // display the users profile page
         profile = () => {
             this.setState({
                 posts: [],
@@ -72,6 +82,7 @@ request.onload = () => {
             request.send()    
         }
 
+        // display a friends profile page
         friends_profile = (e) => {
             const friend = e.target.innerHTML
             if (friend === this.state.user){
@@ -120,8 +131,11 @@ request.onload = () => {
             }
             
         }
-
+     
+        // logic to update the users profile page
         update_profile_pic = (e) => {
+
+            // display the picture before actually uploading it
             document.querySelector(".profile_pic_in_popup").innerHTML = ''
             var image = document.createElement("IMG")
             image.width = 200
@@ -130,6 +144,7 @@ request.onload = () => {
             document.querySelector("#save_picture_button").style.display= 'inline-block';
         }
 
+        // send the picture to the server 
         save_new_pic  = (e) => {
             const profile_pic = e.target.previousSibling.childNodes[1].firstChild.childNodes[1].files[0]
             var formdata = new FormData()
@@ -146,7 +161,7 @@ request.onload = () => {
                     profile_pic: answer.profile_pic
                 })
 
-                // change the proile in the author's posts
+                // change the profile in the author's posts
                 var posts = []
                 for(let i = 0 ; i < this.state.posts.length; i++) {
                     if (this.state.posts[i].author === this.state.user) {
@@ -175,11 +190,15 @@ request.onload = () => {
             }
             request.send(formdata)   
         }
-
+        
+        // this handles a new post creation 
         handleClick = () => {
             const text = document.querySelector('#new_post_text').value;
+
+            // posts that are smaller than 1 char are not allowed
             if (text.length > 1) {
               const data = {author: this.state.user, text: text}
+              
               // send that post to the server to save it
               const csrftoken = Cookies.get('csrftoken');
               const request = new XMLHttpRequest();
@@ -190,19 +209,26 @@ request.onload = () => {
                 const response = JSON.parse(request.responseText)
                 console.log(response)
                 
+                // update the posts in the state
                 this.setState({
                   posts : [{likes: [], dislikes: [], author: response.author, author_picture: this.state.profile_pic, text: response.text, date: response.date, id:response.id, comments: response.comments}, ...this.state.posts]
                 })
+                // clear the new post textarea
                 document.querySelector("#new_post_text").value = '';
-                console.log(response)
               }
               request.send(JSON.stringify(data))
             }
         }
         
+        // logic to delete the post, this takes the postID and the user to ensure that the correct post is deleted
+        // and that the post was written by the current user...this will be double checked on the server
         deletePost = (post_id, author) => {
         const post = document.getElementById(post_id)
+
+        // make the post disappeat smoothly
         post.style.animationPlayState = 'running';
+
+        // update the posts in the state...setTimeout is used so that the post is deleted after the animation is finished
         setTimeout(() =>{
             this.setState({
             posts: this.state.posts.filter(post => post.id != post_id)
@@ -224,8 +250,8 @@ request.onload = () => {
         request.send(JSON.stringify(data))
         }
 
+        // this method starts the friendship request logic
         request_friendship = () => {
-            console.log('this is happening')
             const request = new XMLHttpRequest()
             const csrftoken = Cookies.get('csrftoken')
             request.open("POST", '/request_friendship', true)
@@ -233,9 +259,12 @@ request.onload = () => {
             request.setRequestHeader('COntent-Type', 'text/plain;charset=UTF8')
             request.onload = () => {
                 const response = JSON.parse(request.responseText).response
+                
+                // if the server is able to process the friend request set the status of that user to pending
                 if (response === "Friendship requested"){
                     this.setState({
-                        friend:  {dob: this.state.friend.dob,
+                        friend: {
+                            dob: this.state.friend.dob,
                             email: this.state.friend.email,
                             first: this.state.friend.first,
                             friend: this.state.friend.friend,
@@ -251,6 +280,7 @@ request.onload = () => {
             request.send(this.state.page)   
         }
 
+        // this deletes the a friend...this.friend.page (at the end of this method) contains the username of the friend to be deleted
         unfriend = () => {
             console.log('starting to unfirnd')
             const request = new XMLHttpRequest()
@@ -261,6 +291,7 @@ request.onload = () => {
             request.onload = () => {
                 const response = JSON.parse(request.responseText).response
                 if (response === 'unfriended_sent' || response === 'unfriended_received'){
+                    
                     // change the friendship status
                     this.setState({
                         friend:  {dob: this.state.friend.dob,
@@ -276,20 +307,25 @@ request.onload = () => {
                         friends: this.state.friends.filter(f => f.user !== this.state.page),
                         posts: this.state.posts.filter(p => p.author !== this.state.page)
                     })
-                    console.log('unfriended')
                 }
             }
+            
+            // this.state.page contains the username of the friend to be deleted
             request.send(this.state.page)   
         }
 
+        // confirm a friend request
         confirm_request = (id) => {
             const confirm = new XMLHttpRequest()
             const csrftoken = Cookies.get('csrftoken');
+            
+            // display the loading message until the the posts of the new friend come back
             this.setState({
                 posts: [],
                 page: 'loading',
                 post_page: 1,
             })
+
             confirm.open('POST', '/confirm_friend_request', true);
             confirm.setRequestHeader('X-CSRFToken', csrftoken);
             confirm.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
@@ -297,8 +333,8 @@ request.onload = () => {
               const answer = JSON.parse(confirm.responseText)
               const response = answer['updated_info']
               const status = answer['response']
-              console.log(response)
-              
+            
+              // update the friendship request div on the left side of the screen
               if (status === 'friendship confirmed') {
                 const box = document.getElementById(id)
                 const message = document.createElement("P");
@@ -307,6 +343,8 @@ request.onload = () => {
                 box.innerHTML = ''
                 box.appendChild(message)
                 console.log(message)
+
+                // update the state with the new posts and set the page to main => hide the loading message
                 this.setState({
                     user: response.user,
                     profile_pic: response.profile_pic,
@@ -325,8 +363,9 @@ request.onload = () => {
              
             }
             confirm.send(id)
-          }
-      
+        }
+        
+        // send the ignore request to the server and update the friend request div on the left of the screen
         ignore_request(id) {
         const ignore = new XMLHttpRequest();
         const csrftoken = Cookies.get('csrftoken');
@@ -348,6 +387,7 @@ request.onload = () => {
         ignore.send(id)
         }
 
+        // look for other users to befriend. Users get looked up in the database using their username...at least for now
         search_friends = (e) => { 
             e.preventDefault()
             this.setState({
@@ -367,9 +407,14 @@ request.onload = () => {
             request.send()
         }
         
+        // load more posts and display the loading wheel while the request is pending
         load_more_posts = () => {
+            
+            //hide the 'add more posts p' and display the loading wheel
             document.querySelector('.load_more_posts_p').style.display = 'none';
             document.querySelector('.loader').style.display = 'block';
+
+            // the page number is used on the server Paginator function to determine which posts to load
             const data = {page_number: this.state.post_page + 1}
             const csrftoken = Cookies.get('csrftoken')
             const request = new XMLHttpRequest()
@@ -378,7 +423,8 @@ request.onload = () => {
             request.setRequestHeader('Content-Type', "text/plain;charset=UTF-8");
             request.onload = () => {
                 const response  =  JSON.parse(request.responseText)
-                console.log(response.posts)
+
+                // hide the loading wheel and display the 'no more posts link' or 'load even more posts link'
                 if (response.posts === 'No more posts'){
                     document.querySelector('.load_more_posts_p').innerHTML = response.posts
                     document.querySelector('.load_more_posts_p').style.display = 'block';
@@ -390,8 +436,7 @@ request.onload = () => {
                     posts:more_posts,
                     post_page: this.state.post_page + 1,
                 })
-                console.log('line 364')
-                console.log(typeof(response.posts))
+    
                 document.querySelector('.load_more_posts_p').style.display = 'block';
                 document.querySelector('.loader').style.display = 'none';
                 document.querySelector('.load_more_posts_p').innerHTML = 'Load even more posts'
@@ -401,6 +446,7 @@ request.onload = () => {
             request.send(JSON.stringify(data))
         }
         
+        // same as load more posts just for a friends profile
         load_more_friends_posts = () => {
             document.querySelector('.load_more_posts_p').style.display = 'none';
             document.querySelector('.loader').style.display = 'block';
@@ -440,9 +486,8 @@ request.onload = () => {
             request.send(JSON.stringify(dataa))
         }
 
+        // update the last interaction with a friend
         hello = (user) => {
-            console.log('hello is being calleDDDDD')
-            console.log('This is the user :', user)
             var now = new Date()
             now.setHours(now.getHours() + 5);
             now.toUTCString()
@@ -458,6 +503,7 @@ request.onload = () => {
             console.log(now)
         }
 
+        // display all the main components that are always visible 
         render() {
             return (
                 <div id='app'>
@@ -510,9 +556,12 @@ request.onload = () => {
         }
     }
 
+    // render the app component
     ReactDOM.render(
         <App />,
         document.getElementById('root')
     )
 }
+
+// send the request with all the necessary data to load up the app
 request.send(JSON.stringify(data))
