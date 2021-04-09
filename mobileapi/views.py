@@ -12,6 +12,7 @@ def api(request):
 
 @api_view()
 def users(request):
+  print('there was a request mado to rest_users')
   users = User.objects.all()
   serializer = UserSerializer(users, many=True)
   return Response(serializer.data)
