@@ -21,7 +21,7 @@ def users(request):
 
 
 
-@api_view()
+@api_view(["GET", "POST"])
 def login(request):
   data = json.loads(request.body.decode("utf-8")) 
   print(data)
