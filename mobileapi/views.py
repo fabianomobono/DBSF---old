@@ -33,4 +33,4 @@ def login(request):
 
 class HomeData(APIView):
     def post(self, request):
-       return Response({'hello': 'from the serbver'})
+       return Response({'hello': request.user})
