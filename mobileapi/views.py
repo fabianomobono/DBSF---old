@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from social.models import User
+from social.models import User, Get_info
+
 from .serializers import UserSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 import json
 
 
@@ -26,11 +28,14 @@ def users(request):
 
 @api_view(["GET", "POST"])
 def login(request):
-  data = json.loads(request.body.decode("utf-8")) 
-  print(data)
+  
   return JsonResponse({'gdf': 'sdf'})
 
 
 class HomeData(APIView):
+    permission_classes = (IsAuthenticated,)
     def post(self, request):
-       return Response({'hello': request.user})
+       print(request.user)
+       info = Get_info()
+       r = info.info(request, 1)
+       return Response({'hello': r})
