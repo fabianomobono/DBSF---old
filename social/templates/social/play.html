@@ -1,0 +1,13 @@
+<h1 id='title'>PLay</h1>
+
+
+<script>
+  fetch('http://127.0.0.1:8000/api/one_persons_posts', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Token 446adb844990ddfda620aa71396a9e7eedb9f896',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({friend: 'fabian'}) 
+  }).then(res => res.json()).then(r => document.querySelector("#title").innerHTML = r.posts.posts[1].id).catch(f => console.log(f))
+</script>

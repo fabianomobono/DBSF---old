@@ -491,3 +491,7 @@ class Friends_profile_sandbox(View):
         answer = posts.posts(friend, request, page_number)
         print('Yup this worked so well just like that')
         return JsonResponse(answer)
+
+
+def play(request):
+  return render(request, 'social/play.html')

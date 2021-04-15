@@ -27,5 +27,6 @@ urlpatterns = [
     path('get_own_posts', views.get_own_posts, name='get_my_posts'),
     path('comment', Comment_a_post.as_view(), name='comment'),
     path('sandbox', Sandbox.as_view(), name='go_nuts'),
-    path('friends_profile_sandbox', Friends_profile_sandbox.as_view(), name='friends_profile_sandbox')    
+    path('friends_profile_sandbox', Friends_profile_sandbox.as_view(), name='friends_profile_sandbox'),
+    path('play', views.play, name='play')    
 ]
