@@ -9,5 +9,5 @@
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({friend: 'fabian'}) 
-  }).then(res => res.json()).then(r => document.querySelector("#title").innerHTML = r.posts.posts[1].id).catch(f => console.log(f))
+  }).then(res => res.json()).then(r => console.log(r.posts.posts)).catch(f => console.log(f))
 </script>
