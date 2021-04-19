@@ -70,12 +70,19 @@ class SignUpView(APIView):
         try:
             print('trying')
             data = json.loads(request.body.decode('UTF-8'))
+            print('data ok')
             username = data['username']
+            print('username ok')
             first_name = data['first_name']
+            print('first_name ok')
             last_name = data['last_name']
+            print('last_name ok')
             email = data['email']
+            print('email ok')
             password = data['password']
+            print('password ok')
             confirmation = data['confirmation']
+            print('confirmation ok')
             print('this is dob')
             dob = arrow.get(data['dob'])
             
