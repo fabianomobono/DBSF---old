@@ -76,8 +76,9 @@ class SignUpView(APIView):
             email = data['email']
             password = data['password']
             confirmation = data['confirmation']
-            dob = arrow.get(data['dob'])
             print('this is dob')
+            dob = arrow.get(data['dob'])
+            
             print(dob)
 
             # check if all fields are not empty strings
