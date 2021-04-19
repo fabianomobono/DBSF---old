@@ -69,8 +69,9 @@ class SignUpView(APIView):
         danger = ['"', "'"]
         try:
             print('trying')
-            data = json.loads(request.body)
+            data = json.loads(request.body.decode('UTF-8'))
             print('data ok')
+            print(data)
             username = data['username']
             print('username ok')
             first_name = data['first_name']
