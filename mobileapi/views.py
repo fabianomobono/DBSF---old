@@ -115,7 +115,7 @@ class SignUpView(APIView):
                     token = Token.objects.get(user=user)
                     
                     # HURRAYYY user and token have been created...sending back token
-                    return Response({'response': token.key})
+                    return Response({'response': 'HURRAYYY user and token have been created...sending back token', 'token': token.key})
             
                 # if the username already exists
                 except IntegrityError:
