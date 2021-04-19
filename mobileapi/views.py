@@ -88,7 +88,7 @@ class SignUpView(APIView):
             dob = arrow.get(data['dob'])
             
             print(dob)
-            return Response({'response': data})
+            
             # check if all fields are not empty strings
             if username == '' or first_name == '' or last_name == '' or email == '' or dob == '' or password == '' or confirmation == '':
                 return Response({'response': 'you must fill out all fields'})
