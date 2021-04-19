@@ -68,6 +68,7 @@ class SignUpView(APIView):
     def post(self, request):
         danger = ['"', "'"]
         try:
+            print('trying')
             data = json.loads(request.body.decode('UTF-8'))
             username = data['username']
             first_name = data['first_name']
