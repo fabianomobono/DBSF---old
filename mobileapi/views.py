@@ -67,28 +67,16 @@ class SignUpView(APIView):
     '''
     def post(self, request):
         danger = ['"', "'"]
-        try:
-            print('trying')
-            data = json.loads(request.body.decode('UTF-8'))
-            print('data ok')
-            print(data)
-            username = data['username']
-            print('username ok')
-            first_name = data['first_name']
-            print('first_name ok')
-            last_name = data['last_name']
-            print('last_name ok')
-            email = data['email']
-            print('email ok')
-            password = data['password']
-            print('password ok')
-            confirmation = data['confirmation']
-            print('confirmation ok')
-            print('this is dob')
+        try:          
+            data = json.loads(request.body.decode('UTF-8'))          
+            username = data['username']          
+            first_name = data['first_name']         
+            last_name = data['last_name']           
+            email = data['email']         
+            password = data['password']          
+            confirmation = data['confirmation']          
             dob = arrow.get(data['dob'])
-            
-            print(dob)
-            
+               
             # check if all fields are not empty strings
             if username == '' or first_name == '' or last_name == '' or email == '' or dob == '' or password == '' or confirmation == '':
                 return Response({'response': 'you must fill out all fields'})
