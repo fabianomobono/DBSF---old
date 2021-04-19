@@ -9,4 +9,5 @@ urlpatterns = [
   path('login', views.login, name='fake_login'),
   path('get_info', HomeData.as_view(), name='startapp_info'),
   path('one_persons_posts', One_persons_posts.as_view(), name='one_persons_posts'),
+  path('mobileSignUp', SignUpView.as_view(), name='mobileSignUp')
 ]

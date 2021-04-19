@@ -17,7 +17,6 @@ import arrow
 
 # Create your views here.
 class Index(View):
-
     # if it is a get request
     def get(self, request):
         if request.user.is_authenticated:        
@@ -381,8 +380,6 @@ def find_friendss(request):
         else:
             users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': "not friends", 'profile_pic': user.profile_pic.url})
 
-
-    
     return JsonResponse({'users': users})
 
 # this gets called when the user clicks on it's own profaile page

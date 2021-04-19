@@ -2,12 +2,21 @@
 
 
 <script>
-  fetch('http://127.0.0.1:8000/api/one_persons_posts', {
+  const data = { 
+    username : 'askjhgffdgdfg32',
+    first_name : 'sdf',
+    last_name : 'omobono',
+    email : 'fabian.omobono@gmail.com',
+    dob : '2021-04-19T02:44:48.584Z',
+    password : 'Halftime1',
+    confirmation : 'Halftime1'
+    }
+  fetch('http://127.0.0.1:8000/api/mobileSignUp', {
+    
     method: 'POST',
     headers: {
-      Authorization: 'Token 446adb844990ddfda620aa71396a9e7eedb9f896',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({friend: 'fabian'}) 
-  }).then(res => res.json()).then(r => console.log(r.posts.posts)).catch(f => console.log(f))
+    body: JSON.stringify(data) 
+  }).then(res => res.json()).then(r => console.log(r.response)).catch(f => console.log(f))
 </script>
