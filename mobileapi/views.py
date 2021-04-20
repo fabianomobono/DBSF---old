@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from social.models import User, Get_info, Get_one_persons_posts
+from social.models import User, Get_info, Get_one_persons_posts, Post
 from django.db import IntegrityError
 from .serializers import UserSerializer
 from rest_framework.decorators import api_view
@@ -61,6 +61,7 @@ class One_persons_posts(APIView):
         return Response({'posts': posts})
 
 
+# this handles the sign up from the mobile app... the route is mobileSignUp
 class SignUpView(APIView):
     '''
     this handles the sign up process from the mobile app
@@ -114,7 +115,25 @@ class SignUpView(APIView):
         except:
             return Response({'response': 'not all fields where provided...or something else went wrong'})
         
-       
+
+# create a new post 
+class Create_new_post(APIView):
+    permission_classes = (IsAuthenticated,)     
+
+    def post(self, request):
+        # get the data from the 
+        text = json.loads(request.body.decode('UTF-8'))['text']
+        new_post = Post.objects.create(text=text, author=request.user)
+
+        # create an arrow object
+        time_arrow = arrow.utcnow()
+        response = {
+            'author': new_post.author.username, 
+            'date': time_arrow.humanize(), 
+            'id': new_post.id, 
+            'text': text,
+            'comments': []} 
+        return Response({'response': response})
 
           
       

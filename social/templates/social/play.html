@@ -3,18 +3,13 @@
 
 <script>
   const data = { 
-    username : 'askjhgffdgdfg32',
-    first_name : 'sdf',
-    last_name : 'omobono',
-    email : 'fabian.omobono@gmail.com',
-    dob : '2021-04-19T02:44:48.584Z',
-    password : 'Halftime1',
-    confirmation : 'Halftime1'
+   text: 'this will be the post text'
     }
-  fetch('https://dbsf.herokuapp.com/api/mobileSignUp', {
+  fetch('https://dbsf.herokuapp.com/api/new_post', {
     
     method: 'POST',
     headers: {
+      'Authorization': 'Token c0633ed03748350e853f332a5b68e4aa1ce1f149',
       'Content-Type': 'application/json',
     },
     credentials: 'same-origin',
