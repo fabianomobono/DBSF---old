@@ -243,7 +243,7 @@ class Get_info(models.Manager):
             response['friend_requests'].append({'sender': request.sender.username, 'sender_profile_pic': request.sender.profile_pic.url, 'id': request.id})
         
 
-        p = Paginator(response['posts'], 2)
+        p = Paginator(response['posts'], 10)
         print('this is the page number')
         print(page_number)
         print(type(page_number))
@@ -362,7 +362,7 @@ class Get_one_persons_posts(models.Manager):
             }
         
         # organize the posts using a pginator 
-        p = Paginator(answer['posts'], 2)
+        p = Paginator(answer['posts'], 10)
         if page_number > p.num_pages:
             answer['posts'] = 'No more posts'
         else:
