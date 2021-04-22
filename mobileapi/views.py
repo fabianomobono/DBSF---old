@@ -152,6 +152,13 @@ class Comment_a_post(APIView):
         comment = Comment(text=text, commentator=user, post=post)
         comment.save()
 
-        return Response({'responsee': 'comment was created', 'response': comment.id})
+        return Response({
+            "id": comment.id, 
+            "text": comment.text, 
+            "commentator": request.user.username, 
+            "profile_pic": request.user.profile_pic.url, 
+            "date": comment.date,
+            "likes": comment.likes
+        })
           
       
