@@ -5,7 +5,7 @@
   const data = { 
    text: 'this will be the post text'
     }
-  fetch('https://dbsf.herokuapp.com/api/new_post', {
+  fetch('http://127.0.0.1:8000/api/comment', {
     
     method: 'POST',
     headers: {
@@ -13,6 +13,9 @@
       'Content-Type': 'application/json',
     },
     credentials: 'same-origin',
-    body: JSON.stringify(data) 
+    body: JSON.stringify({
+      post_id: 169,
+      text: 'this is a comment test text'
+    }) 
   }).then(res => res.json()).then(r => console.log(r.response)).catch(f => console.log(f))
 </script>

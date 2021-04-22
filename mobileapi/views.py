@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from social.models import User, Get_info, Get_one_persons_posts, Post
+from social.models import User, Get_info, Get_one_persons_posts, Post, Comment
 from django.db import IntegrityError
 from .serializers import UserSerializer
 from rest_framework.decorators import api_view
@@ -135,7 +135,23 @@ class Create_new_post(APIView):
             'comments': []} 
         return Response({'response': response})
 
-          
-      
+
+# comment a post API
+class Comment_a_post(APIView):
+
+    # restrict access to users that have a token
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        print('working on commenting')
+        data = json.loads(request.body.decode('UTF-8'))
+        text = data['text']
+        post = Post.objects.get(pk=data['post_id'])
+        user = request.user
+
+        comment = Comment(text=text, commentator=user, post=post)
+        comment.save()
+
+        return Response({'responsee': 'comment was created', 'response': comment.id})
           
       
