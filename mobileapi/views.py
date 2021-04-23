@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from social.models import User, Get_info, Get_one_persons_posts, Post, Comment
+from social.models import User, Get_info, Get_one_persons_posts, Post, Comment, Friendship, Like, Dislike
 from django.db import IntegrityError
 from .serializers import UserSerializer
 from rest_framework.decorators import api_view
@@ -161,4 +161,42 @@ class Comment_a_post(APIView):
             "likes": comment.likes
         })
           
-      
+
+class FindFriends(APIView):
+    
+    # restrict access to authenticated users => they need to have token => they need to be logged in
+    def post(self, request):
+        search_term = json.loads(request.body)['search_term']
+        results = User.objects.filter(username__contains=search_term)
+        users = []
+
+        for user in results:
+
+            # check if current user and user are friends
+            requested = Friendship.objects.filter(sender=request.user, receiver=user)
+            received = Friendship.objects.filter(sender=user, receiver=request.user)
+
+            # if a requested Friendship object exists check the friendship status
+            if requested.count() != 0:
+
+                # This logic is used to determine what the Friend request button needs to display -- right now this feature is not active
+                if requested[0].pending == True:
+                    users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': 'Pending', 'profile_pic': user.profile_pic.url, 'rejected': False})
+                else:
+                    users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': 'Friends', 'profile_pic': user.profile_pic.url, 'rejected': requested[0].rejected})
+
+
+            # if a received Friendship object exists check the friendship status
+            elif received.count() != 0:
+
+                # This logic is used to determine what the Friend request button needs to display -- right now this feature is not active
+                if received[0].pending == True:
+                    users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': 'Pending', 'profile_pic': user.profile_pic.url , 'rejected': False})
+                else:
+                    users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': 'Friends', 'profile_pic': user.profile_pic.url, 'rejected': received[0].rejected})
+
+            # if they are not friends
+            else:
+                users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': "not friends", 'profile_pic': user.profile_pic.url})
+
+        return Response({'response': users})

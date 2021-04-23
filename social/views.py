@@ -339,8 +339,6 @@ def get_friendship_id(request):
         return JsonResponse(response)
 
 
-
-
 # this gets triggered if the user looks for friends in the main search box
 @require_http_methods(['GET'])
 @login_required
