@@ -5,7 +5,7 @@
   const data = { 
    text: 'this will be the post text'
     }
-  fetch('http://127.0.0.1:8000/api/findFriends', {
+  fetch('https://dbsf.herokuapp.com/api/one_persons_posts', {
     
     method: 'POST',
     headers: {
@@ -14,7 +14,7 @@
     },
     credentials: 'same-origin',
     body: JSON.stringify({
-      search_term: 'f'
+      friend: 'patrick'
     }) 
   }).then(res => res.json()).then(r => console.log(r)).catch(f => console.log(f))
 </script>
