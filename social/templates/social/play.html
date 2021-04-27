@@ -1,20 +1,24 @@
 <h1 id='title'>PLay</h1>
-
+<input id='pic' type='file' onchange="send()">
 
 <script>
-  const data = { 
-   text: 'this will be the post text'
-    }
-  fetch('https://dbsf.herokuapp.com/api/one_persons_posts', {
+  function send() {
+    const profile_pic = document.querySelector("#pic").files[0] 
+    console.log(profile_pic)
+
+    const formdata = new FormData()
+    formdata.append('profile_pic', profile_pic )
+
+  fetch('http://127.0.0.1:8000/api/update_profile_pic', {
     
     method: 'POST',
     headers: {
       'Authorization': 'Token c0633ed03748350e853f332a5b68e4aa1ce1f149',
-      'Content-Type': 'application/json',
+      
     },
     credentials: 'same-origin',
-    body: JSON.stringify({
-      friend: 'patrick'
-    }) 
+    body: formdata
   }).then(res => res.json()).then(r => console.log(r)).catch(f => console.log(f))
+  }
+  
 </script>

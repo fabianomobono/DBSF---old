@@ -165,6 +165,8 @@ class Comment_a_post(APIView):
 class FindFriends(APIView):
     
     # restrict access to authenticated users => they need to have token => they need to be logged in
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request):
         search_term = json.loads(request.body)['search_term']
         results = User.objects.filter(username__contains=search_term)
@@ -200,3 +202,17 @@ class FindFriends(APIView):
                 users.append({'user': user.username, 'first': user.first_name, 'last': user.last_name, 'status': "not friends", 'profile_pic': user.profile_pic.url})
 
         return Response({'response': users})
+
+
+# update the profile pic
+class UpdateProfilePic(APIView):
+
+    # make sure the request is coming from an authenticated user
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        picture = request.FILES['profile_pic']
+        user = User.objects.get(username=request.user)
+        user.profile_pic = picture
+        user.save()
+        return Response({'response': user.profile_pic.url})
