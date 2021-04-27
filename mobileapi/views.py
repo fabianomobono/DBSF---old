@@ -211,6 +211,7 @@ class UpdateProfilePic(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
+        print(request.FILES)
         picture = request.FILES['profile_pic']
         user = User.objects.get(username=request.user)
         user.profile_pic = picture
