@@ -3,22 +3,27 @@
 
 <script>
   function send() {
-    const profile_pic = document.querySelector("#pic").files[0] 
+    const profile_pic = document.querySelector("#pic").files[0]
+    console.log('This is the profile_pic const') 
     console.log(profile_pic)
 
     const formdata = new FormData()
-    formdata.append('profile_pic', profile_pic )
+    formdata.append('profile_pic', profile_pic)
 
-  fetch('http://127.0.0.1:8000/api/update_profile_pic', {
+    console.log('this is form data')
+    console.log(formdata)
+  fetch('http://127.0.0.1:8000/api/get_comments_for_post', {
     
     method: 'POST',
     headers: {
       'Authorization': 'Token c0633ed03748350e853f332a5b68e4aa1ce1f149',
       
     },
-    credentials: 'same-origin',
-    body: formdata
-  }).then(res => res.json()).then(r => console.log(r)).catch(f => console.log(f))
+  
+    body: JSON.stringify({post_id: 169})
+  }).then(res => res.json()).then(r => {
+    console.log('This is the response from the server...hurray')
+    console.log(r)}).catch(f => console.log('something went wrong'))
   }
   
 </script>

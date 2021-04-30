@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from social.models import User, Get_info, Get_one_persons_posts, Post, Comment, Friendship, Like, Dislike
 from django.db import IntegrityError
-from .serializers import UserSerializer
+from .serializers import UserSerializer, CommentSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -212,8 +212,20 @@ class UpdateProfilePic(APIView):
 
     def post(self, request):
         print(request.FILES)
+       
         picture = request.FILES['profile_pic']
         user = User.objects.get(username=request.user)
         user.profile_pic = picture
         user.save()
         return Response({'response': user.profile_pic.url})
+
+
+class GetCommentsForPost(APIView):
+
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        post_id = json.loads(request.body.decode('UTF-8'))['post_id']
+        comments = Comment.objects.filter(post=(Post.objects.get(id=post_id)))
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)

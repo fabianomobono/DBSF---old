@@ -12,6 +12,7 @@ urlpatterns = [
   path('mobileSignUp', SignUpView.as_view(), name='mobileSignUp'),
   path('new_post', Create_new_post.as_view(), name='new_post'),
   path('comment', Comment_a_post.as_view(), name='comment'),
+  path('get_comments_for_post', GetCommentsForPost.as_view(), name='get_comments'),
   path('findFriends', FindFriends.as_view(), name='findFriends'),
   path('update_profile_pic', UpdateProfilePic.as_view(), name='update_profile_pic')
 ]
