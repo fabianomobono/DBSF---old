@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
 
   commentator = serializers.ReadOnlyField(source='commentator.username')
-
+  profile_pic = serializers.ReadOnlyField(source='commentator.profile_pic.url')
   class Meta:
     model = Comment
-    fields = ['id', 'post', 'commentator', 'text', 'date', 'likes']
+    fields = ['id', 'post', 'commentator', 'profile_pic', 'text', 'date', 'likes']
