@@ -569,6 +569,7 @@ class Feed_sandbox extends React.Component {
   }
 }
 
+
 class Post extends React.Component {
   constructor(props){
     super(props)
@@ -1365,7 +1366,7 @@ class Friends_sandbox extends React.Component {
       console.log(answer.id)
       console.log(messages_from_server)
 
-    // create messaging appnew ReconnectingWebSocket
+    // create messaging websocket
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     const chatSocket = new WebSocket(
       ws_scheme

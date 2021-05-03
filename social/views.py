@@ -315,7 +315,7 @@ def get_friendship_id(request):
     sender = data['sender']
     receiver = data['receiver']
     
-    # since the friendship can be requested or sent check both cases
+    # since the friendship can be requested or sent, check both cases
     try: 
         friendship = Friendship.objects.get(sender=(User.objects.get(username=sender)),receiver=(User.objects.get(username=receiver)))
         messages_from_db = Message.objects.filter(conversation=friendship)

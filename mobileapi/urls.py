@@ -14,5 +14,6 @@ urlpatterns = [
   path('comment', Comment_a_post.as_view(), name='comment'),
   path('get_comments_for_post', GetCommentsForPost.as_view(), name='get_comments'),
   path('findFriends', FindFriends.as_view(), name='findFriends'),
-  path('update_profile_pic', UpdateProfilePic.as_view(), name='update_profile_pic')
+  path('update_profile_pic', UpdateProfilePic.as_view(), name='update_profile_pic'),
+  path('get_messages', GetMessages.as_view(), name='get_messages'),
 ]

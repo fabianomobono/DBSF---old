@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from social.models import User, Get_info, Get_one_persons_posts, Post, Comment, Friendship, Like, Dislike
+from social.models import User, Get_info, Get_one_persons_posts, Post, Comment, Friendship, Like, Dislike, Message
 from django.db import IntegrityError
-from .serializers import UserSerializer, CommentSerializer
+from .serializers import UserSerializer, CommentSerializer, MessageSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -229,3 +229,28 @@ class GetCommentsForPost(APIView):
         comments = Comment.objects.filter(post=(Post.objects.get(id=post_id)))
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
+
+
+# get all the messages for a certain conversation
+class GetMessages(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        current_user = request.user
+        friend = User.objects.get(username=json.loads(request.body.decode('UTF-8'))['friend'])
+        
+        # since a friendship can be sent or requested, check both cases
+
+        try: 
+            friendship = Friendship.objects.get(sender=current_user, receiver=friend)
+            messages_from_db = Message.objects.filter(conversation=friendship)
+            serializer = MessageSerializer(messages_from_db, many=True)
+            return Response({'response': 'this is where the current user is the sender of the friendship.', 'messages': serializer.data, 'friendship_id': friendship.id})
+        
+        except:
+
+            friendship = Friendship.objects.get(receiver=current_user, sender=friend)
+            messages_from_db = Message.objects.filter(conversation=friendship)
+            serializer = MessageSerializer(messages_from_db, many=True)
+            return Response({'response': 'this is where the current user is the receiver of the friendship.', 'messages': serializer.data, 'friendship_id': friendship.id})
+
