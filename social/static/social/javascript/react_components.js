@@ -1005,7 +1005,7 @@ class Friends extends React.Component {
         //send the message via the chatsocket
         if (message.length > 0){
           chatSocket.send(JSON.stringify({
-            message: message,
+            text: message,
             sender: this.state.user,
             receiver: this.state.receiver
           }));
