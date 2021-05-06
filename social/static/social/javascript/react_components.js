@@ -1022,6 +1022,7 @@ class Friends extends React.Component {
       }
 
       close() {
+        console.log('calling close before')
         document.getElementById('message_box').style.display = 'none';
         chatSocket.close()
         console.log('closed chatSocket')
