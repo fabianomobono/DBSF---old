@@ -1001,8 +1001,7 @@ class Friends extends React.Component {
 
       // close the websocket connection when the close button is clicked
       componentWillUnmount() {
-        chatSocket.close()
-        console.log('closed chatSocket')
+       
       }
 
       
@@ -1024,6 +1023,8 @@ class Friends extends React.Component {
 
       close() {
         document.getElementById('message_box').style.display = 'none';
+        chatSocket.close()
+        console.log('closed chatSocket')
       }
 
       render() {
