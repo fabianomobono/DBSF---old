@@ -998,6 +998,12 @@ class Friends extends React.Component {
           }
         }  
       }
+
+      // close the websocket connection when the close button is clicked
+      componentWillUnmount() {
+        chatSocket.close()
+      }
+
       
       sendMessage() {
         
