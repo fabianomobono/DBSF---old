@@ -1432,6 +1432,8 @@ class Friends_sandbox extends React.Component {
 
       close() {
         document.getElementById('message_box').style.display = 'none';
+        chatSocket.close()
+        console.log('closed connection')
       }
 
       render() {
