@@ -45,7 +45,7 @@ class ChatConsumer(WebsocketConsumer):
                 'sender': sender,
                 'receiver': receiver,
                 'id': message_to_save.id,
-                'date': message_to_save.date_sent
+                'date': message_to_save.date_sent.strftime("%a %b %d, %Y %H:%M:%S")
             }
         )
 
