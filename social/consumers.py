@@ -44,7 +44,8 @@ class ChatConsumer(WebsocketConsumer):
                 'message': message,
                 'sender': sender,
                 'receiver': receiver,
-                'id': message_to_save.id
+                'id': message_to_save.id,
+                'date': message_to_save.date_sent
             }
         )
 
@@ -54,6 +55,7 @@ class ChatConsumer(WebsocketConsumer):
         sender = event['sender']
         receiver = event['receiver']
         id = event['id']
+        date = event['date']
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
@@ -61,4 +63,5 @@ class ChatConsumer(WebsocketConsumer):
             'sender': sender,
             'receiver': receiver,
             'id': id,
+            'date': date,
         }))
