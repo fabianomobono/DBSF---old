@@ -182,6 +182,8 @@ class Get_info(models.Manager):
             for comment in comments:
                 c.append({
                 'commentator': comment.commentator.username,
+                'first': comment.commentator.first_name,
+                'last': comment.commentator.last_name,
                 'profile_pic': comment.commentator.profile_pic.url, 
                 'text': comment.text, 
                 'date':comment.date, 
@@ -219,7 +221,9 @@ class Get_info(models.Manager):
             # store all the data necessary for the post in response['response']
             response['posts'].append({
                 'id': post.id, 
-                'author': post.author.username, 
+                'author': post.author.username,
+                'first': post.author.first_name,
+                'last': post.author.last_name, 
                 'text': post.text, 
                 'date': post.date, 
                 'author_picture': post.author.profile_pic.url,
