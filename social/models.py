@@ -128,10 +128,10 @@ class Get_info(models.Manager):
         friends = []
 
         for f in received:
-            friends.append({'user': f.sender.username, 'profile_pic': f.sender.profile_pic.url, 'id': f.id})
+            friends.append({'user': f.sender.username, 'first': f.sender.first_name, 'last': f.sender.last_name, 'profile_pic': f.sender.profile_pic.url, 'id': f.id})
     
         for s in sent:
-            friends.append({'user': s.receiver.username, 'profile_pic':s.receiver.profile_pic.url, 'id': s.id})
+            friends.append({'user': s.receiver.username,'first': f.receiver.first_name, 'last': f.receiver.last_name, 'profile_pic':s.receiver.profile_pic.url, 'id': s.id})
 
         # get the last message (if it exists) that was sent to each friend
         for f in friends:
