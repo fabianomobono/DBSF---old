@@ -263,7 +263,13 @@ class Get_info(models.Manager):
 class Get_one_persons_posts(models.Manager):
     def posts(self, friend, request, page_number):
         friend_user = User.objects.get(username=friend)
-        response = {'posts': []}
+        response = {
+            'posts': [],
+            'first': friend_user.first_name,
+            'last': friend_user.last_name,
+            'email': friend_user.email,
+            'user': friend_user.username,
+            'profile_pic': friend_user.profile_pic.url}
         # get all the users p osts 
         posts = Post.objects.filter(author=(User.objects.get(username=friend_user)))
         for post in posts:
