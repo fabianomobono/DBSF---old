@@ -288,3 +288,30 @@ class GetMessages(APIView):
             serializer = MessageSerializer(messages_from_db, many=True)
             return Response({'response': 'this is where the current user is the receiver of the friendship.', 'messages': serializer.data, 'friendship_id': friendship.id})
 
+
+
+class RequestFriendship(APIView):
+
+    # make sure the user is Authenticated
+    permission_classed = (IsAuthenticated,)
+
+    def post(self, request):
+
+        # define the sender and the receiver user 
+        current_user = request.user
+        potentialFriend = User.objects.get(username=(json.loads.get(request.body.decode('UTF-8'))['potentialFriend']))
+        
+        # check if the friendship object already exists...this shouldn't be possible and if it is there's a bug somewhere
+        first = Friendship.objects.filter(sender=current_user, receiver=potentialFriend)
+        second = Friendship.objects.filter(sender=potentialFriend, receiver=current_user)
+
+        if first.count != 0 or second.count != 0:
+            return Response({'response': 'this friendship already exists'})
+
+        # if the friendship doesn't exist create a new Friendship object
+        elif first.count == 0 or second.count == 0:
+            friendship = Friendship(sender=current_user, receiver=potentialFriend)
+            friendship.save()
+            return Response({'response': 'request sent'})
+
+        
