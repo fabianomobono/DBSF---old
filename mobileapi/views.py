@@ -57,8 +57,6 @@ class One_persons_posts(APIView):
         # get the name of the person that you need to load the posts from
         friend = json.loads(request.body.decode('UTF-8'))['friend']
 
-        
-        
         manager = Get_one_persons_posts()
         posts = manager.posts(friend, request, 1)
 
@@ -66,8 +64,8 @@ class One_persons_posts(APIView):
         # Friendships can be reqeusted or received so we have to check both cases
         sent = Friendship.objects.filter(sender=request.user, receiver=(User.objects.get(username=friend)))
         received = Friendship.objects.filter(sender=(User.objects.get(username=friend)), receiver=request.user)
-
-        if (len(sent) == 0 or len(received == 0)):
+        
+        if (len(sent) == 0 and len(received) == 0):
             return Response({'posts': posts, 'status': 'not friends'})
 
         elif(received[0].are_they_friends or sent[0].are_they_friends):
