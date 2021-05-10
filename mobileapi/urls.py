@@ -16,5 +16,5 @@ urlpatterns = [
   path('findFriends', FindFriends.as_view(), name='findFriends'),
   path('update_profile_pic', UpdateProfilePic.as_view(), name='update_profile_pic'),
   path('get_messages', GetMessages.as_view(), name='get_messages'),
-  path('requestFriendship', requestFriendship.as_view(), name='requestFriendship'),
+  path('requestFriendship', RequestFriendship.as_view(), name='requestFriendship'),
 ]
