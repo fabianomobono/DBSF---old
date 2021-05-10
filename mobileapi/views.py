@@ -172,7 +172,7 @@ class FindFriends(APIView):
         search_term = json.loads(request.body)['search_term']
 
         # find the all the users with the search term in their username, exclude own user object
-        results = User.objects.filter(username__contains=search_term).exclude(User.objects.get(username=request.user))
+        results = User.objects.filter(username__contains=search_term).exclude(username=request.user)
 
         users = []
 
