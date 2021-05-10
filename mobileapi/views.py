@@ -162,6 +162,7 @@ class Comment_a_post(APIView):
         })
           
 
+# Find other users and request their friendship... this gets called after the the return button is pressed on the search bar
 class FindFriends(APIView):
     
     # restrict access to authenticated users => they need to have token => they need to be logged in
@@ -169,7 +170,10 @@ class FindFriends(APIView):
 
     def post(self, request):
         search_term = json.loads(request.body)['search_term']
-        results = User.objects.filter(username__contains=search_term)
+
+        # find the all the users with the search term in their username, exclude own user object
+        results = User.objects.filter(username__contains=search_term).exclude(User.objects.get(username=request.user))
+
         users = []
 
         for user in results:

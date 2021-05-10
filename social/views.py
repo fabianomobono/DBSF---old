@@ -345,7 +345,7 @@ def get_friendship_id(request):
 def find_friendss(request):
     # get all the users that contain the seatch term in the username
     search_term = str(request.GET['search_term'])
-    results = User.objects.filter(username__contains=search_term)
+    results = User.objects.filter(username__contains=search_term).exclude(username=request.user)
     users = []
 
     # for each user in that the database spits out
