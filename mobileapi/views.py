@@ -55,7 +55,11 @@ class One_persons_posts(APIView):
     def post(self, request):
 
         # get the name of the person that you need to load the posts from
-        friend = json.loads(request.body.decode('UTF-8'))['friend']
+        try:
+            friend = User.objects.get(username=(json.loads(request.body.decode('UTF-8'))['friend']))
+        
+        except:
+            return Response({'posts': [], 'status': 'no user'})
 
         manager = Get_one_persons_posts()
         posts = manager.posts(friend, request, 1)
@@ -64,15 +68,25 @@ class One_persons_posts(APIView):
         # Friendships can be reqeusted or received so we have to check both cases
         sent = Friendship.objects.filter(sender=request.user, receiver=(User.objects.get(username=friend)))
         received = Friendship.objects.filter(sender=(User.objects.get(username=friend)), receiver=request.user)
-        
+
         if (len(sent) == 0 and len(received) == 0):
             return Response({'posts': posts, 'status': 'not friends'})
 
-        elif(received[0].are_they_friends or sent[0].are_they_friends):
-            return Response({'posts': posts, 'status': 'friends'})
+        elif(len(sent) > 0):
 
-        elif(received[0].pending or received[0].rejected or sent[0].pending or sent[0].rejected):
-            return Response({'posts': posts, 'status': 'pending or rejected'})
+            if(sent[0].are_they_friends):
+                return Response({'posts': posts, 'status': 'friends'})
+
+            if(sent[0].pending or sent[0].rejected):
+                return Response({'posts': posts, 'status': 'pending or rejected'})
+
+        elif(len(received) > 0):
+
+            if(received[0].are_they_friends):
+                return Response({'posts': posts, 'status': 'friends'})
+
+            if(received[0].pending or received[0].rejected):
+                return Response({'posts': posts, 'status': 'pending or rejected'})
 
         return Response({'posts': posts, 'status': 'something went wrong with the statuses'})
 
