@@ -3,18 +3,17 @@
 
 <script>
    
-  fetch('http://127.0.0.1:8000/api/one_persons_posts', {
-    
-    method: 'POST',
-    headers: {
-      'Authorization': 'Token  446adb844990ddfda620aa71396a9e7eedb9f896',
-      
-    },
-  
-    body: JSON.stringify({friend: 'vitorjhjv'})
-  }).then(res => res.json()).then(r => {
-    console.log('This is the response from the server...hurray')
-    console.log(r)}).catch(f => console.log('something went wrong'))
+  fetch('http://127.0.0.1:8000/api-token-auth/', {
+      method: 'POST',
+      headers: {
+        
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({username:'giacomo', password: 'Halftime1'})
+    }
+  ).then(res => res.json()).then(r => {
+    console.log('This is the response from the server...hurray', r)
+    console.log(r)}).catch(f => console.log('something went wrong', f))
   
   
 </script>
