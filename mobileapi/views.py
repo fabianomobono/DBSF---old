@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 import json
 import arrow
-
+import datetime
 
 # Create your views here.
 def api(request):
@@ -299,7 +299,7 @@ class RequestFriendship(APIView):
 
         # define the sender and the receiver user 
         current_user = request.user
-        potentialFriend = User.objects.get(username=(json.loads.get(request.body.decode('UTF-8'))['potentialFriend']))
+        potentialFriend = User.objects.get(username=(json.loads(request.body.decode('UTF-8'))['potentialFriend']))
         
         # check if the friendship object already exists...this shouldn't be possible and if it is there's a bug somewhere
         first = Friendship.objects.filter(sender=current_user, receiver=potentialFriend)
@@ -314,4 +314,44 @@ class RequestFriendship(APIView):
             friendship.save()
             return Response({'response': 'request sent'})
 
+
+# logic to accept the friendship
+class ConfirmFriendRequest(APIView):
+
+    permission_classes = (IsAuthenticated,) 
+
+    def post(self, request):
+
+        # get the Friendship Obj based on the ID
+        friendship = Friendship.objects.get(id=(json.loads(request.body.decode('UTF-8'))['friendshipId']))
+
+       # make them friends, set a time for the friendship start and set the pending boolean to False
+        friendship.are_they_friends = True
+        now = datetime.datetime.now()
+        friendship.date_confirmed = now
+        friendship.pending = False
+        friendship.save()
+
+        # retrieve the updated info from the server..this includes info from the new friend
+        newInfo = Get_info()
+        return Response({'response': 'friendship confirmed', 'info': newInfo.info(request, 1)})
+
+
+# logic that handles when if the user ignores the friend request
+class IgnoreFriendship(APIView):
+    
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+
+        # get the friendship through the id
+
+        friendship = Friendship.objects.get(id=(json.loads(request.body.decode('UTF-8'))['friendshipId']))
+        # set the pending to False and Rejected to true
+        friendship.pending = False
+        friendship.rejected = True
+        now = datetime.datetime.now()
+        friendship.date_confirmed = now
+        friendship.save()
         
+        return Response({'response': 'request ignored'})

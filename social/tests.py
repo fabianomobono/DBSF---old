@@ -71,15 +71,6 @@ class ModelTestCase(TestCase):
         response = c.get('/get_posts')
         self.assertEqual(response.status_code, 200)
 
-    def test_get_friends(self):
-        '''
-        Test if the the friend list will show up
-        '''       
-        c = Client()
-        c.login(username='test_user', password='1234')
-        response = c.get('/get_friends')
-        self.assertEqual(response.status_code, 200)
-
     def test_profile(self):
         '''
         Test if you can reach the profile page when logged in
