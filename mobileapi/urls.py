@@ -17,4 +17,6 @@ urlpatterns = [
   path('update_profile_pic', UpdateProfilePic.as_view(), name='update_profile_pic'),
   path('get_messages', GetMessages.as_view(), name='get_messages'),
   path('requestFriendship', RequestFriendship.as_view(), name='requestFriendship'),
+  path('confirmFriendRequest', ConfirmFriendRequest.as_view(), name='confirmFriendRequest'),
+  path('ignoreFriendRequest', IgnoreFriendship.as_view(), name='ignoreFriendRequest'),
 ]

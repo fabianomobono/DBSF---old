@@ -345,9 +345,9 @@ class IgnoreFriendship(APIView):
     def post(self, request):
 
         # get the friendship through the id
-
         friendship = Friendship.objects.get(id=(json.loads(request.body.decode('UTF-8'))['friendshipId']))
-        # set the pending to False and Rejected to true
+        
+        # set the pending to False and Rejected to true, set a date for when this happened
         friendship.pending = False
         friendship.rejected = True
         now = datetime.datetime.now()
