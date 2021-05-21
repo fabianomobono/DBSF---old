@@ -3,10 +3,10 @@
 
 <script>
    
-  fetch('http://127.0.0.1:8000/api-token-auth/', {
+  fetch('http://127.0.0.1:8000/api/get_info', {
       method: 'POST',
       headers: {
-        
+        Authorization: 'Token 446adb844990ddfda620aa71396a9e7eedb9f896',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({username:'giacomo', password: 'Halftime1'})
