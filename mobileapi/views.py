@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.mail import send_mail
 from django.http import JsonResponse
 from social.models import User, Get_info, Get_one_persons_posts, Post, Comment, Friendship, Like, Dislike, Message
 from django.db import IntegrityError
@@ -41,6 +42,13 @@ class HomeData(APIView):
        print(request.user)
        info = Get_info()
        r = info.info(request, 1)
+       send_mail(
+        'You requested data from the server',
+        'Hi there, you requested data from the server.',
+        'dbsfmanager@gmail.com',
+        ['fabian.omobono@gmail.com'],
+        fail_silently=False,
+        )
        return Response({'hello': r})
 
 
@@ -134,6 +142,9 @@ class SignUpView(APIView):
                     token = Token.objects.get(user=user)
                     
                     # HURRAYYY user and token have been created...sending back token
+
+                    # send an email to the new users email address
+
                     return Response({'response': 'HURRAYYY user and token have been created...sending back token', 'token': token.key})
             
                 # if the username already exists
