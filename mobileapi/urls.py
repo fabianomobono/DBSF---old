@@ -19,4 +19,5 @@ urlpatterns = [
   path('requestFriendship', RequestFriendship.as_view(), name='requestFriendship'),
   path('confirmFriendRequest', ConfirmFriendRequest.as_view(), name='confirmFriendRequest'),
   path('ignoreFriendRequest', IgnoreFriendship.as_view(), name='ignoreFriendRequest'),
+  path('unfriend', Unfriend.as_view(), name='unfriend'),
 ]

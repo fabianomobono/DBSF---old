@@ -367,3 +367,36 @@ class IgnoreFriendship(APIView):
         friendship.save()
         
         return Response({'response': 'request ignored'})
+
+
+#logic to unfriend current friends
+class Unfriend(APIView):
+
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+
+        soonExFriend = User.objects.get(username=(json.loads(request.body.decode('UTF-8'))['soonExFriend']))
+
+
+        # find the friendship it can be sent or received
+        sentFriendship = Friendship.objects.filter(sender=request.user, receiver=soonExFriend, pending=False)
+        receivedFriendship = Friendship.objects.filter(sender=soonExFriend, receiver=request.user, pending=False)
+
+        try:
+            to_delete = sentFriendship[0]
+            to_delete.delete()
+
+            newInfo = Get_info()
+
+            return Response({'response': 'friendship was deleted', 'info': newInfo.info(request, 1)})
+
+        except:
+            to_delete = receivedFriendship[0]
+            to_delete.delete()
+
+            newInfo = Get_info()
+
+            return Response({'response': 'friendship was deleted...received Friendship', 'info': newInfo.info(request, 1)})
+        
+        
