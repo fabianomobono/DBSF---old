@@ -42,13 +42,7 @@ class HomeData(APIView):
        print(request.user)
        info = Get_info()
        r = info.info(request, 1)
-       send_mail(
-        'You requested data from the server',
-        'Hi there, you requested data from the server.',
-        'dbsfmanager@gmail.com',
-        ['fabian.omobono@gmail.com'],
-        fail_silently=False,
-        )
+       
        return Response({'hello': r})
 
 
@@ -144,6 +138,13 @@ class SignUpView(APIView):
                     # HURRAYYY user and token have been created...sending back token
 
                     # send an email to the new users email address
+                    send_mail(
+                        'You signed up',
+                        'Hi there, you requested data from the server.',
+                        'dbsfmanager@gmail.com',
+                        ['fabian.omobono@gmail.com'],
+                        fail_silently=False,
+                        )
 
                     return Response({'response': 'HURRAYYY user and token have been created...sending back token', 'token': token.key})
             
