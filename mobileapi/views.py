@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.http import JsonResponse
 from social.models import User, Get_info, Get_one_persons_posts, Post, Comment, Friendship, Like, Dislike, Message
 from django.db import IntegrityError
@@ -168,7 +168,7 @@ class ResetPassword(APIView):
 
         send_mail(
             f"Hi {username}, let's reset your password",
-            'Hi there! it looks like you have forgotten your password...tough luck my dear.',
+            'Hi there! it looks like you have forgotten your password...<a href="www.google.com">google</a>',
             'dbsfmanager@gmail.com',
             [email],
             fail_silently=False, 
