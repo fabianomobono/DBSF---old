@@ -151,12 +151,28 @@ class SignUpView(APIView):
                 # if the username already exists
                 except IntegrityError:
                     return Response({'response': 'username is taken'})
-            
-            return Response({'response': 'so far so good'})
            
         except:
             return Response({'response': 'not all fields where provided...or something else went wrong'})
         
+
+
+# reset password logic
+class ResetPassword(APIView):
+    
+    def post(self,request):
+        email = json.loads(request.body.decode('UTF-8'))['email']
+        username = json.loads(request.body.docede('UTF-8'))['username']
+
+        send_mail(
+            f"Hi {username}, let's reset your password",
+            'Hi there! it looks like you have forgotten your password...tough luck my dear.',
+            'dbsfmanager@gmail.com',
+            [email],
+            fail_silently=False, 
+        )
+
+
 
 # create a new post 
 class Create_new_post(APIView):
@@ -400,3 +416,4 @@ class Unfriend(APIView):
             return Response({'response': 'friendship was deleted...received Friendship', 'info': newInfo.info(request, 1)})
         
         
+
