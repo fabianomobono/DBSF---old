@@ -163,6 +163,7 @@ class ResetPassword(APIView):
     def post(self,request):
         email = json.loads(request.body.decode('UTF-8'))['email']
         username = json.loads(request.body.docede('UTF-8'))['username']
+        print(email, username)
 
         send_mail(
             f"Hi {username}, let's reset your password",
@@ -171,6 +172,8 @@ class ResetPassword(APIView):
             [email],
             fail_silently=False, 
         )
+        
+        return Response({'response': 'email has been sent...maybe'})
 
 
 
