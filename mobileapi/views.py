@@ -161,8 +161,9 @@ class SignUpView(APIView):
 class ResetPassword(APIView):
     
     def post(self,request):
+        print('sdflgkgflkjl;lsdfjg;slzdfj')
         email = json.loads(request.body.decode('UTF-8'))['email']
-        username = json.loads(request.body.docede('UTF-8'))['username']
+        username = json.loads(request.body.decode('UTF-8'))['username']
         print(email, username)
 
         send_mail(
