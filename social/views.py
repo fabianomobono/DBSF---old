@@ -284,6 +284,11 @@ def ignore_friend_request(request):
     return JsonResponse(response)
 
 
+def set_new_password(request):
+    return render(request, 'social/set_new_password.html')
+
+
+
 #delete friendship
 @login_required
 @require_http_methods(['POST'])

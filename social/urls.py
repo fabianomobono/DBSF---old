@@ -28,5 +28,6 @@ urlpatterns = [
     path('comment', Comment_a_post.as_view(), name='comment'),
     path('sandbox', Sandbox.as_view(), name='go_nuts'),
     path('friends_profile_sandbox', Friends_profile_sandbox.as_view(), name='friends_profile_sandbox'),
-    path('play', views.play, name='play')    
+    path('play', views.play, name='play'),
+    path('set_new_password', views.set_new_password, name='set_new_password')  
 ]
