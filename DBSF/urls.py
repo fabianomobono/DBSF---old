@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('mobileapi.urls')),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
-    path('password_reset', include('django_rest_resetpassword.urls', namespace='password_reset')),
+    path('password_reset/', include('django_rest_resetpassword.urls', namespace='password_reset_this')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

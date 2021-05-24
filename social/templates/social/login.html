@@ -9,12 +9,17 @@
   <body>
     <nav id="login_navbar">
       <a href="#">DBSF</a>
-      <form class="login_form" action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        {{form}}
-        <input id='login_submit_button' type="submit" name="" value="Log in">
-      </form>
-    </nav>
+      <div>
+        <div>
+          <form class="login_form" action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            {{form}}
+            <input id='login_submit_button' type="submit" name="" value="Log in">
+        </div>
+          <a href="/forgot_password" style='font-size: 10px; display: inline;'>Forgot your password?</a>
+      </div>
+      </form>      
+    </nav> 
     <div class="message">
       {{message}}
     </div>

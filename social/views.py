@@ -284,8 +284,13 @@ def ignore_friend_request(request):
     return JsonResponse(response)
 
 
+
+# forgot password logic
 def set_new_password(request):
     return render(request, 'social/set_new_password.html')
+
+def forgot_password(request):
+    return render(request, 'social/forgot_password.html')
 
 
 

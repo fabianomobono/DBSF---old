@@ -17,6 +17,7 @@
 }
 #login_navbar form {
   padding: 20px;
+  padding-bottom: 5px;
 }
 #login_navbar form input[type=text], #login_navbar form input[type=password] {
   padding: 5px;
