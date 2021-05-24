@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.http import JsonResponse
+from django.urls import reverse
 from social.models import User, Get_info, Get_one_persons_posts, Post, Comment, Friendship, Like, Dislike, Message
 from django.db import IntegrityError
 from .serializers import UserSerializer, CommentSerializer, MessageSerializer
@@ -166,14 +167,6 @@ class ResetPassword(APIView):
         username = json.loads(request.body.decode('UTF-8'))['username']
         print(email, username)
 
-        send_mail(
-            f"Hi {username}, let's reset your password",
-            'Hi there! it looks like you have forgotten your password...<a href="www.google.com">google</a>',
-            'dbsfmanager@gmail.com',
-            [email],
-            fail_silently=False, 
-        )
-        
         return Response({'response': 'email has been sent...maybe'})
 
 

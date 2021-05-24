@@ -18,3 +18,4 @@ arrow
 channels
 channels-redis
 django-cors-headers
+django-rest-resetpassword
