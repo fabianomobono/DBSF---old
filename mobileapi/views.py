@@ -413,4 +413,39 @@ class Unfriend(APIView):
             return Response({'response': 'friendship was deleted...received Friendship', 'info': newInfo.info(request, 1)})
         
         
+class Like_a_post(APIView):
+    permission_classes = (IsAuthenticated,)
 
+    def post(self, request):
+
+        # get post through the post id from the request body
+        post = Post.objects.get(id=(json.loads(request.body.decode('UTF-8')['post_id'])))
+        
+        # try to add a like to the post if it does not exist already
+        try: 
+            already_liked = Like.objects.get(post=post, user=request.user)
+            return Response({'response': 'you already liked this post'})
+
+        except:
+            like = Like(user=request.user, post=post)
+            like.save()
+            return Response({'response': 'like created'})
+
+
+class Dislike_a_post(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+
+        # get post through the post id from the request body
+        post = Post.objects.get(id=(json.loads(request.body.decode('UTF-8')['post_id'])))
+        
+        # try to add a like to the post if it does not exist already
+        try: 
+            already_liked = Dislike.objects.get(post=post, user=request.user)
+            return Response({'response': 'you already disliked this post'})
+
+        except:
+            like = Dislike(user=request.user, post=post)
+            like.save()
+            return Response({'response': 'dislike created'})
