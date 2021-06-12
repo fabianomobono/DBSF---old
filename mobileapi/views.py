@@ -419,7 +419,7 @@ class Like_a_post(APIView):
     def post(self, request):
 
         # get post through the post id from the request body
-        post = Post.objects.get(id=(json.loads(request.body.decode('UTF-8')['post_id'])))
+        post = Post.objects.get(id=(json.loads(request.body.decode('UTF-8'))['post_id']))
         
         # try to add a like to the post if it does not exist already
         try: 
@@ -438,7 +438,7 @@ class Dislike_a_post(APIView):
     def post(self, request):
 
         # get post through the post id from the request body
-        post = Post.objects.get(id=(json.loads(request.body.decode('UTF-8')['post_id'])))
+        post = Post.objects.get(id=(json.loads(request.body.decode('UTF-8'))['post_id']))
         
         # try to add a like to the post if it does not exist already
         try: 
