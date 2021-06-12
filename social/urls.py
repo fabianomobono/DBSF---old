@@ -31,6 +31,5 @@ urlpatterns = [
     path('play', views.play, name='play'),
     path('set_new_password', views.set_new_password, name='set_new_password'),
     path('forgot_password', views.forgot_password, name='forgot_passsord'),
-    path('like_a_post', Like_a_post.as_view(), name='like'),
-    path('dislike_a_post', Dislike_a_post.as_view(), name='dislike'),  
+   
 ]

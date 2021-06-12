@@ -20,5 +20,7 @@ urlpatterns = [
   path('confirmFriendRequest', ConfirmFriendRequest.as_view(), name='confirmFriendRequest'),
   path('ignoreFriendRequest', IgnoreFriendship.as_view(), name='ignoreFriendRequest'),
   path('unfriend', Unfriend.as_view(), name='unfriend'),
-  path('resetPassword', ResetPassword.as_view(), name='resetPassword')
+  path('resetPassword', ResetPassword.as_view(), name='resetPassword'),
+  path('like_a_post', Like_a_post.as_view(), name='like'),
+  path('dislike_a_post', Dislike_a_post.as_view(), name='dislike'),  
 ]

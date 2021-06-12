@@ -3,13 +3,13 @@
 
 <script>
    
-  fetch('http://127.0.0.1:8000/password_reset/password-reset/', {
+  fetch('http://127.0.0.1:8000/api/like_a_post/', {
       method: 'POST',
       headers: {
-        //Authorization: 'Token 446adb844990ddfda620aa71396a9e7eedb9f896',
+        Authorization: 'Token 446adb844990ddfda620aa71396a9e7eedb9f896',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({username:'fabian', email: 'dbsfmanager@gmail.com'})
+      body: JSON.stringify({post_id: '169'})
     }
   )
   .then(res => res.json())
