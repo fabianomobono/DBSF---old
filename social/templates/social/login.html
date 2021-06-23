@@ -28,6 +28,9 @@
       "prepTime": "PT20M"
       }
   </script>
+  <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="353768358220-h0erg8v47qp5sa12ikvf3pluejlis03s.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <title>Don't be a shitty Friend | Login</title>
   </head>
   <body>
@@ -66,6 +69,9 @@
       {{register_form.dob}}
       <input type="submit" name="" value="Register">
     </form>
-    
+    <h4>Login with GOOGLE</h4>
+    <div>
+      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    </div>
   </body>
 </html>
