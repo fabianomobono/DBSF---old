@@ -14,6 +14,7 @@
   <meta name='description' content="Don't be a shitty friend Social Media DBSF" >
     <link rel="stylesheet" href="{% static 'social/styles/base.css' %}">
     <meta charset="utf-8">
+    <!-- structured data --> 
     <script type='application/ld+json'>
       {
       "@context": "https://schema.org/",
@@ -73,5 +74,16 @@
     <div>
       <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
     </div>
+    <button onclick='show()'>Click here Fabian</button>
   </body>
+  <script>
+    function show() {
+      fetch('https://accounts.google.com/o/oauth2/auth?redirect_uri=storagerelay%3A%2F%2Fhttp%2Fdbsf.herokuapp.com%3Fid%3Dauth434907&response_type=permission%20id_token&scope=email%20profile%20openid&openid.realm=&client_id=353768358220-h0erg8v47qp5sa12ikvf3pluejlis03s.apps.googleusercontent.com&ss_domain=http%3A%2F%2Fdbsf.herokuapp.com&fetch_basic_profile=true&gsiwebsdk=2',{
+        method: 'GET'
+      })
+      .then(res => res.json())
+      .then(res => console.log(res))
+      .catch(res = console.log(res))
+    }
+  </script>
 </html>
