@@ -28,7 +28,7 @@ AUTH_USER_MODEL = 'social.User'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ['desolate-lowlands-74512.herokuapp.com', 'dbsf.herokuapp.com', 'localhost', '127.0.0.1', 'testserver']
-CORS_ALLOWED_ORIGINS = ['https://localhost:3000', 'http://127.0.0.1:8000']
+CORS_ALLOWED_ORIGINS = ['https://localhost:3000', 'http://127.0.0.1:8000','https://accounts.google.com/o/oauth2/auth?redirect_uri=storagerelay%3A%2F%2Fhttp%2Fdbsf.herokuapp.com%3Fid%3Dauth434907&response_type=permission%20id_token&scope=email%20profile%20openid&openid.realm=&client_id=353768358220-h0erg8v47qp5sa12ikvf3pluejlis03s.apps.googleusercontent.com&ss_domain=http%3A%2F%2Fdbsf.herokuapp.com&fetch_basic_profile=true&gsiwebsdk=2']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_HSTS_SECONDS = 3600
 SECURE_SSL_REDIRECT = False
