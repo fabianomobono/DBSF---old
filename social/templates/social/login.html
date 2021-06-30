@@ -31,7 +31,7 @@
   </script>
   <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content="353768358220-h0erg8v47qp5sa12ikvf3pluejlis03s.apps.googleusercontent.com">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/platform.js" async defer>gapi.auth2.init()</script>
     <title>Don't be a shitty Friend | Login</title>
   </head>
   <body>
@@ -76,6 +76,9 @@
     </div>
    
   </body>
-  
-    
+  <script>
+     const queryString = window.location.search;
+    console.log(queryString);
+    console.log('here')
+  </script>
 </html>
