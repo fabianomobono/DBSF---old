@@ -19,3 +19,5 @@ channels
 channels-redis
 django-cors-headers
 django-rest-resetpassword
+google-oauth2-tool
+google-auth
