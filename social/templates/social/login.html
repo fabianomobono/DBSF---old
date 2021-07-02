@@ -96,7 +96,7 @@
   var id_token = googleUser.getAuthResponse().id_token;
   console.log(id_token)
   let csrftoken = Cookies.get('csrftoken');
-  fetch('/google_auth_token', {
+  fetch('https://dbsf.herokuapp.com/google_auth_token', {
     method: 'POST',
     headers: {
       "X-CSRFToken": csrftoken ,
