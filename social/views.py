@@ -13,7 +13,8 @@ import json
 import datetime
 from django.views import View
 import arrow
-
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 # Create your views here.
 class Index(View):
@@ -500,3 +501,10 @@ class Friends_profile_sandbox(View):
 
 def play(request):
   return render(request, 'social/play.html')
+
+
+
+def google_log_in(request):
+    auth_token = json.loads(request.body.decode('utf-8'))['auth_token']
+    print(auth_token, '24234234')
+    return JsonResponse({'auth_token': auth_token })
