@@ -506,5 +506,8 @@ def play(request):
 
 def google_log_in(request):
     auth_token = json.loads(request.body.decode('utf-8'))['auth_token']
+    CLIENT_ID = '353768358220-h0erg8v47qp5sa12ikvf3pluejlis03s'
+    idinfo = id_token.verify_oauth2_token(auth_token, requests.Request(), CLIENT_ID)
     print(auth_token, '24234234')
+    print(idinfo)
     return JsonResponse({'auth_token': auth_token })
