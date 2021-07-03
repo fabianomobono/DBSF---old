@@ -100,7 +100,7 @@
     method: 'POST',
     headers: {
       "X-CSRFToken": csrftoken ,
-      'Content-type': 'application/json'
+      'Content-type': 'application/x-www-form-urlencoded'
     },
     body: JSON.stringify({'auth_token': id_token})
 
