@@ -511,4 +511,4 @@ def google_log_in(request):
     idinfo = id_token.verify_oauth2_token(auth_token, requests.Request(), c)
     print(auth_token, '24234234')
     print(idinfo)
-    return JsonResponse({'auth_token': auth_token })
+    return JsonResponse({'auth_token': idinfo})
