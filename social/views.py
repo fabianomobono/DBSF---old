@@ -505,7 +505,7 @@ def play(request):
 
 
 @psa()
-def google_log_in(request, backend):
+def google_log_in(request):
     auth_token = json.loads(request.body.decode('utf-8'))['auth_token']
     print(auth_token)
     user = request.backend.do_auth(auth_token)
