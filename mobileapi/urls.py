@@ -23,5 +23,5 @@ urlpatterns = [
   path('resetPassword', ResetPassword.as_view(), name='resetPassword'),
   path('like_a_post', Like_a_post.as_view(), name='like'),
   path('dislike_a_post', Dislike_a_post.as_view(), name='dislike'),  
-  path('google_login', include('social_django.urls', namespace='social'))
+  
 ]

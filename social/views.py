@@ -505,6 +505,6 @@ def play(request):
 
 
 @psa()
-def google_log_in(request):
+def google_log_in(request, backend):
    
     return JsonResponse({'hello':'hello'})

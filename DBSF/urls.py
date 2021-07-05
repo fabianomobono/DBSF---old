@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/', include('mobileapi.urls')),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('password_reset/', include('django_rest_resetpassword.urls', namespace='password_reset_this')),
+    path('google_login', include('social_django.urls', namespace='social'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
