@@ -13,6 +13,7 @@ import json
 import datetime
 from django.views import View
 import arrow
+from social_django.utils import psa
 from google.oauth2 import id_token
 from google.auth.transport import requests
 
@@ -503,12 +504,16 @@ def play(request):
   return render(request, 'social/play.html')
 
 
-
-def google_log_in(request):
+@psa()
+def google_log_in(request, backend):
     auth_token = json.loads(request.body.decode('utf-8'))['auth_token']
     print(auth_token)
+    user = request.backend.do_auth(auth_token)
+    print(user)
     c = '353768358220-h0erg8v47qp5sa12ikvf3pluejlis03s.apps.googleusercontent.com'
     idinfo = id_token.verify_oauth2_token(auth_token, requests.Request(), c)
     print(auth_token, '24234234')
     print(idinfo)
+    user = request.backend.do_auth(auth_token)
+    print(user)
     return JsonResponse(idinfo)

@@ -21,3 +21,4 @@ django-cors-headers
 django-rest-resetpassword
 google-oauth2-tool
 google-auth
+social-auth-app-django
