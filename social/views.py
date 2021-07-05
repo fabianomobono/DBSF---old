@@ -504,7 +504,7 @@ def play(request):
   return render(request, 'social/play.html')
 
 
-
+@psa()
 def google_log_in(request):
     auth_token = json.loads(request.body.decode('utf-8'))['auth_token']
     print(auth_token)
