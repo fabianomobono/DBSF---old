@@ -227,3 +227,11 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
+for key in ['GOOGLE_OAUTH2_KEY',
+            'GOOGLE_OAUTH2_SECRET',
+            'FACEBOOK_KEY',
+            'FACEBOOK_SECRET']:
+    # Use exec instead of eval here because we're not just trying to evaluate a dynamic value here;
+    # we're setting a module attribute whose name varies.
+    exec("SOCIAL_AUTH_{key} = os.environ.get('{key}')".format(key=key))
