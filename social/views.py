@@ -504,7 +504,7 @@ def play(request):
   return render(request, 'social/play.html')
 
 
-@psa()
+
 def google_log_in(request, backend):
    
     return JsonResponse({'hello':'hello'})

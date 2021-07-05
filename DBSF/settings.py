@@ -216,6 +216,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
+
+
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',

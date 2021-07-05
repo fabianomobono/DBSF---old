@@ -84,7 +84,7 @@
   }
 </script>
     </div>
-   
+    <a href="{% url "social:begin" "google-oauth2" %}">Google+</a>
   </body>
   <script>
     function onSignIn(googleUser) {
@@ -96,7 +96,7 @@
   var id_token = googleUser.getAuthResponse().id_token;
   console.log(id_token)
   let csrftoken = Cookies.get('csrftoken');
-  fetch('/google_login', {
+  fetch('/google_auth_token', {
     method: 'POST',
     headers: {
       "X-CSRFToken": csrftoken ,
