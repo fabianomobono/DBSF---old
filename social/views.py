@@ -504,7 +504,7 @@ def play(request):
   return render(request, 'social/play.html')
 
 
-@psa()
+
 def google_log_in(request, backend):
     auth_token = json.loads(request.body.decode('utf-8'))['auth_token']
     print(auth_token)
@@ -512,4 +512,6 @@ def google_log_in(request, backend):
     idinfo = id_token.verify_oauth2_token(auth_token, requests.Request(), c)
     print(auth_token, '24234234')
     print(idinfo)
+    user = request.backend.do_auth(idinfo)
+    print(user)
     return JsonResponse(idinfo)

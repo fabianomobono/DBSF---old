@@ -96,7 +96,7 @@
   var id_token = googleUser.getAuthResponse().id_token;
   console.log(id_token)
   let csrftoken = Cookies.get('csrftoken');
-  fetch('/google_auth_token', {
+  fetch('/register-by-token', {
     method: 'POST',
     headers: {
       "X-CSRFToken": csrftoken ,
