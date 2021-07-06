@@ -84,7 +84,7 @@
   }
 </script>
     </div>
-    <a href="{% url "social:begin" "google-oauth2" %}">Google+</a>
+    <a href="#" onclick=test()>Local test</a>
   </body>
   <script>
     function onSignIn(googleUser) {
@@ -96,7 +96,7 @@
   var id_token = googleUser.getAuthResponse().id_token;
   console.log(id_token)
   let csrftoken = Cookies.get('csrftoken');
-  fetch('/google_auth_token/?backend=google-oauth2', {
+  fetch('/google_auth_token/google-oauth2/', {
     method: 'POST',
     headers: {
       "X-CSRFToken": csrftoken ,
@@ -109,6 +109,28 @@
   .then(res => console.log(res))
   .catch(res => console.log('something went wrong', res))
 }
+
+
+function test() {
+  let csrftoken = Cookies.get('csrftoken');
+  fetch('/google_auth_token/google-oauth2/', {
+    method: 'POST',
+    headers: {
+      "X-CSRFToken": csrftoken ,
+      'Content-type': 'application/x-www-form-urlencoded'
+    },
+    body: JSON.stringify(
+      {
+        'auth_token': 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2ZjhkNTVkYTUzNGVhOTFjYjJjYjAwZTFhZjRlOGUwY2RlY2E5M2QiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMzUzNzY4MzU4MjIwLWgwZXJnOHY0N3FwNXNhMTJpa3ZmM3BsdWVqbGlzMDNzLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMzUzNzY4MzU4MjIwLWgwZXJnOHY0N3FwNXNhMTJpa3ZmM3BsdWVqbGlzMDNzLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA5MTM4MjY4MzAxMjkwNjE0OTA1IiwiZW1haWwiOiJmYWJpYW4ub21vYm9ub0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6Ikdub1FOQ0pDdmlIMzRfSUhSNTd1ZmciLCJuYW1lIjoiRmFiaWFuIE9tb2Jvbm8iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FPaDE0R2pmSUhpakl6b01yNHZ2SmVKdFZ2cnpMMHg0dDd2U0JzbmtHdEdkenc9czk2LWMiLCJnaXZlbl9uYW1lIjoiRmFiaWFuIiwiZmFtaWx5X25hbWUiOiJPbW9ib25vIiwibG9jYWxlIjoiZW4iLCJpYXQiOjE2MjU1NjMyNjksImV4cCI6MTYyNTU2Njg2OSwianRpIjoiMjI2MmJhYjhiYmYxZThjODNmMmU0NjgyZTQyYjcxYzU3MzJiZWZlNSJ9.Cn4QeS06eZ0eMOWijeL2gIkrRJiCPmqQ9X0HgR3niMkpDIpnf8zF4VyM8C37_Lnp2a72FBKQ7e-C8EvRY1aiaUhCySklABwABYfsxqTH2tTYY5slFEM5DIwm0o-kdsWoHywFrXtR752DflOS7POtk1hFFgMytdr7NNboMFGYqrlnd0ah0xRV76ew9Ra8OmlhRGsLQVDyLQJdihzRwODoauPxMiiIub5fHqWgi6uv6idAWMAwoK_rXABdafeT-EF-ViYBYk0EiQhABEgEEIDN4tgp45y8zVekzz2BVGcEGk1EvWqDX6aQ8seY8w4jJ_YBLIjLOmarakzAPFjJBvVK7g',
+        'backend': 'google-oauth2'
+  })
+
+  })
+  .then(res => res.json())
+  .then(res => console.log(res))
+  .catch(res => console.log('something went wrong', res))
+}
+
 
 
   </script>

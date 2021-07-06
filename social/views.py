@@ -506,12 +506,14 @@ def play(request):
 
 @psa()
 def google_log_in(request, backend):
+    print(backend)
     auth_token = json.loads(request.body.decode('utf-8'))['auth_token']
     print(auth_token)
     c = '353768358220-h0erg8v47qp5sa12ikvf3pluejlis03s.apps.googleusercontent.com'
     idinfo = id_token.verify_oauth2_token(auth_token, requests.Request(), c)
     print(auth_token, '24234234')
     print(idinfo)
-    user = request.backend.do_auth(idinfo)
+    user = request.backend.do_auth(auth_token)
     print(user)
+  
     return JsonResponse(idinfo)
