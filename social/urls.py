@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls import url
 from . import views
 from social.views import *
@@ -32,7 +32,7 @@ urlpatterns = [
     path('play', views.play, name='play'),
     path('set_new_password', views.set_new_password, name='set_new_password'),
     path('forgot_password', views.forgot_password, name='forgot_passsord'),
-    path('google_auth_token', views.google_log_in, name='google_log_in'),
+    re_path(r'google_auth_token/(?P<backend>[^/]+)/$', views.google_log_in, name='google_log_in'),
     url('google_login/', include('social_django.urls', namespace='social')),
    
 
