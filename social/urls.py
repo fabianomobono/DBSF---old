@@ -34,7 +34,7 @@ urlpatterns = [
     path('forgot_password', views.forgot_password, name='forgot_passsord'),
     path('google_auth_token', views.google_log_in, name='google_log_in'),
     url('google_login/', include('social_django.urls', namespace='social')),
-    url(r'^register-by-token/(?P<backend>[^/]+)/$', views.google_log_in)
+    url('register-by-token/(?P<backend>[^/]+)/$', views.google_log_in, name='heeg')
 
    
 ]
