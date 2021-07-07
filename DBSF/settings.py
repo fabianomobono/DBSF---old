@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SECRET_KEY']
 AUTH_USER_MODEL = 'social.User'
-SOCIAL_AUTH_USER_MODEL = 'social.User'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ['desolate-lowlands-74512.herokuapp.com', 'dbsf.herokuapp.com', 'localhost', '127.0.0.1', 'testserver']
@@ -207,6 +207,11 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
 
 
 # SOCIAL AUTH STUFF
+SOCIAL_AUTH_USER_MODEL = 'social.User'
+
+SOCIAL_AUTH_GOOGLE_KEY = os.environ['SOCIAL_AUTH_GOOGLE_KEY']
+SOCIAL_AUTH_GOOGLE_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_SECRET']
+
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.open_id.OpenIdAuth',
     'social_core.backends.google.GoogleOAuth2',
