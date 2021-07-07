@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.serializers import Serializer
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import login, logout, authenticate
 from .models import User, Post, Friendship, Message, Comment, Like, Dislike, Get_info, Get_one_persons_posts
@@ -12,6 +13,7 @@ from django.utils.decorators import method_decorator
 import json
 import datetime
 from django.views import View
+from mobileapi.serializers import UserSerializer
 import arrow
 from social_django.utils import psa
 from google.oauth2 import id_token
@@ -504,7 +506,7 @@ def play(request):
   return render(request, 'social/play.html')
 
 
-@psa()
+@psa('social:complete')
 def google_log_in(request, backend):
     print(backend)
     auth_token = json.loads(request.body.decode('utf-8'))['auth_token']
@@ -513,6 +515,7 @@ def google_log_in(request, backend):
     idinfo = id_token.verify_oauth2_token(auth_token, requests.Request(), c)
     print(auth_token, '24234234')
     print(idinfo)
+    
     user = request.backend.do_auth(auth_token)
     print(user)
   
