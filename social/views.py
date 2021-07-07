@@ -516,7 +516,6 @@ def google_log_in(request, backend):
     print(auth_token, '24234234')
     print(idinfo)
     
-    user = request.backend.do_auth(auth_token)
-    print(user)
+    
   
     return JsonResponse(idinfo)
