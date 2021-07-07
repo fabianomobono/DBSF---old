@@ -513,7 +513,7 @@ def google_log_in(request, backend):
     idinfo = id_token.verify_oauth2_token(auth_token, requests.Request(), c)
     print(auth_token, '24234234')
     print(idinfo)
-    user = request.backend.do_auth(idinfo)
+    user = request.backend.do_auth(auth_token)
     print(user)
   
     return JsonResponse(idinfo)
