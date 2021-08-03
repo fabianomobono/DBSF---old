@@ -449,3 +449,24 @@ class Dislike_a_post(APIView):
             like = Dislike(user=request.user, post=post)
             like.save()
             return Response({'response': 'dislike created'})
+
+
+# this will remove the like object
+class Unlike_a_post(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    # handle unliking the post
+    def post(self, request):
+        
+        # get the post object from the request by using the post ID
+        post = Post.objects.get(id=(json.loads(request.body.decode('UTF-8'))['post_id']))
+
+        try:
+            # try to delete the like object, this should always work, if not there's something wrong with the app
+            like = Like.objects.get(post=post, user=request.user)
+            like.delete()
+            return Response({'response': 'like object deleted...ehm post unliked'})
+
+        except:
+            #THIS should not happen
+            return Response({'response': 'Uh oh...most likely the like object that the function above found was not found by this function...very bad'})

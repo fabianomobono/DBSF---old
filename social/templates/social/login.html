@@ -30,14 +30,14 @@
       "prepTime": "PT20M"
       }
   </script>
+ 
+ 
   <meta name="google-signin-scope" content="profile email">
-    
-  
   <meta name="google-signin-client_id" content="353768358220-h0erg8v47qp5sa12ikvf3pluejlis03s.apps.googleusercontent.com">
-  
-  
   <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <title>Don't be a shitty Friend | Login</title>
+  
+  
+  <title>Don't be a shitty Friend | Login</title>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -77,7 +77,13 @@
     </form>
     <h4>Login with GOOGLE</h4>
     <div>
+
+
+
       <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+
+
+
       <a href="#" onclick="signOut();">Sign out</a>
 <script>
   function signOut() {
@@ -100,6 +106,8 @@
   var id_token = googleUser.getAuthResponse().id_token;
   console.log(id_token)
   let csrftoken = Cookies.get('csrftoken');
+
+  // send to the server
   fetch('/google_auth_token/google-oauth2/', {
     method: 'POST',
     headers: {
@@ -117,6 +125,7 @@
 
 function test() {
   let csrftoken = Cookies.get('csrftoken');
+  const auth_token = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjFiZjhhODRkM2VjZDc3ZTlmMmFkNWYwNmZmZDI2MDcwMWRkMDZkOTAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMzUzNzY4MzU4MjIwLWgwZXJnOHY0N3FwNXNhMTJpa3ZmM3BsdWVqbGlzMDNzLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMzUzNzY4MzU4MjIwLWgwZXJnOHY0N3FwNXNhMTJpa3ZmM3BsdWVqbGlzMDNzLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA5MTM4MjY4MzAxMjkwNjE0OTA1IiwiZW1haWwiOiJmYWJpYW4ub21vYm9ub0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6Im1Yd3BwNVdoZl9BRjBEUmcxMGRjUFEiLCJuYW1lIjoiRmFiaWFuIE9tb2Jvbm8iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FPaDE0R2pmSUhpakl6b01yNHZ2SmVKdFZ2cnpMMHg0dDd2U0JzbmtHdEdkenc9czk2LWMiLCJnaXZlbl9uYW1lIjoiRmFiaWFuIiwiZmFtaWx5X25hbWUiOiJPbW9ib25vIiwibG9jYWxlIjoiZW4iLCJpYXQiOjE2MjU4NDY5MzYsImV4cCI6MTYyNTg1MDUzNiwianRpIjoiMDczM2ZhZDlhY2VkYTk2ZjczNTk2OGNjMThjZjAyZTFhNDZhYzFhMiJ9.jIbGUmUkeszVgHvNgWh_egbv_abeRaN4bqjzTmZiku1_A5y84VjGDl2biPVVjnSjGeFo13THvQmpt2bnX4EVc_eES6nAqYiNXE_-O40N7yRbF6JZM-PB3JfrlgyOOihQudC0TEWLMZsDQuLN4QloaydSCy5nse3qpLK2vnNT3TxPpPPYlEmN567EdDC85TOPvvgyMR11f1ha4hBCdslU3gW1bFZflIgYS4rFPc5-BM0bjuaKtz-MvD8ynx4tgZXsh4RNP81ugdLo6r2X-4ZYmjUe4iOj6A4Jhur5hYS11K0GW1iIXgY-AJQg5Mp0X3_SpG7yTqHfex7GNRAFcgrptw'
   fetch('/google_auth_token/google-oauth2/', {
     method: 'POST',
     headers: {
@@ -125,7 +134,7 @@ function test() {
     },
     body: JSON.stringify(
       {
-        'auth_token': 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2ZjhkNTVkYTUzNGVhOTFjYjJjYjAwZTFhZjRlOGUwY2RlY2E5M2QiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMzUzNzY4MzU4MjIwLWgwZXJnOHY0N3FwNXNhMTJpa3ZmM3BsdWVqbGlzMDNzLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMzUzNzY4MzU4MjIwLWgwZXJnOHY0N3FwNXNhMTJpa3ZmM3BsdWVqbGlzMDNzLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA5MTM4MjY4MzAxMjkwNjE0OTA1IiwiZW1haWwiOiJmYWJpYW4ub21vYm9ub0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IlhKdllVUzI1cW5YYkhVOWkyM09IVHciLCJuYW1lIjoiRmFiaWFuIE9tb2Jvbm8iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FPaDE0R2pmSUhpakl6b01yNHZ2SmVKdFZ2cnpMMHg0dDd2U0JzbmtHdEdkenc9czk2LWMiLCJnaXZlbl9uYW1lIjoiRmFiaWFuIiwiZmFtaWx5X25hbWUiOiJPbW9ib25vIiwibG9jYWxlIjoiZW4iLCJpYXQiOjE2MjU2NTIxNzMsImV4cCI6MTYyNTY1NTc3MywianRpIjoiOTU2ZGZjODkzMzk1YTUxNDZiOWY2ZjdiODg5NDNiZDkwMDA4ZjQzOSJ9.wjQVcYcnGU62giiCoDYod0SP3XQKyizhbzxXcJaIOqT6AET0uaU-0iw0NGFZfsevSu4p8KNfKMKZ4X_hLzgmPQQBGW2-2acIiHMPawLHwfR5P8PTr2iSim2AV4wYZVtXt40A3z6_CBxCtya-Zc0o9iVqcBEVyk3gp4vsOyagFkuYn9SBsyA4lUuQNhOgna_l2JhNJ9OGdfyORKAVdIBPBT0QtpOlvkml63oc-dyUOgUZy3I5jkL8OlL4scfki_Gtx38RgIJLNXtHGCq9OWA7lnw1RKlrpj7rbh5s393CMtf8A6f_wFlrjIgSmA2zYmaKxw58Cyp3NlHi4I5PpKTJyg',
+        'auth_token': auth_token,
         'backend': 'google-oauth2'
   })
 

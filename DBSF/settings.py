@@ -95,7 +95,7 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-         'rest_framework.permissions.AllowAny',
+         'rest_framework.permissions.IsAuthenticated'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication', 
@@ -209,8 +209,9 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
 # SOCIAL AUTH STUFF
 SOCIAL_AUTH_USER_MODEL = 'social.User'
 
-SOCIAL_AUTH_GOOGLE_KEY = os.environ['SOCIAL_AUTH_GOOGLE_KEY']
-SOCIAL_AUTH_GOOGLE_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_SECRET']
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_SECRET']
+SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = []
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.open_id.OpenIdAuth',
