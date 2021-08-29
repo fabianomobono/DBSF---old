@@ -820,31 +820,31 @@ class Post_sandbox extends React.Component {
   }
   
   add_comment = (text) =>{
-    console.log(this.state.id)
-    const data = {'post_id': this.state.id, 'commentator': this.state.current_user, 'text': text.value}
-    const csrftoken = Cookies.get('csrftoken');
-    const request = new XMLHttpRequest()
-    request.open('POST', '/comment', true)
-    request.setRequestHeader('X-CSRFToken', csrftoken);
-    request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-    request.onload = () => {
-      const response = JSON.parse(request.responseText)
-      console.log(response)
-      this.setState({
-        comments: [...this.state.comments, 
-          {
-            text: response.text, 
-            commentator: response.commentator, 
-            profile_pic: response.profile_pic, 
-            id:response.id, 
-            current_user: this.state.current_user}]
-          }
-      )
-      text.value = ''
-    }
-    request.send(JSON.stringify(data))
-   
-    
+    if (text.length > 0){
+      console.log(this.state.id)
+      const data = {'post_id': this.state.id, 'commentator': this.state.current_user, 'text': text.value}
+      const csrftoken = Cookies.get('csrftoken');
+      const request = new XMLHttpRequest()
+      request.open('POST', '/comment', true)
+      request.setRequestHeader('X-CSRFToken', csrftoken);
+      request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+      request.onload = () => {
+        const response = JSON.parse(request.responseText)
+        console.log(response)
+        this.setState({
+          comments: [...this.state.comments, 
+            {
+              text: response.text, 
+              commentator: response.commentator, 
+              profile_pic: response.profile_pic, 
+              id:response.id, 
+              current_user: this.state.current_user}]
+            }
+        )
+        text.value = ''
+      }
+      request.send(JSON.stringify(data))   
+    }    
   }
 
   render() {
