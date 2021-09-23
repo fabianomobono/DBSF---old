@@ -19,7 +19,8 @@ from social_django.utils import psa
 from google.oauth2 import id_token
 from google.auth.transport import requests
 
-# Create your views here.
+#
+#  Create your views here.
 class Index(View):
     # if it is a get request
     def get(self, request):
@@ -34,7 +35,7 @@ class Index(View):
 class RegisterView(View):
     
     # if it is a post request
-    def post(self, request, *args, **kwargs):     
+    def post(self, request, backend='django.contrib.auth.backends.ModelBackend', *args, **kwargs):     
         form = RegisterForm(request.POST)
         if form.is_valid():
 
@@ -65,7 +66,7 @@ class RegisterView(View):
                     return render(request, 'social/login.html', {'message': 'Username is taken', 'form': LoginForm(), 'register_form': form})
 
                 # if everything goes well log the user in and redirect to the main page
-                login(request, user)
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 return HttpResponseRedirect(reverse('index'))
 
         # if the form is not valid
